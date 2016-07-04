@@ -1,0 +1,22 @@
+{
+    "name": "pixelfusion/skeletor",
+    "description": "Project skeleton generator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wouter Peschier",
+            "email": "wouter@pixelfusion.co.nz"
+        }
+    ],
+    "require": {
+        "symfony/console": "^2.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Skeletor\\": "src/Skeletor"
+        }
+    },
+    "require-dev": {
+        "kherge/box": "^2.7"
+    }
+}
