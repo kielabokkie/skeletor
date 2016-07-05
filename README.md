@@ -1,6 +1,6 @@
 # Skeletor
 
-Skeletor allows you to easily setup a base Laravel project with our atomic design frontend magic applied to it.
+Skeletor allows you to easily setup a base Laravel project with [our atomic design](https://github.com/pixelfusion/base-atomic-design) frontend magic applied to it.
 
 If you already have Skeletor installed you can skip to [create a project skeleton](#create-a-project-skeleton) section.
 
