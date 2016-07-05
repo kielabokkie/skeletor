@@ -4,6 +4,10 @@
     "finder": [
         {
             "name": "*.php",
+            "in": "src"
+        },
+        {
+            "name": "*.php",
             "in": "vendor"
         },
         {
