@@ -41,6 +41,15 @@ class CreateProjectCommand extends Command
             $this->tidyLaravel($output);
         }
 
+        $question = new ConfirmationQuestion('Is this a Lumen project? [<comment>Y/n</comment>]: ', true);
+        $isLumen = $helper->ask($input, $output, $question);
+
+        if ($isLumen === true) {
+            $output->writeln('<comment>> Creating Lumen project</comment>');
+            $this->installLumen();
+            $this->tidyLumen($output);
+        }
+
         $question = new ConfirmationQuestion('Atomic design? [<comment>Y/n</comment>]: ', true);
         $isAtomicDesign = $helper->ask($input, $output, $question);
 
@@ -69,6 +78,22 @@ class CreateProjectCommand extends Command
         $this->filesystem->createDir('setup/git-hooks');
     }
 
+    private function installLumen()
+    {
+        $process = new Process('composer create-project --prefer-dist laravel/lumen .');
+        $process->setTimeout(500);
+        $process->run();
+
+        if ($process->isSuccessful() === false) {
+            throw new ProcessFailedException($process);
+        }
+    }
+
+    private function tidyLumen()
+    {
+        $this->filesystem->createDir('setup/git-hooks');
+    }
+
     private function installAtomicDesign()
     {
         $process = new Process('git clone https://github.com/pixelfusion/base-atomic-design.git');
@@ -89,9 +114,15 @@ class CreateProjectCommand extends Command
         $this->filesystem->delete('base-atomic-design/README.md');
 
         // Remove some files that will be replaced
-        $this->filesystem->delete('.gitignore');
-        $this->filesystem->delete('gulpfile.js');
-        $this->filesystem->delete('package.json');
+        if ($this->filesystem->has('.gitignore') === true) {
+            $this->filesystem->delete('.gitignore');
+        }
+        if ($this->filesystem->has('gulpfile') === true) {
+            $this->filesystem->delete('gulpfile.js');
+        }
+        if ($this->filesystem->has('package.json') === true) {
+            $this->filesystem->delete('package.json');
+        }
 
         // We only want the index.php file from the Laravel project
         rename(getcwd() . '/public', getcwd() . '/public-temp');
