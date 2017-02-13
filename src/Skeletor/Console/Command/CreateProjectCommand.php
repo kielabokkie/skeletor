@@ -1,22 +1,32 @@
 <?php
 namespace Skeletor\Console\Command;
 
+use League\CLImate\CLImate;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class CreateProjectCommand extends Command
 {
+    /**
+     * @var CLImate
+     */
+    protected $cli;
+
+    /**
+     * @var Filesystem
+     */
     protected $filesystem;
 
     public function __construct()
     {
         parent::__construct();
+
+        $this->cli = new CLImate;
 
         $adapter = new Local(getcwd());
         $this->filesystem = new Filesystem($adapter);
@@ -25,129 +35,77 @@ class CreateProjectCommand extends Command
     protected function configure()
     {
         $this->setName('project:create')
-            ->setDescription('Create a new project skeleton');
+            ->setDescription('Create a new Laravel/Lumen project skeleton');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $helper = $this->getHelper('question');
+        $this->cli->br()->yellow('Skeletor - Laravel/Lumen project creator')->br();
 
-        $question = new ConfirmationQuestion('Is this a Laravel project? [<comment>Y/n</comment>]: ', true);
-        $isLaravel = $helper->ask($input, $output, $question);
+        $options = ['Laravel 5.3', 'Laravel 5.4', 'Lumen 5.4'];
+        $frameworkQuestion = $this->cli->radio('Choose your framework:', $options);
+        $response = explode(' ', $frameworkQuestion->prompt());
 
-        if ($isLaravel === true) {
-            $output->writeln('<comment>> Creating Laravel project</comment>');
-            $this->installLaravel();
-            $this->tidyLaravel($output);
-        }
+        $framework = strtolower($response[0]);
+        $version = $response[1];
 
-        $question = new ConfirmationQuestion('Is this a Lumen project? [<comment>Y/n</comment>]: ', true);
-        $isLumen = $helper->ask($input, $output, $question);
-
-        if ($isLumen === true) {
-            $output->writeln('<comment>> Creating Lumen project</comment>');
-            $this->installLumen();
-            $this->tidyLumen($output);
-        }
-
-        $question = new ConfirmationQuestion('Atomic design? [<comment>Y/n</comment>]: ', true);
-        $isAtomicDesign = $helper->ask($input, $output, $question);
-
-        if ($isAtomicDesign === true) {
-            $output->writeln('<comment>> Copying front end files</comment>');
-            $this->installAtomicDesign();
-            $this->tidyAtomicDesign();
+        switch ($framework) {
+            case 'laravel':
+                $this->cli->br()->yellow('Prepairing to install Laravel')->br();
+                $this->installLaravel($version);
+                break;
+            case 'lumen':
+                $this->cli->br()->yellow('Prepairing to install Lumen')->br();
+                $this->installLumen($version);
+                break;
         }
     }
 
-    private function installLaravel()
+    private function installLaravel($version)
     {
-        $process = new Process('composer create-project --prefer-dist laravel/laravel .');
+        $command = sprintf('composer create-project --prefer-dist --ansi laravel/laravel:%s .', $version);
+
+        $process = new Process($command);
         $process->setTimeout(500);
-        $process->run();
+
+        // Stream output to the cli
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
 
         if ($process->isSuccessful() === false) {
             throw new ProcessFailedException($process);
         }
+
+        $this->tidyLaravel();
     }
 
     private function tidyLaravel()
     {
-        $this->filesystem->delete('server.php');
-        $this->filesystem->deleteDir('resources/assets');
-        $this->filesystem->createDir('setup/git-hooks');
+        // Do some tidying up here
     }
 
-    private function installLumen()
+    private function installLumen($version)
     {
-        $process = new Process('composer create-project --prefer-dist laravel/lumen .');
+        $command = sprintf('composer create-project --prefer-dist --ansi laravel/lumen:%s .', $version);
+
+        $process = new Process($command);
         $process->setTimeout(500);
-        $process->run();
+
+        // Stream output to the cli
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
 
         if ($process->isSuccessful() === false) {
             throw new ProcessFailedException($process);
         }
+
+        $this->tidyLumen();
     }
 
     private function tidyLumen()
     {
-        $this->filesystem->createDir('setup/git-hooks');
-    }
-
-    private function installAtomicDesign()
-    {
-        $process = new Process('git clone https://github.com/pixelfusion/base-atomic-design.git');
-        $process->run();
-
-        if ($process->isSuccessful() === false) {
-            throw new ProcessFailedException($process);
-        }
-    }
-
-    private function tidyAtomicDesign()
-    {
-        $this->filesystem->deleteDir('base-atomic-design/.git');
-
-        // Delete some files that we don't need
-        $this->filesystem->delete('base-atomic-design/.travis.yml');
-        $this->filesystem->delete('base-atomic-design/LICENSE');
-        $this->filesystem->delete('base-atomic-design/README.md');
-
-        // Remove some files that will be replaced
-        if ($this->filesystem->has('.gitignore') === true) {
-            $this->filesystem->delete('.gitignore');
-        }
-        if ($this->filesystem->has('gulpfile') === true) {
-            $this->filesystem->delete('gulpfile.js');
-        }
-        if ($this->filesystem->has('package.json') === true) {
-            $this->filesystem->delete('package.json');
-        }
-
-        // We only want the index.php file from the Laravel project
-        rename(getcwd() . '/public', getcwd() . '/public-temp');
-        rename(getcwd() . '/base-atomic-design/public', getcwd() . '/public');
-        $this->filesystem->copy('public-temp/index.php', 'public/index.php');
-        $this->filesystem->deleteDir('public-temp');
-
-        // Copy front end assets folder
-        rename(getcwd() . '/base-atomic-design/resources/assets', getcwd() . '/resources/assets');
-        $this->filesystem->deleteDir('base-atomic-design/resources');
-
-        // Copy front end git hooks
-        rename(getcwd() . '/base-atomic-design/setup/git-hooks', getcwd() . '/setup/git-hooks');
-        $this->filesystem->deleteDir('base-atomic-design/setup');
-
-        // Copy the remaining files to the root of the project
-        $files = $this->filesystem->listContents('base-atomic-design');
-
-        foreach ($files as $file) {
-            $this->filesystem->copy(
-                $file['path'],
-                $file['basename']
-            );
-        }
-
-        $this->filesystem->deleteDir('base-atomic-design');
+        // Do some tidying up here
     }
 }

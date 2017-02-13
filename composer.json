@@ -11,7 +11,8 @@
     "require": {
         "symfony/console": "^2.8",
         "symfony/process": "^2.8",
-        "league/flysystem": "^1.0"
+        "league/flysystem": "^1.0",
+        "league/climate": "^3.2"
     },
     "require-dev": {
         "kherge/box": "^2.7"
