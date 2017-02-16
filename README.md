@@ -23,5 +23,5 @@ mv skeletor.phar /usr/local/bin/skeletor
 Create a directory for your project and use skeletor to setup the project skeleton:
 
 ```bash
-mkdir myproject && skeletor project:create
+mkdir myproject && cd myproject && skeletor project:create
 ```
