@@ -18,18 +18,61 @@ class CreateProjectCommand extends Command
     protected $cli;
 
     /**
+     * @var CLImate padding method
+     */
+    protected $padding;
+
+    /**
      * @var Filesystem
      */
     protected $filesystem;
+
+    /**
+     * @var string framework name
+     */
+    protected $framework;
+
+    /**
+     * @var string framework version
+     */
+    protected $frameworkVersion;
+
+    /**
+     * @var array with available packages
+     */
+    protected $availablePackages;
+
+    /**
+     * @var array with active packages
+     */
+    protected $activePackages;
+
+    /**
+     * @var bool success
+     */
+    protected $success;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->cli = new CLImate;
+        $this->padding = $this->cli->padding(20);
 
         $adapter = new Local(getcwd());
         $this->filesystem = new Filesystem($adapter);
+
+        $this->success = false;
+        $this->setPackages();
+    }
+
+    public function __destruct()
+    {
+        if($this->success) {
+            $this->cli->br()->green('Yhea, success')->br();
+        } else {
+            $this->cli->br()->red('Owh no, it failed')->br();
+        }
     }
 
     protected function configure()
@@ -40,72 +83,127 @@ class CreateProjectCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Say hello
         $this->cli->br()->yellow('Skeletor - Laravel/Lumen project creator')->br();
 
-        $options = ['Laravel 5.3', 'Laravel 5.4', 'Lumen 5.4'];
-        $frameworkQuestion = $this->cli->radio('Choose your framework:', $options);
-        $response = explode(' ', $frameworkQuestion->prompt());
+        // Set all options
+        $this->setOptions();
 
-        $framework = strtolower($response[0]);
-        $version = $response[1];
+        // Get all options before confirmations
+        $this->getOptions();
 
-        switch ($framework) {
+        // Check options
+        if ($this->confirmOptions() === false) {
+            return false;
+        }
+
+        // Build project
+        $this->buildProject();
+    }
+
+    private function setPackages()
+    {
+        $this->availablePackages = [
+            'Behat' => [
+                'name' => 'Behat',
+                'slug' => 'behat/behat',
+                'version' => ''
+            ],
+            'Jsonapi' => [
+                'name' => 'Jsonapi',
+                'slug' => 'kielabokkie/jsonapi-behat-extension',
+                'version' => ' --dev'
+            ],
+        ];
+    }
+
+    private function setOptions()
+    {
+        // Choose framework
+        $frameworkOptions = ['Laravel 5.3', 'Laravel 5.4', 'Lumen 5.4'];
+        $frameworkQuestion = $this->cli->radio('Choose your framework:', $frameworkOptions);
+        $frameworkResponse = explode(' ', $frameworkQuestion->prompt());
+        $this->framework = strtolower($frameworkResponse[0]);
+        $this->frameworkVersion = $frameworkResponse[1];
+
+        // Choose packages
+        $packagesQuestion = $this->cli->checkboxes('Choose your packages', array_keys($this->availablePackages));
+        $packagesResponse = $packagesQuestion->prompt();
+        $this->activePackages = array_map(function($activePackage) {
+            return $this->availablePackages[$activePackage];
+        }, $packagesResponse);
+    }
+
+    private function getOptions()
+    {
+        $this->cli->br()->yellow('Project setup:');
+        $this->padding->label('Framework')->result($this->framework);
+        $this->padding->label('Version')->result($this->frameworkVersion);
+        $this->cli->br()->yellow('Packages:');
+        $this->cli->table($this->activePackages);
+    }
+
+    private function confirmOptions()
+    {
+        $input = $this->cli->confirm('Continue?');
+        if ($input->confirmed()) {
+            return true;
+        }
+        return false;
+    }
+
+    private function buildProject()
+    {
+        $this->cli->br()->green('Building..');
+        $this->installFramework();
+        $this->installPackages();
+    }
+
+    private function runCommand($command)
+    {
+        $this->cli->yellow($command);
+        $process = new Process($command);
+        $process->setTimeout(500);
+
+        // Stream output to the cli
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
+
+        if ($process->isSuccessful() === false) {
+            $this->success = false;
+            throw new ProcessFailedException($process);
+        }
+
+        $this->success = true;
+    }
+
+    private function installFramework()
+    {
+        $this->cli->br()->yellow(sprintf('Installing %s %s', $this->framework, $this->frameworkVersion));
+        $this->runCommand(sprintf('composer create-project --prefer-dist --ansi laravel/%s:%s .', $this->framework, $this->frameworkVersion));
+        $this->tidyFramework();
+    }
+
+    private function tidyFramework()
+    {
+        // Do some tidying up here
+        switch ($this->framework) {
             case 'laravel':
-                $this->cli->br()->yellow('Prepairing to install Laravel')->br();
-                $this->installLaravel($version);
+                $this->cli->br()->yellow('Clean laravel');
                 break;
             case 'lumen':
-                $this->cli->br()->yellow('Prepairing to install Lumen')->br();
-                $this->installLumen($version);
+                $this->cli->br()->yellow('Clean lumen');
                 break;
         }
     }
 
-    private function installLaravel($version)
+    private function installPackages()
     {
-        $command = sprintf('composer create-project --prefer-dist --ansi laravel/laravel:%s .', $version);
-
-        $process = new Process($command);
-        $process->setTimeout(500);
-
-        // Stream output to the cli
-        $process->run(function ($type, $buffer) {
-            echo $buffer;
-        });
-
-        if ($process->isSuccessful() === false) {
-            throw new ProcessFailedException($process);
+        foreach($this->activePackages as $key => $package)
+        {
+            $this->cli->br()->yellow(sprintf('Installing %s %s', $package['name'], $package['version']));
+            $this->runCommand(sprintf('composer require %s %s', $package['slug'], $package['version']));
         }
-
-        $this->tidyLaravel();
-    }
-
-    private function tidyLaravel()
-    {
-        // Do some tidying up here
-    }
-
-    private function installLumen($version)
-    {
-        $command = sprintf('composer create-project --prefer-dist --ansi laravel/lumen:%s .', $version);
-
-        $process = new Process($command);
-        $process->setTimeout(500);
-
-        // Stream output to the cli
-        $process->run(function ($type, $buffer) {
-            echo $buffer;
-        });
-
-        if ($process->isSuccessful() === false) {
-            throw new ProcessFailedException($process);
-        }
-
-        $this->tidyLumen();
-    }
-
-    private function tidyLumen()
-    {
-        // Do some tidying up here
     }
 }
