@@ -52,7 +52,7 @@ class CreateProjectCommand extends Command
      */
     protected $success;
 
-    public function __construct(CLImate $cli, FrameworkManager $frameworkManager)
+    public function __construct()
     {
         parent::__construct();
 
@@ -64,12 +64,6 @@ class CreateProjectCommand extends Command
 
         $this->success = false;
         $this->setPackages();
-
-        $frameworkManager = new FrameworkManager();
-        $frameworkManager->addFramework(new Laravel54Framework());
-        $frameworkManager->addFramework(new Laravel53Framework());
-        $frameworkManager->addFramework(new Lumen54Framework());
-        $frameworkManager->addFramework(new Symfony31Framework());
     }
 
     public function __destruct()
@@ -149,7 +143,6 @@ class CreateProjectCommand extends Command
         // Choose packages
         $packagesQuestion = $this->cli->checkboxes('Choose your packages', array_keys($this->availablePackages));
         $packagesResponse = $packagesQuestion->prompt();
-        $this->cli->dump($this->activePackages);
         $this->activePackages = array_map(function($activePackage) {
             return $this->availablePackages[$activePackage];
         }, $packagesResponse);
