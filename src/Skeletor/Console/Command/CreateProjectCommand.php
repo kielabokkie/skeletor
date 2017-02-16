@@ -52,7 +52,7 @@ class CreateProjectCommand extends Command
      */
     protected $success;
 
-    public function __construct()
+    public function __construct(CLImate $cli, FrameworkManager $frameworkManager)
     {
         parent::__construct();
 
@@ -64,6 +64,12 @@ class CreateProjectCommand extends Command
 
         $this->success = false;
         $this->setPackages();
+
+        $frameworkManager = new FrameworkManager();
+        $frameworkManager->addFramework(new Laravel54Framework());
+        $frameworkManager->addFramework(new Laravel53Framework());
+        $frameworkManager->addFramework(new Lumen54Framework());
+        $frameworkManager->addFramework(new Symfony31Framework());
     }
 
     public function __destruct()
@@ -89,6 +95,9 @@ class CreateProjectCommand extends Command
         // Set all options
         $this->setOptions();
 
+        // Set default packages
+        $this->setDefaultPackages();
+
         // Get all options before confirmations
         $this->getOptions();
 
@@ -109,12 +118,23 @@ class CreateProjectCommand extends Command
                 'slug' => 'behat/behat',
                 'version' => ''
             ],
-            'Jsonapi' => [
-                'name' => 'Jsonapi',
+            'JSON API Behat Extension' => [
+                'name' => 'JSON API Behat Extension',
                 'slug' => 'kielabokkie/jsonapi-behat-extension',
                 'version' => ' --dev'
             ],
         ];
+    }
+
+    private function setDefaultPackages()
+    {
+        $this->activePackages = array_merge($this->activePackages, [
+            [
+                'name' => 'PixelFusion Git Hooks',
+                'slug' => 'pixelfusion/git-hooks',
+                'version' => ''
+            ],
+        ]);
     }
 
     private function setOptions()
@@ -129,6 +149,7 @@ class CreateProjectCommand extends Command
         // Choose packages
         $packagesQuestion = $this->cli->checkboxes('Choose your packages', array_keys($this->availablePackages));
         $packagesResponse = $packagesQuestion->prompt();
+        $this->cli->dump($this->activePackages);
         $this->activePackages = array_map(function($activePackage) {
             return $this->availablePackages[$activePackage];
         }, $packagesResponse);
