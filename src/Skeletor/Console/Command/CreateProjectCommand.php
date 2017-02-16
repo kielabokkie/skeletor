@@ -2,11 +2,8 @@
 namespace Skeletor\Console\Command;
 
 use League\CLImate\CLImate;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -16,11 +13,6 @@ class CreateProjectCommand extends Command
      * @var CLImate
      */
     protected $cli;
-
-    /**
-     * @var CLImate padding method
-     */
-    protected $padding;
 
     /**
      * @var Filesystem
@@ -47,32 +39,12 @@ class CreateProjectCommand extends Command
      */
     protected $activePackages;
 
-    /**
-     * @var bool success
-     */
-    protected $success;
-
-    public function __construct()
+    public function __construct(CLImate $cli, Filesystem $filesystem)
     {
         parent::__construct();
-
-        $this->cli = new CLImate;
-        $this->padding = $this->cli->padding(20);
-
-        $adapter = new Local(getcwd());
-        $this->filesystem = new Filesystem($adapter);
-
-        $this->success = false;
+        $this->cli = $cli;
+        $this->filesystem = $filesystem;
         $this->setPackages();
-    }
-
-    public function __destruct()
-    {
-        if($this->success) {
-            $this->cli->br()->green('Yhea, success')->br();
-        } else {
-            $this->cli->br()->red('Owh no, it failed')->br();
-        }
     }
 
     protected function configure()
@@ -81,27 +53,19 @@ class CreateProjectCommand extends Command
             ->setDescription('Create a new Laravel/Lumen project skeleton');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute()
     {
-        // Say hello
         $this->cli->br()->yellow('Skeletor - Laravel/Lumen project creator')->br();
-
-        // Set all options
         $this->setOptions();
-
-        // Set default packages
         $this->setDefaultPackages();
+        $this->showEneteredOptions();
 
-        // Get all options before confirmations
-        $this->getOptions();
-
-        // Check options
         if ($this->confirmOptions() === false) {
             return false;
         }
 
-        // Build project
         $this->buildProject();
+        $this->cli->br()->green('Yhea, success')->br();
     }
 
     private function setPackages()
@@ -148,11 +112,13 @@ class CreateProjectCommand extends Command
         }, $packagesResponse);
     }
 
-    private function getOptions()
+    private function showEneteredOptions()
     {
+        $padding = $this->cli->padding(20);
+
         $this->cli->br()->yellow('Project setup:');
-        $this->padding->label('Framework')->result($this->framework);
-        $this->padding->label('Version')->result($this->frameworkVersion);
+        $padding->label('Framework')->result($this->framework);
+        $padding->label('Version')->result($this->frameworkVersion);
         $this->cli->br()->yellow('Packages:');
         $this->cli->table($this->activePackages);
     }
@@ -176,6 +142,7 @@ class CreateProjectCommand extends Command
     private function runCommand($command)
     {
         $this->cli->yellow($command);
+        return;
         $process = new Process($command);
         $process->setTimeout(500);
 
@@ -188,8 +155,6 @@ class CreateProjectCommand extends Command
             $this->success = false;
             throw new ProcessFailedException($process);
         }
-
-        $this->success = true;
     }
 
     private function installFramework()

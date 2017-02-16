@@ -2,17 +2,23 @@
 <?php
 
 date_default_timezone_set('UTC');
-
 set_time_limit(0);
 
 (@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
 
+use League\CLImate\CLImate;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Application;
 
 $app = new Application('Skeletor CLI', '1.0.0');
 
+$cli = new CLImate;
+$adapter = new Local(getcwd());
+$filesystem = new Filesystem($adapter);
+
 $app->addCommands(array(
-    new Skeletor\Console\Command\CreateProjectCommand(),
+    new Skeletor\Console\Command\CreateProjectCommand($cli, $filesystem),
 ));
 
 $app->run();
