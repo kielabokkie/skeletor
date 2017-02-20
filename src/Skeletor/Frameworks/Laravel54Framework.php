@@ -1,9 +1,12 @@
 <?php
 namespace Skeletor\Frameworks;
 
+use League\Flysystem\Filesystem;
+use Skeletor\Manager\ComposerManager;
+
 class Laravel54Framework extends Framework
 {
-    public function __construct($composerManager)
+    public function __construct(ComposerManager $composerManager)
     {
         parent::__construct($composerManager);
         $this->setFramework('laravel');
@@ -17,7 +20,7 @@ class Laravel54Framework extends Framework
         $this->composerManager->runCommand($command);
     }
 
-    public function tidyUp($filesystem)
+    public function tidyUp(Filesystem $filesystem)
     {
         //$filesystem->delete('server.php');
     }

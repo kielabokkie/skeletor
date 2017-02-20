@@ -5,7 +5,14 @@ use Skeletor\Packages\Packages;
 
 class PackageManager
 {
+    /**
+     * @var instance of ComposerManager
+     */
     protected $composerManager;
+
+    /**
+     * @var instance of Packages
+     */
     protected $packages;
 
     public function __construct(ComposerManager $composerManager, Packages $packages)
