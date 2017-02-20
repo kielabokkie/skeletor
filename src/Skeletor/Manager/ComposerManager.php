@@ -8,10 +8,12 @@ use League\CLImate\CLImate;
 class ComposerManager
 {
     protected $cli;
+    protected $dryRun;
 
-    public function __construct(CLImate $cli)
+    public function __construct(CLImate $cli, bool $dryRun)
     {
         $this->cli = $cli;
+        $this->dryRun = $dryRun;
     }
 
     public function prepareFrameworkCommand(string $framework, string $name, string $version)
@@ -19,9 +21,19 @@ class ComposerManager
         return sprintf('create-project --prefer-dist --ansi %s/%s:%s', $framework, $name, $version);
     }
 
+    public function preparePackageCommand(string $package, string $version)
+    {
+        return sprintf('composer require %s %s', $package, $version);
+    }
+
     public function runCommand(string $command)
     {
         $this->cli->yellow($command);
+
+        if($this->dryRun) {
+            return;
+        }
+
         $process = new Process($command);
         $process->setTimeout(500);
 

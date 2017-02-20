@@ -1,18 +1,16 @@
 <?php
-
 namespace Skeletor\Manager;
 
 use Skeletor\Packages\Packages;
-use Skeletor\Manager\ComposerManager;
 
 class PackageManager
 {
     protected $composerManager;
     protected $packages;
 
-    public function __construct(ComposerManager $composerManager)
+    public function __construct(ComposerManager $composerManager, Packages $packages)
     {
-        $this->packages = new Packages();
+        $this->packages = $packages;
         $this->composerManager = $composerManager;
     }
 
