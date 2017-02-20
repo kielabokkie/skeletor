@@ -1,9 +1,14 @@
 <?php
 namespace Skeletor\Console\Command;
 
+use Skeletor\Frameworks\Laravel54Framework;
+use Skeletor\Manager\ComposerManager;
+use Skeletor\Manager\FrameworkManager;
 use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -20,14 +25,9 @@ class CreateProjectCommand extends Command
     protected $filesystem;
 
     /**
-     * @var string framework name
+     * @var FrameworkManager
      */
-    protected $framework;
-
-    /**
-     * @var string framework version
-     */
-    protected $frameworkVersion;
+    protected $frameworkManager;
 
     /**
      * @var array with available packages
@@ -39,12 +39,22 @@ class CreateProjectCommand extends Command
      */
     protected $activePackages;
 
+    /**
+     * @var instance of Framework
+     */
+    protected $activeFramework;
+
+
     public function __construct(CLImate $cli, Filesystem $filesystem)
     {
         parent::__construct();
         $this->cli = $cli;
         $this->filesystem = $filesystem;
         $this->setPackages();
+
+        $composerManager = new ComposerManager($this->cli);
+        $this->frameworkManager = new FrameworkManager($this->filesystem);
+        $this->frameworkManager->addFramework(new Laravel54Framework($composerManager));
     }
 
     protected function configure()
@@ -53,9 +63,9 @@ class CreateProjectCommand extends Command
             ->setDescription('Create a new Laravel/Lumen project skeleton');
     }
 
-    protected function execute()
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->cli->br()->yellow('Skeletor - Laravel/Lumen project creator')->br();
+        $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames()) ))->br();
         $this->setOptions();
         $this->setDefaultPackages();
         $this->showEneteredOptions();
@@ -98,11 +108,10 @@ class CreateProjectCommand extends Command
     private function setOptions()
     {
         // Choose framework
-        $frameworkOptions = ['Laravel 5.3', 'Laravel 5.4', 'Lumen 5.4'];
+        $frameworkOptions = $this->frameworkManager->getFrameworkNames();
         $frameworkQuestion = $this->cli->radio('Choose your framework:', $frameworkOptions);
-        $frameworkResponse = explode(' ', $frameworkQuestion->prompt());
-        $this->framework = strtolower($frameworkResponse[0]);
-        $this->frameworkVersion = $frameworkResponse[1];
+        $frameworkResponse = $frameworkQuestion->prompt();
+        $this->activeFramework = $this->frameworkManager->load($frameworkResponse);
 
         // Choose packages
         $packagesQuestion = $this->cli->checkboxes('Choose your packages', array_keys($this->availablePackages));
@@ -117,8 +126,8 @@ class CreateProjectCommand extends Command
         $padding = $this->cli->padding(20);
 
         $this->cli->br()->yellow('Project setup:');
-        $padding->label('Framework')->result($this->framework);
-        $padding->label('Version')->result($this->frameworkVersion);
+        $padding->label('Framework')->result($this->activeFramework->getName());
+        $padding->label('Version')->result($this->activeFramework->getVersion());
         $this->cli->br()->yellow('Packages:');
         $this->cli->table($this->activePackages);
     }
@@ -135,46 +144,9 @@ class CreateProjectCommand extends Command
     private function buildProject()
     {
         $this->cli->br()->green('Building..');
-        $this->installFramework();
+        $this->frameworkManager->install($this->activeFramework);
+        $this->frameworkManager->tidyUp($this->activeFramework);
         $this->installPackages();
-    }
-
-    private function runCommand($command)
-    {
-        $this->cli->yellow($command);
-        return;
-        $process = new Process($command);
-        $process->setTimeout(500);
-
-        // Stream output to the cli
-        $process->run(function ($type, $buffer) {
-            echo $buffer;
-        });
-
-        if ($process->isSuccessful() === false) {
-            $this->success = false;
-            throw new ProcessFailedException($process);
-        }
-    }
-
-    private function installFramework()
-    {
-        $this->cli->br()->yellow(sprintf('Installing %s %s', $this->framework, $this->frameworkVersion));
-        $this->runCommand(sprintf('composer create-project --prefer-dist --ansi laravel/%s:%s .', $this->framework, $this->frameworkVersion));
-        $this->tidyFramework();
-    }
-
-    private function tidyFramework()
-    {
-        // Do some tidying up here
-        switch ($this->framework) {
-            case 'laravel':
-                $this->cli->br()->yellow('Clean laravel');
-                break;
-            case 'lumen':
-                $this->cli->br()->yellow('Clean lumen');
-                break;
-        }
     }
 
     private function installPackages()
@@ -182,7 +154,8 @@ class CreateProjectCommand extends Command
         foreach($this->activePackages as $key => $package)
         {
             $this->cli->br()->yellow(sprintf('Installing %s %s', $package['name'], $package['version']));
-            $this->runCommand(sprintf('composer require %s %s', $package['slug'], $package['version']));
+            //$this->runCommand(sprintf('composer require %s %s', $package['slug'], $package['version']));
         }
     }
+
 }
