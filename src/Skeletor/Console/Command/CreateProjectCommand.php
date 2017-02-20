@@ -2,6 +2,7 @@
 namespace Skeletor\Console\Command;
 
 use Skeletor\Frameworks\Laravel54Framework;
+use Skeletor\Frameworks\LaravelLumen54Framework;
 use Skeletor\Manager\ComposerManager;
 use Skeletor\Manager\FrameworkManager;
 use League\CLImate\CLImate;
@@ -54,7 +55,9 @@ class CreateProjectCommand extends Command
 
         $composerManager = new ComposerManager($this->cli);
         $this->frameworkManager = new FrameworkManager($this->filesystem);
+
         $this->frameworkManager->addFramework(new Laravel54Framework($composerManager));
+        $this->frameworkManager->addFramework(new LaravelLumen54Framework($composerManager));
     }
 
     protected function configure()
