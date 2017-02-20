@@ -25,3 +25,10 @@ Create a directory for your project and use skeletor to setup the project skelet
 ```bash
 mkdir myproject && cd myproject && skeletor project:create
 ```
+
+## DryRun option
+
+When you want to test the install proces, you can run a dryrun.
+```bash
+mkdir myproject && cd myproject && skeletor project:create --dryrun
+```
