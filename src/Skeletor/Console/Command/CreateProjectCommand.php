@@ -10,7 +10,6 @@ use Skeletor\Manager\FrameworkManager;
 use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
