@@ -19,6 +19,6 @@ class LaravelLumen54Framework extends Framework
 
     public function tidyUp($filesystem)
     {
-        $this->filesystem->delete('server.php');
+        //$filesystem->delete('server.php');
     }
 }
