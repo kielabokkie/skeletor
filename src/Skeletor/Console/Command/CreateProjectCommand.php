@@ -64,13 +64,8 @@ class CreateProjectCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dryRun = $input->getOption('dryrun');
-        if($dryRun){
-            $this->cli->green('Skeletor runs dry');
-        }
-
         $this->setupDependencies($dryRun);
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames()) ))->br();
-
         $this->activeFramework = $this->getFrameworkOption();
         $this->activePackages = $this->getPackageOptions();
 
@@ -84,7 +79,6 @@ class CreateProjectCommand extends Command
         }
 
         $this->activePackages = $this->packageManager->mergeSelectedAndDefaultPackages($this->activePackages);
-
         $this->buildProject();
         $this->cli->br()->green('Yhea, success')->br();
     }

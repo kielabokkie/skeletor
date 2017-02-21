@@ -1,7 +1,6 @@
 <?php
 namespace Skeletor\Manager;
 
-use Skeletor\Packages\Exception\FailedToLoadPackageException;
 use League\Flysystem\Filesystem;
 use Skeletor\Packages\Package;
 
