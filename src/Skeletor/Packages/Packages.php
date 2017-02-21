@@ -3,7 +3,7 @@ namespace Skeletor\Packages;
 
 class Packages
 {
-    function getPackages()
+    public function getPackages()
     {
         return [
             'Behat' => [
@@ -19,7 +19,7 @@ class Packages
         ];
     }
 
-    function getDefaultPackages()
+    public function getDefaultPackages()
     {
         return [
             'PixelFusion Git Hooks' => [

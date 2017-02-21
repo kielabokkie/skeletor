@@ -6,11 +6,11 @@ use League\Flysystem\Filesystem;
 interface FrameworkInterface
 {
     public function getFramework();
-    public function setFramework($framework);
+    public function setFramework(string $framework);
     public function getName();
-    public function setName($name);
+    public function setName(string $name);
     public function getVersion();
-    public function setVersion($version);
+    public function setVersion(string $version);
     public function install();
     public function tidyUp(Filesystem $filesystem);
 }

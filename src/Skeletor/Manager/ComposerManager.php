@@ -18,7 +18,7 @@ class ComposerManager
 
     public function prepareFrameworkCommand(string $framework, string $name, string $version)
     {
-        return sprintf('create-project --prefer-dist --ansi %s/%s:%s', $framework, $name, $version);
+        return sprintf('composer create-project --prefer-dist --ansi %s/%s:%s .', $framework, $name, $version);
     }
 
     public function preparePackageCommand(string $package, string $version)

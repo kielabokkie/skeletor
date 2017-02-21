@@ -20,7 +20,7 @@ abstract class Framework implements FrameworkInterface
         return $this->framework;
     }
 
-    public function setFramework($framework)
+    public function setFramework(string $framework)
     {
         $this->framework = $framework;
     }
@@ -30,7 +30,7 @@ abstract class Framework implements FrameworkInterface
         return $this->name;
     }
 
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -40,7 +40,7 @@ abstract class Framework implements FrameworkInterface
         return $this->version;
     }
 
-    public function setVersion($version)
+    public function setVersion(string $version)
     {
         $this->version = $version;
     }

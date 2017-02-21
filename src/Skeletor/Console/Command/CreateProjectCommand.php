@@ -1,6 +1,7 @@
 <?php
 namespace Skeletor\Console\Command;
 
+use Skeletor\Api\PackagistApi;
 use Skeletor\Frameworks\Laravel54Framework;
 use Skeletor\Frameworks\LaravelLumen54Framework;
 use Skeletor\Packages\Packages;
@@ -69,7 +70,14 @@ class CreateProjectCommand extends Command
 
         $this->setupDependencies($dryRun);
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames()) ))->br();
-        $this->setOptions();
+
+        $this->activeFramework = $this->getFrameworkOption();
+        $this->activePackages = $this->getPackageOptions();
+
+        $packageVersions = $this->packageManager->getVersionsPackages($this->activePackages);
+        $this->getPackageVersionOptions($packageVersions);
+
+        $this->activePackages = $this->packageManager->addDefaultPackages($this->activePackages);
         $this->showEnteredOptions();
 
         if ($this->confirmOptions() === false) {
@@ -84,24 +92,34 @@ class CreateProjectCommand extends Command
     {
         $composerManager = new ComposerManager($this->cli, $dryRun);
         $packages = new Packages();
-        $this->packageManager = new PackageManager($composerManager, $packages);
+        $packagistApi = new PackagistApi();
+
+        $this->packageManager = new PackageManager($composerManager, $packages, $packagistApi);
         $this->frameworkManager = new FrameworkManager($this->filesystem);
 
         $this->frameworkManager->addFramework(new Laravel54Framework($composerManager));
         $this->frameworkManager->addFramework(new LaravelLumen54Framework($composerManager));
     }
 
-    private function setOptions()
+    private function getFrameworkOption()
     {
-        // Choose framework
         $frameworkQuestion = $this->cli->radio('Choose your framework:', $this->frameworkManager->getFrameworkNames());
-        $frameworkResponse = $frameworkQuestion->prompt();
-        $this->activeFramework = $this->frameworkManager->load($frameworkResponse);
+        return $this->frameworkManager->load($frameworkQuestion->prompt());
+    }
 
-        // Choose packages
-        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->packageManager->getPackageNames());
-        $packagesResponse = $packagesQuestion->prompt();
-        $this->activePackages = $this->packageManager->load($packagesResponse);
+    private function getPackageOptions()
+    {
+        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->packageManager->getPackageNames($this->packageManager->getPackages()));
+        return $this->packageManager->load($packagesQuestion->prompt());
+    }
+
+    private function getPackageVersionOptions(array $packageVersions)
+    {
+        foreach($this->activePackages as $key => $package)
+        {
+            $packageVersionsQuestion = $this->cli->radio(sprintf('Choose %s version', $package['name']), $packageVersions[$key]);
+            $this->activePackages[$key]['version'] = $packageVersionsQuestion->prompt();
+        }
     }
 
     private function showEnteredOptions()

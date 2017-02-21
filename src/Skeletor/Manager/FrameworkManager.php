@@ -3,6 +3,7 @@ namespace Skeletor\Manager;
 
 use Skeletor\Frameworks\Exception\FailedToLoadFrameworkException;
 use League\Flysystem\Filesystem;
+use Skeletor\Frameworks\Framework;
 
 class FrameworkManager
 {
@@ -21,7 +22,7 @@ class FrameworkManager
         $this->filesystem = $fileSystem;
     }
 
-    public function addFramework($framework)
+    public function addFramework(Framework $framework)
     {
         $this->frameworks[] = $framework;
     }
@@ -33,7 +34,7 @@ class FrameworkManager
         }, $this->frameworks);
     }
 
-    public function load($name)
+    public function load(string $name)
     {
         foreach($this->frameworks as $key => $framework) {
             if($framework->getName() . ' ' . $framework->getVersion() === $name) {
