@@ -1,10 +1,9 @@
 <?php
 namespace Skeletor\Console\Command;
 
-use Skeletor\Api\PackagistApi;
 use Skeletor\Frameworks\Laravel54Framework;
 use Skeletor\Frameworks\LaravelLumen54Framework;
-use Skeletor\Packages\Packages;
+use Skeletor\Packages\BehatPackage;
 use Skeletor\Manager\PackageManager;
 use Skeletor\Manager\ComposerManager;
 use Skeletor\Manager\FrameworkManager;
@@ -74,12 +73,7 @@ class CreateProjectCommand extends Command
         $this->activeFramework = $this->getFrameworkOption();
         $this->activePackages = $this->getPackageOptions();
 
-        $packageVersions = $this->packageManager->getVersionsPackages($this->activePackages);
-        $this->getPackageVersionOptions($packageVersions);
-
-        $this->activePackages = $this->packageManager->addDefaultPackages($this->activePackages);
         $this->showEnteredOptions();
-
         if ($this->confirmOptions() === false) {
             return false;
         }
@@ -91,14 +85,13 @@ class CreateProjectCommand extends Command
     private function setupDependencies(bool $dryRun)
     {
         $composerManager = new ComposerManager($this->cli, $dryRun);
-        $packages = new Packages();
-        $packagistApi = new PackagistApi();
-
-        $this->packageManager = new PackageManager($composerManager, $packages, $packagistApi);
+        $this->packageManager = new PackageManager($this->filesystem);
         $this->frameworkManager = new FrameworkManager($this->filesystem);
 
         $this->frameworkManager->addFramework(new Laravel54Framework($composerManager));
         $this->frameworkManager->addFramework(new LaravelLumen54Framework($composerManager));
+
+        $this->packageManager->addPackage(new BehatPackage($composerManager));
     }
 
     private function getFrameworkOption()
@@ -109,17 +102,8 @@ class CreateProjectCommand extends Command
 
     private function getPackageOptions()
     {
-        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->packageManager->getPackageNames($this->packageManager->getPackages()));
+        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->packageManager->getPackageNames());
         return $this->packageManager->load($packagesQuestion->prompt());
-    }
-
-    private function getPackageVersionOptions(array $packageVersions)
-    {
-        foreach($this->activePackages as $key => $package)
-        {
-            $packageVersionsQuestion = $this->cli->radio(sprintf('Choose %s version', $package['name']), $packageVersions[$key]);
-            $this->activePackages[$key]['version'] = $packageVersionsQuestion->prompt();
-        }
     }
 
     private function showEnteredOptions()
@@ -129,7 +113,7 @@ class CreateProjectCommand extends Command
         $padding->label('Framework')->result($this->activeFramework->getName());
         $padding->label('Version')->result($this->activeFramework->getVersion());
         $this->cli->br()->yellow('Packages:');
-        $this->cli->table($this->activePackages);
+        $this->cli->table($this->packageManager->showPackagesTable($this->activePackages));
     }
 
     private function confirmOptions()
@@ -146,6 +130,10 @@ class CreateProjectCommand extends Command
         $this->cli->br()->green('Building..');
         $this->frameworkManager->install($this->activeFramework);
         $this->frameworkManager->tidyUp($this->activeFramework);
-        $this->packageManager->install($this->activePackages);
+
+        foreach($this->activePackages as $key => $package) {
+            $this->packageManager->install($package);
+            $this->packageManager->tidyUp($package);
+        }
     }
 }

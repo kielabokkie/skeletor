@@ -1,66 +1,64 @@
 <?php
 namespace Skeletor\Manager;
 
-use Skeletor\Api\PackagistApi;
-use Skeletor\Packages\Packages;
+use Skeletor\Packages\Exception\FailedToLoadPackageException;
+use League\Flysystem\Filesystem;
+use Skeletor\Packages\Package;
 
 class PackageManager
 {
     /**
-     * @var instance of ComposerManager
-     */
-    protected $composerManager;
-
-    /**
-     * @var instance of Packages
+     * @var array with packages
      */
     protected $packages;
 
     /**
-     * @var Packagist
+     * @var instance of the filesystem
      */
-    protected $packagistApi;
+    protected $fileSystem;
 
-    public function __construct(ComposerManager $composerManager, Packages $packages, PackagistApi $packagistApi)
+    public function __construct(Filesystem $fileSystem)
     {
-        $this->packages = $packages;
-        $this->packagistApi = $packagistApi;
-        $this->composerManager = $composerManager;
+        $this->filesystem = $fileSystem;
+    }
+
+    public function addPackage(Package $package)
+    {
+        $this->packages[] = $package;
     }
 
     public function getPackageNames()
     {
-        return array_keys($this->packages->getPackages());
+        return array_map(function($package) {
+            return $package->getName();
+        }, $this->packages);
     }
 
-    public function load(array $packages)
+    public function load(array $names)
     {
         $activePackages = [];
-        $availablePackages = $this->packages->getPackages();
-
-        foreach ($packages as $key) {
-            $activePackages[$key] = $availablePackages[$key];
+        foreach($this->packages as $key => $package) {
+            if( in_array($package->getName(), $names) ) {
+                $activePackages[] = $package;
+            }
         }
-
         return $activePackages;
     }
 
-    public function addDefaultPackages(array $packages)
+    public function showPackagesTable(array $packages)
     {
-        return array_merge($packages, $this->packages->getDefaultPackages());
+        return array_map(function($package) {
+            return ['name' => $package->getName(), 'version' => $package->getVersion()];
+        }, $packages);
     }
 
-    public function getVersionsPackages(array $packages)
+    public function install($package)
     {
-        return $this->packagistApi->getAvailablePackasgeVersions($packages);
+        $package->install();
     }
 
-    public function install(array $activePackages)
+    public function tidyUp($package)
     {
-        foreach($activePackages as $key => $package)
-        {
-            $command = $this->composerManager->preparePackageCommand($package['slug'], $package['version']);
-            $this->composerManager->runCommand($command);
-        }
+        $package->tidyUp($this->filesystem);
     }
 }
