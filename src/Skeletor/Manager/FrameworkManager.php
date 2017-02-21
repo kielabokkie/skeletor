@@ -1,6 +1,7 @@
 <?php
 namespace Skeletor\Manager;
 
+use League\CLImate\CLImate;
 use Skeletor\Frameworks\Exception\FailedToLoadFrameworkException;
 use League\Flysystem\Filesystem;
 use Skeletor\Frameworks\Framework;
@@ -21,7 +22,8 @@ class FrameworkManager
     public function __construct(Filesystem $fileSystem, bool $dryRun)
     {
         $this->filesystem = $fileSystem;
-        $this->$dryRun = $dryRun;
+        $this->dryRun = $dryRun;
+        $this->CLImate = $CLImate;
     }
 
     public function addFramework(Framework $framework)

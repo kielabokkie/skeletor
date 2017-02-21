@@ -25,7 +25,7 @@ class PackageManager
     public function __construct(Filesystem $fileSystem, bool $dryRun)
     {
         $this->filesystem = $fileSystem;
-        $this->$dryRun = $dryRun;
+        $this->dryRun = $dryRun;
     }
 
     public function addPackage(Package $package)

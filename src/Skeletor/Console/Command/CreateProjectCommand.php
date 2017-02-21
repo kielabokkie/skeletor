@@ -69,6 +69,7 @@ class CreateProjectCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dryRun = $input->getOption('dryrun');
+        $this->cli->dump($dryRun);
         $projectName = $input->getArgument('projectName');
         $this->setupProjectFolder($projectName);
         $this->setupDependencies($dryRun);
@@ -165,7 +166,7 @@ class CreateProjectCommand extends Command
 
         foreach($this->activePackages as $key => $package) {
             $this->packageManager->install($package);
-            $this->packageManager->dryrun($package);
+            $this->packageManager->tidyUp($package);
         }
     }
 }
