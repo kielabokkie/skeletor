@@ -22,10 +22,10 @@ class PackageManager
     protected $fileSystem;
     protected $dryRun;
 
-    public function __construct(Filesystem $fileSystem, $dryRun)
+    public function __construct(Filesystem $fileSystem, bool $dryRun)
     {
         $this->filesystem = $fileSystem;
-        $this->dryRun = $dryRun;
+        $this->$dryRun = $dryRun;
     }
 
     public function addPackage(Package $package)
@@ -76,7 +76,7 @@ class PackageManager
     public function tidyUp(Package $package)
     {
         if(!$this->dryRun) {
-            $package->tidyUp($this->filesystem);
+            $package->tidyUp($this->fileSystem);
         }
     }
 }

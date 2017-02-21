@@ -6,16 +6,16 @@ use Skeletor\Manager\ComposerManager;
 
 class GitHooksPackage extends Package
 {
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
+    public function __construct(ComposerManager $composerManager)
     {
-        parent::__construct($composerManager, $filesystem);
+        parent::__construct($composerManager);
         $this->setPackage('pixelfusion/git-hooks');
         $this->setName("PixelFusion Git Hooks");
         $this->setVersion("");
     }
 
-    public function tidyUp()
+    public function tidyUp(Filesystem $filesystem)
     {
-        //$this->filesystem->delete('server.php');
+        //$filesystem->delete('server.php');
     }
 }

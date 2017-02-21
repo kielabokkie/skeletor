@@ -6,18 +6,18 @@ use Skeletor\Manager\ComposerManager;
 
 class Laravel54Framework extends Framework
 {
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
+    public function __construct(ComposerManager $composerManager)
     {
-        parent::__construct($composerManager, $filesystem);
+        parent::__construct($composerManager);
         $this->setFramework('laravel');
         $this->setName("Laravel");
         $this->setVersion("5.4");
     }
 
-    public function tidyUp()
+    public function tidyUp(Filesystem $filesystem)
     {
-        $this->filesystem->delete('server.php');
-        $this->filesystem->deleteDir('resources/assets');
-        $this->filesystem->createDir('setup/git-hooks');
+        $filesystem->delete('server.php');
+        $filesystem->deleteDir('resources/assets');
+        $filesystem->createDir('setup/git-hooks');
     }
 }

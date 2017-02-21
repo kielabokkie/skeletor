@@ -6,16 +6,16 @@ use Skeletor\Manager\ComposerManager;
 
 class LaravelLumen54Framework extends Framework
 {
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
+    public function __construct(ComposerManager $composerManager)
     {
-        parent::__construct($composerManager, $filesystem);
+        parent::__construct($composerManager);
         $this->setFramework('laravel');
         $this->setName("Lumen");
         $this->setVersion("5.4");
     }
 
-    public function tidyUp()
+    public function tidyUp(Filesystem $filesystem)
     {
-        $this->filesystem->createDir('setup/git-hooks');
+        $filesystem->createDir('setup/git-hooks');
     }
 }
