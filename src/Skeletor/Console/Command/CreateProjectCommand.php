@@ -9,6 +9,7 @@ use Skeletor\Manager\ComposerManager;
 use Skeletor\Manager\FrameworkManager;
 use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
+use Skeletor\Packages\GitHooksPackage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -73,10 +74,16 @@ class CreateProjectCommand extends Command
         $this->activeFramework = $this->getFrameworkOption();
         $this->activePackages = $this->getPackageOptions();
 
+        if ($this->confirmOptions("Specify package versions?")) {
+            $this->specifyPackagesVersions();
+        }
+
         $this->showEnteredOptions();
-        if ($this->confirmOptions() === false) {
+        if (!$this->confirmOptions()) {
             return false;
         }
+
+        $this->activePackages = $this->packageManager->mergeSelectedAndDefaultPackages($this->activePackages);
 
         $this->buildProject();
         $this->cli->br()->green('Yhea, success')->br();
@@ -92,6 +99,7 @@ class CreateProjectCommand extends Command
         $this->frameworkManager->addFramework(new LaravelLumen54Framework($composerManager));
 
         $this->packageManager->addPackage(new BehatPackage($composerManager));
+        $this->packageManager->addDefaultPackage(new GitHooksPackage($composerManager));
     }
 
     private function getFrameworkOption()
@@ -102,8 +110,17 @@ class CreateProjectCommand extends Command
 
     private function getPackageOptions()
     {
-        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->packageManager->getPackageNames());
+        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->packageManager->getInstallablePackageNames());
         return $this->packageManager->load($packagesQuestion->prompt());
+    }
+
+    private function specifyPackagesVersions()
+    {
+        foreach ($this->activePackages as $key => $package)
+        {
+            $input = $this->cli->input(sprintf('%s version:', $package->getName()));
+            $package->setVersion($input->prompt());
+        }
     }
 
     private function showEnteredOptions()
@@ -116,9 +133,9 @@ class CreateProjectCommand extends Command
         $this->cli->table($this->packageManager->showPackagesTable($this->activePackages));
     }
 
-    private function confirmOptions()
+    private function confirmOptions($text = "Continue?")
     {
-        $input = $this->cli->confirm('Continue?');
+        $input = $this->cli->confirm($text);
         if ($input->confirmed()) {
             return true;
         }

@@ -13,6 +13,11 @@ class PackageManager
     protected $packages;
 
     /**
+     * @var array with default packages
+     */
+    protected $defaultPackages;
+
+    /**
      * @var instance of the filesystem
      */
     protected $fileSystem;
@@ -27,9 +32,14 @@ class PackageManager
         $this->packages[] = $package;
     }
 
-    public function getPackageNames()
+    public function addDefaultPackage(Package $package)
     {
-        return array_map(function($package) {
+        $this->defaultPackages[] = $package;
+    }
+
+    public function getInstallablePackageNames()
+    {
+        return array_map(function(Package $package) {
             return $package->getName();
         }, $this->packages);
     }
@@ -52,12 +62,17 @@ class PackageManager
         }, $packages);
     }
 
-    public function install($package)
+    public function mergeSelectedAndDefaultPackages(array $selectedPacakges)
+    {
+        return array_merge($selectedPacakges, $this->defaultPackages);
+    }
+
+    public function install(Package $package)
     {
         $package->install();
     }
 
-    public function tidyUp($package)
+    public function tidyUp(Package $package)
     {
         $package->tidyUp($this->filesystem);
     }

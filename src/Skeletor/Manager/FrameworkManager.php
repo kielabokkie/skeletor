@@ -45,12 +45,12 @@ class FrameworkManager
         throw new FailedToLoadFrameworkException('Failed to find framework '.$name);
     }
 
-    public function install($framework)
+    public function install(Framework $framework)
     {
         $framework->install();
     }
 
-    public function tidyUp($framework)
+    public function tidyUp(Framework $framework)
     {
         $framework->tidyUp($this->filesystem);
     }

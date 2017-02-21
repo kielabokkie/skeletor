@@ -14,12 +14,6 @@ class BehatPackage extends Package
         $this->setVersion("");
     }
 
-    public function install()
-    {
-        $command = $this->composerManager->preparePackageCommand($this->getPackage(), $this->getVersion());
-        $this->composerManager->runCommand($command);
-    }
-
     public function tidyUp(Filesystem $filesystem)
     {
         //$filesystem->delete('server.php');
