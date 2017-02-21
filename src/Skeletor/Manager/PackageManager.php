@@ -20,10 +20,12 @@ class PackageManager
      * @var instance of the filesystem
      */
     protected $fileSystem;
+    protected $dryRun;
 
-    public function __construct(Filesystem $fileSystem)
+    public function __construct(Filesystem $fileSystem, $dryRun)
     {
         $this->filesystem = $fileSystem;
+        $this->dryRun = $dryRun;
     }
 
     public function addPackage(Package $package)
@@ -73,6 +75,8 @@ class PackageManager
 
     public function tidyUp(Package $package)
     {
-        $package->tidyUp($this->filesystem);
+        if(!$this->dryRun) {
+            $package->tidyUp($this->filesystem);
+        }
     }
 }

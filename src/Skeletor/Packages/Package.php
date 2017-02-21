@@ -1,19 +1,22 @@
 <?php
 namespace Skeletor\Packages;
 
+use League\Flysystem\Filesystem;
 use Skeletor\Manager\ComposerManager;
 
 abstract class Package implements PackageInterface
 {
     protected $composerManager;
+    protected $filesystem
     protected $package;
     protected $name;
     protected $version;
     protected $installDefault;
 
-    public function __construct(ComposerManager $composerManager)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
     {
         $this->composerManager = $composerManager;
+        $this->filesystem = $filesystem;
     }
 
     public function getPackage()

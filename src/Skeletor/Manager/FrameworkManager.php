@@ -16,10 +16,12 @@ class FrameworkManager
      * @var instance of the filesystem
      */
     protected $fileSystem;
+    protected $dryRun;
 
-    public function __construct(Filesystem $fileSystem)
+    public function __construct(Filesystem $fileSystem, bool $dryRun)
     {
         $this->filesystem = $fileSystem;
+        $this->$dryRun = $dryRun;
     }
 
     public function addFramework(Framework $framework)
@@ -52,6 +54,8 @@ class FrameworkManager
 
     public function tidyUp(Framework $framework)
     {
-        $framework->tidyUp($this->filesystem);
+        if(!$this->dryRun) {
+            $framework->tidyUp($this->filesystem);
+        }
     }
 }
