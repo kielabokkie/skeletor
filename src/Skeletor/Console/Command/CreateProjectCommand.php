@@ -12,9 +12,12 @@ use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
 use Skeletor\Packages\GitHooksPackage;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Skeletor\Console\Command\Exception\FailedToMakeFolder;
+use Symfony\Component\Process\Process;
 
 class CreateProjectCommand extends Command
 {
@@ -59,12 +62,15 @@ class CreateProjectCommand extends Command
     {
         $this->setName('project:create')
             ->setDescription('Create a new Laravel/Lumen project skeleton')
+            ->addArgument('projectName', InputArgument::REQUIRED, 'Give your project a name')
             ->addOption('dryrun', null, InputOption::VALUE_NONE, 'Dryrun the install', null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dryRun = $input->getOption('dryrun');
+        $projectName = $input->getArgument('projectName');
+        $this->setupProjectFolder($projectName);
         $this->setupDependencies($dryRun);
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames()) ))->br();
         $this->activeFramework = $this->getFrameworkOption();
@@ -82,6 +88,19 @@ class CreateProjectCommand extends Command
         $this->activePackages = $this->packageManager->mergeSelectedAndDefaultPackages($this->activePackages);
         $this->buildProject();
         $this->cli->br()->green('Yhea, success')->br();
+    }
+
+    private function setupProjectFolder(string $projectName)
+    {
+        if($this->filesystem->has($projectName)){
+            throw new FailedToMakeFolder('Failed to make folder: '. $projectName);
+        }
+        $this->filesystem->createDir($projectName);
+        $process = new Process(sprintf('cd %s', $projectName));
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
     }
 
     private function setupDependencies(bool $dryRun)
