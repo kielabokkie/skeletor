@@ -3,6 +3,7 @@ namespace Skeletor\Console\Command;
 
 use Skeletor\Frameworks\Laravel54Framework;
 use Skeletor\Frameworks\LaravelLumen54Framework;
+use Skeletor\Packages\JsonBehatExtsionPackage;
 use Skeletor\Packages\BehatPackage;
 use Skeletor\Manager\PackageManager;
 use Skeletor\Manager\ComposerManager;
@@ -86,13 +87,14 @@ class CreateProjectCommand extends Command
     private function setupDependencies(bool $dryRun)
     {
         $composerManager = new ComposerManager($this->cli, $dryRun);
-        $this->packageManager = new PackageManager($this->filesystem);
-        $this->frameworkManager = new FrameworkManager($this->filesystem);
+        $this->packageManager = new PackageManager($this->filesystem, $dryRun);
+        $this->frameworkManager = new FrameworkManager($this->filesystem, $dryRun);
 
         $this->frameworkManager->addFramework(new Laravel54Framework($composerManager));
         $this->frameworkManager->addFramework(new LaravelLumen54Framework($composerManager));
 
         $this->packageManager->addPackage(new BehatPackage($composerManager));
+        $this->packageManager->addPackage(new JsonBehatExtsionPackage($composerManager));
         $this->packageManager->addDefaultPackage(new GitHooksPackage($composerManager));
     }
 
@@ -144,7 +146,7 @@ class CreateProjectCommand extends Command
 
         foreach($this->activePackages as $key => $package) {
             $this->packageManager->install($package);
-            $this->packageManager->tidyUp($package);
+            $this->packageManager->dryrun($package);
         }
     }
 }
