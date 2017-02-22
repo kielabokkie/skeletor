@@ -67,6 +67,7 @@ class CreateProjectCommand extends Command
         $dryRun = $input->getOption('dryrun');
         $this->setupDependencies($dryRun);
 
+        $this->cli->dump(getcwd());
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames()) ))->br();
         $this->activeFramework = $this->getFrameworkOption();
         $this->activePackages = $this->getPackageOptions();

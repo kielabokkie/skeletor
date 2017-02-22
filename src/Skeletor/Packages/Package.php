@@ -9,6 +9,7 @@ abstract class Package implements PackageInterface
     protected $composerManager;
     protected $package;
     protected $name;
+    protected $options;
     protected $version;
     protected $installDefault;
 
@@ -47,9 +48,19 @@ abstract class Package implements PackageInterface
         $this->version = $version;
     }
 
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function setOptions(string $options)
+    {
+        $this->options = $options;
+    }
+
     public function install()
     {
-        $command = $this->composerManager->preparePackageCommand($this->getPackage(), $this->getVersion());
+        $command = $this->composerManager->preparePackageCommand($this->getPackage(), $this->getVersion(), $this->getOptions());
         $this->composerManager->runCommand($command);
     }
 }

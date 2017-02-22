@@ -11,6 +11,8 @@ interface PackageInterface
     public function setName(string $name);
     public function getVersion();
     public function setVersion(string $version);
+    public function getOptions();
+    public function setOptions(string $options);
     public function install();
     public function tidyUp(Filesystem $filesystem);
 }

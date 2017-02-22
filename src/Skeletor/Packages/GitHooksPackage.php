@@ -11,7 +11,6 @@ class GitHooksPackage extends Package
         parent::__construct($composerManager);
         $this->setPackage('pixelfusion/git-hooks');
         $this->setName("PixelFusion Git Hooks");
-        $this->setVersion("");
     }
 
     public function tidyUp(Filesystem $filesystem)

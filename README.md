@@ -23,12 +23,12 @@ mv skeletor.phar /usr/local/bin/skeletor
 Create a directory for your project and use skeletor to setup the project skeleton:
 
 ```bash
-skeletor project:create myproject
+mkdir myproject && cd myproject && skeletor project:create
 ```
 
 ## DryRun option
 
 When you want to test the install proces, you can run a dryrun.
 ```bash
-skeletor project:create myproject --dryrun
+mkdir myproject && cd myproject && skeletor project:create --dryrun
 ```

@@ -12,6 +12,7 @@ class BehatPackage extends Package
         $this->setPackage('behat/behat');
         $this->setName("Behat");
         $this->setVersion("v3.3.0");
+        $this->setOptions("--dev");
     }
 
     public function tidyUp(Filesystem $filesystem)

@@ -11,11 +11,11 @@ class JsonBehatExtsionPackage extends Package
         parent::__construct($composerManager);
         $this->setPackage('kielabokkie/jsonapi-behat-extension');
         $this->setName("Behat extension for testing JSON APIs");
-        $this->setVersion("");
     }
 
     public function tidyUp(Filesystem $filesystem)
     {
-        //$filesystem->delete('server.php');
+        //$filesystem->copy('server.php');
+        //$filesystem->write('path/to/file.txt' );
     }
 }
