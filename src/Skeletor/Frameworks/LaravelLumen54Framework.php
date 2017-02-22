@@ -9,7 +9,7 @@ class LaravelLumen54Framework extends Framework
     public function __construct(ComposerManager $composerManager)
     {
         parent::__construct($composerManager);
-        $this->setFramework('laravel');
+        $this->setFramework('laravel/lumen');
         $this->setName("Lumen");
         $this->setVersion("5.4");
     }

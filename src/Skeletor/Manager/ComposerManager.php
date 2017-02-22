@@ -16,9 +16,9 @@ class ComposerManager
         $this->dryRun = $dryRun;
     }
 
-    public function prepareFrameworkCommand(string $framework, string $name, string $version)
+    public function prepareFrameworkCommand(string $framework, string $version)
     {
-        return sprintf('composer create-project --prefer-dist --ansi %s/%s:%s .', $framework, $name, $version);
+        return sprintf('composer create-project --prefer-dist --ansi %s:%s .', $framework, $version);
     }
 
     public function preparePackageCommand(string $package, string $version)

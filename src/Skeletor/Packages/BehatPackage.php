@@ -11,7 +11,7 @@ class BehatPackage extends Package
         parent::__construct($composerManager);
         $this->setPackage('behat/behat');
         $this->setName("Behat");
-        $this->setVersion("");
+        $this->setVersion("v3.3.0");
     }
 
     public function tidyUp(Filesystem $filesystem)

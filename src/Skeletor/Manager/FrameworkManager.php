@@ -16,14 +16,13 @@ class FrameworkManager
     /**
      * @var instance of the filesystem
      */
-    protected $fileSystem;
+    protected $filesystem;
     protected $dryRun;
 
-    public function __construct(Filesystem $fileSystem, bool $dryRun)
+    public function __construct(Filesystem $filesystem, bool $dryRun)
     {
-        $this->filesystem = $fileSystem;
+        $this->filesystem = $filesystem;
         $this->dryRun = $dryRun;
-        $this->CLImate = $CLImate;
     }
 
     public function addFramework(Framework $framework)

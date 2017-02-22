@@ -48,7 +48,7 @@ abstract class Framework implements FrameworkInterface
 
     public function install()
     {
-        $command = $this->composerManager->prepareFrameworkCommand($this->getFramework(), strtolower($this->getName()), $this->getVersion());
+        $command = $this->composerManager->prepareFrameworkCommand($this->getFramework(), $this->getVersion());
         $this->composerManager->runCommand($command);
     }
 }
