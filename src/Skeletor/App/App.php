@@ -14,7 +14,7 @@ class App extends Application
         $this->container = $container;
     }
 
-    public function registrateServices(bool $dryRun)
+    public function registrateServices(bool $dryRun = false)
     {
         $this->container
             ->add('Cli', 'League\CLImate\CLImate');
@@ -90,5 +90,20 @@ class App extends Application
         return [
             $this->container->get('GitHooksPackage')
         ];
+    }
+
+    public function getFrameworkManager()
+    {
+        return $this->container->get('FrameworkManager');
+    }
+
+    public function getPackageManager()
+    {
+        return $this->container->get('PackageManager');
+    }
+
+    public function getCli()
+    {
+        return $this->container->get('Cli');
     }
 }
