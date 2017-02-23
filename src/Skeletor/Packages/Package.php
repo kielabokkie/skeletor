@@ -7,15 +7,16 @@ use Skeletor\Manager\ComposerManager;
 abstract class Package implements PackageInterface
 {
     protected $composerManager;
+    protected $filesystem;
     protected $package;
     protected $name;
-    protected $options;
-    protected $version;
-    protected $installDefault;
+    protected $options = "";
+    protected $version = "";
 
-    public function __construct(ComposerManager $composerManager)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
     {
         $this->composerManager = $composerManager;
+        $this->filesystem = $filesystem;
     }
 
     public function getPackage()

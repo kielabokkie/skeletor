@@ -1,8 +1,6 @@
 <?php
 namespace Skeletor\Frameworks;
 
-use League\Flysystem\Filesystem;
-
 interface FrameworkInterface
 {
     public function getFramework();
@@ -12,5 +10,5 @@ interface FrameworkInterface
     public function getVersion();
     public function setVersion(string $version);
     public function install();
-    public function tidyUp(Filesystem $filesystem);
+    public function tidyUp();
 }

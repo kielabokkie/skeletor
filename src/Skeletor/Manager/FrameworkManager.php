@@ -1,33 +1,19 @@
 <?php
 namespace Skeletor\Manager;
 
-use League\CLImate\CLImate;
-use Skeletor\Frameworks\Exception\FailedToLoadFrameworkException;
-use League\Flysystem\Filesystem;
 use Skeletor\Frameworks\Framework;
+use Skeletor\Frameworks\Exception\FailedToLoadFrameworkException;
 
-class FrameworkManager
+class FrameworkManager extends Manager
 {
     /**
      * @var array with frameworks
      */
     protected $frameworks;
 
-    /**
-     * @var instance of the filesystem
-     */
-    protected $filesystem;
-    protected $dryRun;
-
-    public function __construct(Filesystem $filesystem, bool $dryRun)
+    public function setFrameworks(array $frameworks)
     {
-        $this->filesystem = $filesystem;
-        $this->dryRun = $dryRun;
-    }
-
-    public function addFramework(Framework $framework)
-    {
-        $this->frameworks[] = $framework;
+        $this->frameworks = $frameworks;
     }
 
     public function getFrameworkNames()
@@ -48,6 +34,12 @@ class FrameworkManager
         throw new FailedToLoadFrameworkException('Failed to find framework '.$name);
     }
 
+    public function getFrameworkOption()
+    {
+        $frameworkQuestion = $this->cli->radio('Choose your framework:', $this->getFrameworkNames());
+        return $this->load($frameworkQuestion->prompt());
+    }
+
     public function install(Framework $framework)
     {
         $framework->install();
@@ -56,7 +48,7 @@ class FrameworkManager
     public function tidyUp(Framework $framework)
     {
         if(!$this->dryRun) {
-            $framework->tidyUp($this->filesystem);
+            $framework->tidyUp();
         }
     }
 }

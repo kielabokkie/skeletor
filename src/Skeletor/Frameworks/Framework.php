@@ -7,13 +7,15 @@ use Skeletor\Manager\ComposerManager;
 abstract class Framework implements FrameworkInterface
 {
     protected $composerManager;
+    protected $filesystem;
     protected $framework;
     protected $name;
     protected $version;
 
-    public function __construct(ComposerManager $composerManager)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
     {
         $this->composerManager = $composerManager;
+        $this->filesystem = $filesystem;
     }
 
     public function getFramework()

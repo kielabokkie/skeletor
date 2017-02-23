@@ -1,10 +1,9 @@
 <?php
 namespace Skeletor\Manager;
 
-use League\Flysystem\Filesystem;
 use Skeletor\Packages\Package;
 
-class PackageManager
+class PackageManager extends Manager
 {
     /**
      * @var array with packages
@@ -16,26 +15,14 @@ class PackageManager
      */
     protected $defaultPackages;
 
-    /**
-     * @var instance of the filesystem
-     */
-    protected $filesystem;
-    protected $dryRun;
-
-    public function __construct(Filesystem $filesystem, bool $dryRun)
+    public function setPackages(array $packages)
     {
-        $this->filesystem = $filesystem;
-        $this->dryRun = $dryRun;
+        $this->packages = $packages;
     }
 
-    public function addPackage(Package $package)
+    public function setDefaultPackages(array $defaultPackages)
     {
-        $this->packages[] = $package;
-    }
-
-    public function addDefaultPackage(Package $package)
-    {
-        $this->defaultPackages[] = $package;
+        $this->defaultPackages = $defaultPackages;
     }
 
     public function getInstallablePackageNames()
@@ -68,6 +55,25 @@ class PackageManager
         return array_merge($selectedPacakges, $this->defaultPackages);
     }
 
+    public function getPackageOptions()
+    {
+        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->getInstallablePackageNames());
+        return $this->load($packagesQuestion->prompt());
+    }
+
+    public function specifyPackagesVersions(array $packages)
+    {
+        foreach ($packages as $key => $package)
+        {
+            $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion() ));
+            $version = $input->prompt();
+
+            if(!empty($version)) {
+                $package->setVersion($version);
+            }
+        }
+    }
+
     public function install(Package $package)
     {
         $package->install();
@@ -76,7 +82,7 @@ class PackageManager
     public function tidyUp(Package $package)
     {
         if(!$this->dryRun) {
-            $package->tidyUp($this->filesystem);
+            $package->tidyUp();
         }
     }
 }

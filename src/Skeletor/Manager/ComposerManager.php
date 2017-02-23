@@ -3,19 +3,9 @@ namespace Skeletor\Manager;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use League\CLImate\CLImate;
 
-class ComposerManager
+class ComposerManager extends Manager
 {
-    protected $cli;
-    protected $dryRun;
-
-    public function __construct(CLImate $cli, bool $dryRun)
-    {
-        $this->cli = $cli;
-        $this->dryRun = $dryRun;
-    }
-
     public function prepareFrameworkCommand(string $framework, string $version)
     {
         return sprintf('composer create-project --prefer-dist --ansi %s:%s .', $framework, $version);

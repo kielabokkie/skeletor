@@ -14,5 +14,5 @@ interface PackageInterface
     public function getOptions();
     public function setOptions(string $options);
     public function install();
-    public function tidyUp(Filesystem $filesystem);
+    public function tidyUp();
 }

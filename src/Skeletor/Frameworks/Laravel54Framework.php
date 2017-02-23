@@ -6,18 +6,19 @@ use Skeletor\Manager\ComposerManager;
 
 class Laravel54Framework extends Framework
 {
-    public function __construct(ComposerManager $composerManager)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
     {
-        parent::__construct($composerManager);
+        parent::__construct($composerManager, $filesystem);
         $this->setFramework('laravel/laravel');
         $this->setName("Laravel");
         $this->setVersion("5.4");
     }
 
-    public function tidyUp(Filesystem $filesystem)
+    public function tidyUp()
     {
-        $filesystem->delete('server.php');
-        $filesystem->deleteDir('resources/assets');
-        $filesystem->createDir('setup/git-hooks');
+        $this->filesystem->put('PixelFusion.txt', '©PIXELFUSION');
+        $this->filesystem->delete('server.php');
+        $this->filesystem->deleteDir('resources/assets');
+        $this->filesystem->createDir('setup/git-hooks');
     }
 }

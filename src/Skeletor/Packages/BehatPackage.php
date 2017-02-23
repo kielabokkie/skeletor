@@ -6,17 +6,17 @@ use Skeletor\Manager\ComposerManager;
 
 class BehatPackage extends Package
 {
-    public function __construct(ComposerManager $composerManager)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
     {
-        parent::__construct($composerManager);
+        parent::__construct($composerManager, $filesystem);
         $this->setPackage('behat/behat');
         $this->setName("Behat");
         $this->setVersion("v3.3.0");
         $this->setOptions("--dev");
     }
 
-    public function tidyUp(Filesystem $filesystem)
+    public function tidyUp()
     {
-        //$filesystem->delete('server.php');
+        $this->filesystem->put('PixelFusion.txt', '©PIXELFUSION');
     }
 }
