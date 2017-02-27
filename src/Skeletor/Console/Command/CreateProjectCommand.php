@@ -43,9 +43,9 @@ class CreateProjectCommand extends Command
         $this->setupCommand();
 
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames())))->br();
-
         $activeFramework = $this->frameworkManager->getFrameworkOption();
         $activePackages = $this->packageManager->getPackageOptions();
+
         if ($this->confirmOptions("Specify package versions?")) {
             $this->packageManager->specifyPackagesVersions($activePackages);
         }
@@ -109,11 +109,11 @@ class CreateProjectCommand extends Command
     {
         $this->cli->br()->green('Building..');
         $this->frameworkManager->install($activeFramework);
-        $this->frameworkManager->tidyUp($activeFramework);
+        $this->frameworkManager->configure($activeFramework);
 
         foreach($activePackages as $key => $package) {
             $this->packageManager->install($package);
-            $this->packageManager->tidyUp($package);
+            $this->packageManager->configure($package, $activeFramework);
         }
     }
 }
