@@ -11,11 +11,15 @@ abstract class Framework implements FrameworkInterface
     protected $framework;
     protected $name;
     protected $version;
+    protected $paths;
+    protected $options;
 
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem, array $options)
     {
         $this->composerManager = $composerManager;
         $this->filesystem = $filesystem;
+        $this->options = $options;
+        $this->setup();
     }
 
     public function getFramework()
@@ -46,6 +50,18 @@ abstract class Framework implements FrameworkInterface
     public function setVersion(string $version)
     {
         $this->version = $version;
+    }
+
+    public function getPath(string $path)
+    {
+        if(array_key_exists($path, $this->paths)){
+            return $this->paths[$path];
+        }
+    }
+
+    public function setPaths(array $paths)
+    {
+        $this->paths = $paths;
     }
 
     public function install()
