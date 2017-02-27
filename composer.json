@@ -6,6 +6,10 @@
         {
             "name": "Wouter Peschier",
             "email": "wouter@pixelfusion.co.nz"
+        },
+        {
+            "name": "Thijs Bouwes",
+            "email": "thijs@pixelfusion.co.nz"
         }
     ],
     "require": {
@@ -16,12 +20,14 @@
         "league/container": "^2.3"
     },
     "require-dev": {
-        "kherge/box": "^2.7",
         "codeception/codeception": "^2.2"
     },
     "autoload": {
         "psr-4": {
             "Skeletor\\": "src/Skeletor"
         }
-    }
+    },
+    "bin": [
+        "skeletor"
+    ]
 }
