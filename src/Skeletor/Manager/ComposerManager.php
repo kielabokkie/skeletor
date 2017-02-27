@@ -4,23 +4,23 @@ namespace Skeletor\Manager;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class ComposerManager extends Manager
+class ComposerManager extends Manager implements InstallerInterface
 {
     public function prepareFrameworkCommand(string $framework, string $version)
     {
         return sprintf('composer create-project --prefer-dist --ansi %s:%s .', $framework, $version);
     }
 
-    public function preparePackageCommand(string $package, string $version, string $options)
+    public function preparePackageCommand(string $package, string $version, string $packageOptions)
     {
-        return sprintf('composer require %s %s %s', $package, $version, $options);
+        return sprintf('composer require %s %s %s', $package, $version, $packageOptions);
     }
 
     public function runCommand(string $command)
     {
         $this->cli->yellow($command);
 
-        if($this->dryRun) {
+        if($this->options['dryRun']) {
             return;
         }
 

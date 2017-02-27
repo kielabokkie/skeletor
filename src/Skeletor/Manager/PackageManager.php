@@ -1,6 +1,7 @@
 <?php
 namespace Skeletor\Manager;
 
+use Skeletor\Frameworks\Framework;
 use Skeletor\Packages\Package;
 
 class PackageManager extends Manager
@@ -79,10 +80,10 @@ class PackageManager extends Manager
         $package->install();
     }
 
-    public function tidyUp(Package $package)
+    public function configure(Package $package, Framework $activeFramework)
     {
-        if(!$this->dryRun) {
-            $package->tidyUp();
+        if(!$this->options['dryRun']) {
+            $package->configure($activeFramework);
         }
     }
 }

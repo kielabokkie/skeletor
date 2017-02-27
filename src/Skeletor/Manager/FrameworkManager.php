@@ -45,10 +45,10 @@ class FrameworkManager extends Manager
         $framework->install();
     }
 
-    public function tidyUp(Framework $framework)
+    public function configure(Framework $framework)
     {
-        if(!$this->dryRun) {
-            $framework->tidyUp();
+        if(!$this->options['dryRun']) {
+            $framework->configure();
         }
     }
 }
