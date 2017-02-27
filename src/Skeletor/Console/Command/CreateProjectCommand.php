@@ -46,6 +46,12 @@ class CreateProjectCommand extends Command
         $activeFramework = $this->frameworkManager->getFrameworkOption();
         $activePackages = $this->packageManager->getPackageOptions();
 
+        $this->cli->br()->dump($this->getApplication()->options);
+
+        $this->cli->br()->dump($this->getApplication()->container->get('SkeletorFilesystem')->getSize(
+            $this->getApplication()->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php'
+        ));
+
         if ($this->confirmOptions("Specify package versions?")) {
             $this->packageManager->specifyPackagesVersions($activePackages);
         }
@@ -73,7 +79,7 @@ class CreateProjectCommand extends Command
 
     private function setupFolder(string $name)
     {
-        if(is_dir($name)) {
+        if((is_dir($name)  || is_file($directory)) && $directory != getcwd()) {
             throw new FailedFilesystem(sprintf('Failed to make directory %s already exists', $name));
         }
 
