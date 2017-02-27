@@ -1,18 +1,19 @@
 <?php
 namespace Skeletor\Packages;
 
-use League\Flysystem\Filesystem;
+use Skeletor\Frameworks\Framework;
 
 interface PackageInterface
 {
+    public function setup();
     public function getPackage();
     public function setPackage(string $package);
     public function getName();
     public function setName(string $name);
     public function getVersion();
     public function setVersion(string $version);
-    public function getOptions();
-    public function setOptions(string $options);
+    public function getPackageOptions();
+    public function setPackageOptions(string $packageOptions);
     public function install();
-    public function tidyUp();
+    public function configure(Framework $framework);
 }

@@ -1,21 +1,19 @@
 <?php
 namespace Skeletor\Packages;
 
-use League\Flysystem\Filesystem;
-use Skeletor\Manager\ComposerManager;
+use Skeletor\Frameworks\Framework;
 
 class BehatPackage extends Package
 {
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
+    public function setup()
     {
-        parent::__construct($composerManager, $filesystem);
         $this->setPackage('behat/behat');
         $this->setName("Behat");
         $this->setVersion("v3.3.0");
-        $this->setOptions("--dev");
+        $this->setPackageOptions("--dev");
     }
 
-    public function tidyUp()
+    public function configure(Framework $activeFramework)
     {
         $this->filesystem->put('PixelFusion.txt', '©PIXELFUSION');
     }

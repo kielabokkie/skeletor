@@ -6,17 +6,20 @@ use Skeletor\Manager\ComposerManager;
 
 abstract class Package implements PackageInterface
 {
-    protected $composerManager;
-    protected $filesystem;
+    public $composerManager;
+    public $filesystem;
+    public $options;
+    protected $packageOptions = "";
+    protected $version = "";
     protected $package;
     protected $name;
-    protected $options = "";
-    protected $version = "";
 
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem)
+    public function __construct(ComposerManager $composerManager, Filesystem $filesystem, array $options)
     {
         $this->composerManager = $composerManager;
         $this->filesystem = $filesystem;
+        $this->options = $options;
+        $this->setup();
     }
 
     public function getPackage()
@@ -49,19 +52,19 @@ abstract class Package implements PackageInterface
         $this->version = $version;
     }
 
-    public function getOptions()
+    public function getPackageOptions()
     {
-        return $this->options;
+        return $this->packageOptions;
     }
 
-    public function setOptions(string $options)
+    public function setPackageOptions(string $packageOptions)
     {
-        $this->options = $options;
+        $this->packageOptionsoptions = $packageOptions;
     }
 
     public function install()
     {
-        $command = $this->composerManager->preparePackageCommand($this->getPackage(), $this->getVersion(), $this->getOptions());
+        $command = $this->composerManager->preparePackageCommand($this->getPackage(), $this->getVersion(), $this->getPackageOptions());
         $this->composerManager->runCommand($command);
     }
 }
