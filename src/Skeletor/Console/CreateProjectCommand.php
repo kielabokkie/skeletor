@@ -38,7 +38,10 @@ class CreateProjectCommand extends Command
     {
         $dryRun = $input->getOption('dryrun');
         $name = strtolower($input->getArgument('name'));
-        $this->setupFolder($name);
+        if(!$dryRun) {
+            $this->setupFolder($name);
+        }
+
         $this->getApplication()->registerServices($dryRun);
         $this->setupCommand();
 

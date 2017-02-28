@@ -32,3 +32,9 @@ When you want to test the install proces, you can run a dryrun.
 ```bash
 skeletor project:create myproject --dryrun
 ```
+
+## Testing
+You can test the code with, the following comand.
+```bash
+php vendor/bin/codecept run
+```

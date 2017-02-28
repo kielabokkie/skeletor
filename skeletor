@@ -23,9 +23,11 @@ require __DIR__.'/vendor/autoload.php';
 
 use Skeletor\App\App;
 use League\Container\Container;
+use Skeletor\App\Config\SkeletorConfigurator;
 
 $container = new Container;
-$app = new App($container, 'Skeletor CLI', '1.1.0');
+$config = new SkeletorConfigurator;
+$app = new App($config, $container, $config->getName(), $config->getVersion());
 
 $app->addCommands(array(
     new Skeletor\Console\CreateProjectCommand,

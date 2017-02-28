@@ -17,7 +17,8 @@
         "symfony/process": "^2.8",
         "league/flysystem": "^1.0",
         "league/climate": "^3.2",
-        "league/container": "^2.3"
+        "league/container": "^2.3",
+        "symfony/yaml": "^3.2"
     },
     "require-dev": {
         "codeception/codeception": "^2.2"

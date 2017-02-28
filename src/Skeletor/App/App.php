@@ -2,17 +2,21 @@
 namespace Skeletor\App;
 
 use League\Container\Container;
+use Skeletor\App\Config\SkeletorConfigurator;
+use Skeletor\App\Exceptions\FailedToLoadService;
 use Symfony\Component\Console\Application;
 
 class App extends Application
 {
+    public $configurator;
     public $container;
     public $options;
 
-    public function __construct(Container $container, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    public function __construct(SkeletorConfigurator $configurator, Container $container, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         parent::__construct($name, $version);
         $this->container = $container;
+        $this->configurator = $configurator;
         $this->options['basePath'] = realpath(__DIR__.'/../');
         $this->options['templatePath'] = '/Templates';
     }
@@ -21,17 +25,25 @@ class App extends Application
     {
         $this->options['dryRun'] = $dryRun;
 
-        //Register multiple filesystems
+        $this->registerFilesystem();
+        $this->registerTools();
+        $this->registerManagers();
+        $this->registerFrameworks();
+        $this->registerPackages();
+    }
+
+    public function registerFilesystem()
+    {
         $this->container
             ->add('skeletorAdapter', 'League\Flysystem\Adapter\Local')
             ->withArgument($this->options['basePath']);
-         $this->container
-             ->add('projectAdapter', 'League\Flysystem\Adapter\Local')
-             ->withArgument(getcwd());
+        $this->container
+            ->add('projectAdapter', 'League\Flysystem\Adapter\Local')
+            ->withArgument(getcwd());
 
-         $this->container
-             ->add('skeletorFilesystem', 'League\Flysystem\Filesystem')
-             ->withArgument('skeletorAdapter');
+        $this->container
+            ->add('skeletorFilesystem', 'League\Flysystem\Filesystem')
+            ->withArgument('skeletorAdapter');
         $this->container
             ->add('projectFilesystem', 'League\Flysystem\Filesystem')
             ->withArgument('projectAdapter');
@@ -43,10 +55,16 @@ class App extends Application
         $this->container
             ->add('MountManager', 'League\Flysystem\MountManager')
             ->withArgument($managers);
+    }
 
+    public function registerTools()
+    {
         $this->container
             ->add('Cli', 'League\CLImate\CLImate');
+    }
 
+    public function registerManagers()
+    {
         $this->container
             ->add('ComposerManager', 'Skeletor\Manager\ComposerManager')
             ->withArgument('Cli')
@@ -61,60 +79,65 @@ class App extends Application
             ->add('FrameworkManager', 'Skeletor\Manager\FrameworkManager')
             ->withArgument('Cli')
             ->withArgument($this->options);
+    }
 
-        $this->container
-            ->add('Laravel54Framework', 'Skeletor\Frameworks\Laravel54Framework')
-            ->withArgument('ComposerManager')
-            ->withArgument('projectFilesystem')
-            ->withArgument($this->options);
-        $this->container
-            ->add('LaravelLumen54Framework', 'Skeletor\Frameworks\LaravelLumen54Framework')
-            ->withArgument('ComposerManager')
-            ->withArgument('projectFilesystem')
-            ->withArgument($this->options);
+    public function registerFrameworks()
+    {
+        foreach($this->configurator->getFrameworks() as $key => $framework)
+        {
+            $frameworkClass = sprintf('Skeletor\Frameworks\%s', $framework);
 
-        $this->container
-            ->add('BehatPackage', 'Skeletor\Packages\BehatPackage')
-            ->withArgument('ComposerManager')
-            ->withArgument('projectFilesystem')
-            ->withArgument('MountManager')
-            ->withArgument($this->options);
-        $this->container
-            ->add('JsonBehatExtensionPackage', 'Skeletor\Packages\JsonBehatExtensionPackage')
-            ->withArgument('ComposerManager')
-            ->withArgument('projectFilesystem')
-            ->withArgument('MountManager')
-            ->withArgument($this->options);
+            if(!class_exists($frameworkClass)) {
+                throw new FailedToLoadService("Couldn't find class ". $frameworkClass);
+            }
 
-        $this->container
-            ->add('GitHooksPackage', 'Skeletor\Packages\GitHooksPackage')
-            ->withArgument('ComposerManager')
-            ->withArgument('projectFilesystem')
-            ->withArgument('MountManager')
-            ->withArgument($this->options);
+            $this->container
+                ->add($framework, $frameworkClass)
+                ->withArgument('ComposerManager')
+                ->withArgument('projectFilesystem')
+                ->withArgument($this->options);
+        }
+    }
+
+    public function registerPackages()
+    {
+        $packages = array_merge($this->configurator->getPackages(), $this->configurator->getDefaultPackages());
+        foreach($packages as $key => $package)
+        {
+            $packageClass = sprintf('Skeletor\Packages\%s', $package);
+
+            if(!class_exists($packageClass)) {
+                throw new FailedToLoadService("Couldn't find class ". $package);
+            }
+
+            $this->container
+                ->add($package, $packageClass)
+                ->withArgument('ComposerManager')
+                ->withArgument('projectFilesystem')
+                ->withArgument('MountManager')
+                ->withArgument($this->options);
+        }
     }
 
     public function getFrameworks()
     {
-        return [
-          $this->container->get('Laravel54Framework'),
-          $this->container->get('LaravelLumen54Framework')
-        ];
+        return array_map(function($framework) {
+            return $this->container->get($framework);
+        }, $this->configurator->getFrameworks());
     }
 
     public function getPackages()
     {
-        return [
-            $this->container->get('BehatPackage'),
-            $this->container->get('JsonBehatExtensionPackage')
-        ];
+        return array_map(function($package) {
+            return $this->container->get($package);
+        }, $this->configurator->getPackages());
     }
 
     public function getDefaultPackages()
     {
-        return [
-            $this->container->get('GitHooksPackage')
-        ];
+        return array_map(function($defaultPackage) {
+            return $this->container->get($defaultPackage);
+        }, $this->configurator->getDefaultPackages());
     }
 
     public function getFrameworkManager()
