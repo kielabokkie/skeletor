@@ -108,6 +108,7 @@ class App extends Application
 
     public function registerPackages()
     {
+        //Merge the optional and default packages, because the service is the same
         $packages = array_merge($this->configurator->getPackages(), $this->configurator->getDefaultPackages());
         foreach($packages as $key => $package)
         {

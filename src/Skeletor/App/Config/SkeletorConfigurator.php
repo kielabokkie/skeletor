@@ -1,5 +1,4 @@
 <?php
-
 namespace Skeletor\App\Config;
 
 use Symfony\Component\Yaml\Yaml;
