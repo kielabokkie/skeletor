@@ -62,7 +62,7 @@ abstract class Package implements PackageInterface
 
     public function setPackageOptions(string $packageOptions)
     {
-        $this->packageOptionsoptions = $packageOptions;
+        $this->packageOptions = $packageOptions;
     }
 
     public function install()

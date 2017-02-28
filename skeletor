@@ -28,7 +28,7 @@ $container = new Container;
 $app = new App($container, 'Skeletor CLI', '1.1.0');
 
 $app->addCommands(array(
-    new Skeletor\Console\Command\CreateProjectCommand,
+    new Skeletor\Console\CreateProjectCommand,
 ));
 
 $app->run();
