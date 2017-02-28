@@ -7,10 +7,10 @@ use Skeletor\Manager\ComposerManager;
 
 abstract class Package implements PackageInterface
 {
-    public $options;
-    public $mountManager;
-    public $composerManager;
-    public $projectFilesystem;
+    protected $options;
+    protected $mountManager;
+    protected $composerManager;
+    protected $projectFilesystem;
     protected $packageOptions = "";
     protected $version = "";
     protected $package;

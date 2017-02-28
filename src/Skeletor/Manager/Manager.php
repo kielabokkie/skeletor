@@ -6,7 +6,7 @@ use League\CLImate\CLImate;
 abstract class Manager
 {
     protected $cli;
-    public $options;
+    protected $options;
 
     public function __construct(CLImate $cli, array $options)
     {
