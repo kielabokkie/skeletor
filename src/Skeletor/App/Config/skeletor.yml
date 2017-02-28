@@ -4,7 +4,6 @@ config:
 frameworks:
     - Laravel54Framework
     - LaravelLumen54Framework
-    - Larvel53Framework
 packages:
     - BehatPackage
     - JsonBehatExtensionPackage
