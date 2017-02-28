@@ -1,6 +1,12 @@
 <?php
 namespace Skeletor\App;
 
+use League\CLImate\CLImate;
+use League\Container\Container;
+use Skeletor\App\Config\SkeletorConfigurator;
+use Skeletor\Manager\ComposerManager;
+use Skeletor\Manager\FrameworkManager;
+use Skeletor\Manager\PackageManager;
 
 class AppTest extends \Codeception\Test\Unit
 {
@@ -8,18 +14,47 @@ class AppTest extends \Codeception\Test\Unit
      * @var \UnitTester
      */
     protected $tester;
+    protected $app;
 
     protected function _before()
     {
+        $container = new Container();
+        $config = new SkeletorConfigurator();
+        $this->app = new App($config, $container, $config->getName(), $config->getVersion());
+        $this->app->registerServices(true);
     }
 
     protected function _after()
     {
     }
 
-    // tests
-    public function testMe()
+    public function testGetFrameworks()
     {
+        $this->assertInternalType('array', $this->app->getFrameworks());
+    }
 
+    public function testGetPackages()
+    {
+        $this->assertInternalType('array', $this->app->getPackages());
+    }
+
+    public function testGetDefaultPackages()
+    {
+        $this->assertInternalType('array', $this->app->getDefaultPackages());
+    }
+
+    public function testFrameworkManagerInstanceSetup()
+    {
+        $this->assertInstanceOf(FrameworkManager::class, $this->app->getFrameworkManager());
+    }
+
+    public function testPackageManagerInstanceSetup()
+    {
+        $this->assertInstanceOf(PackageManager::class, $this->app->getPackageManager());
+    }
+
+    public function testCliInstanceSetup()
+    {
+        $this->assertInstanceOf(CLImate::class, $this->app->getCli());
     }
 }
