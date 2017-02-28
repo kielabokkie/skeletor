@@ -1,10 +1,9 @@
 <?php
 namespace Skeletor\App;
 
+use Codeception\Util\Stub;
 use League\CLImate\CLImate;
 use League\Container\Container;
-use Skeletor\App\Config\SkeletorConfigurator;
-use Skeletor\Manager\ComposerManager;
 use Skeletor\Manager\FrameworkManager;
 use Skeletor\Manager\PackageManager;
 
@@ -19,7 +18,16 @@ class AppTest extends \Codeception\Test\Unit
     protected function _before()
     {
         $container = new Container();
-        $config = new SkeletorConfigurator();
+        $config = Stub::make(
+            'Skeletor\App\Config\SkeletorConfigurator',
+            [
+                'getName' => 'Test CLI',
+                'getVersion' => '0.0.1',
+                'getFrameworks' => ['Laravel54Framework'],
+                'getPackages' => ['BehatPackage'],
+                'getDefaultPackages' => ['GitHooksPackage']
+            ]
+        );
         $this->app = new App($config, $container, $config->getName(), $config->getVersion());
         $this->app->registerServices(true);
     }
