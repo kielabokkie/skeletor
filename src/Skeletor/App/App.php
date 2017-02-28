@@ -13,69 +13,84 @@ class App extends Application
     {
         parent::__construct($name, $version);
         $this->container = $container;
-        $this->options['basePath'] = __DIR__;
-        $this->options['templatePath'] = $this->options['basePath'].'/Templates';
+        $this->options['basePath'] = realpath(__DIR__.'/../');
+        $this->options['templatePath'] = '/Templates';
     }
 
-    public function registrateServices(bool $dryRun = false)
+    public function registerServices(bool $dryRun = false)
     {
         $this->options['dryRun'] = $dryRun;
+
+        //Register multiple filesystems
+        $this->container
+            ->add('skeletorAdapter', 'League\Flysystem\Adapter\Local')
+            ->withArgument($this->options['basePath']);
+         $this->container
+             ->add('projectAdapter', 'League\Flysystem\Adapter\Local')
+             ->withArgument(getcwd());
+
+         $this->container
+             ->add('skeletorFilesystem', 'League\Flysystem\Filesystem')
+             ->withArgument('skeletorAdapter');
+        $this->container
+            ->add('projectFilesystem', 'League\Flysystem\Filesystem')
+            ->withArgument('projectAdapter');
+
+        $managers = [
+            'skeletor' => $this->container->get('skeletorFilesystem'),
+            'project' => $this->container->get('projectFilesystem')
+        ];
+        $this->container
+            ->add('MountManager', 'League\Flysystem\MountManager')
+            ->withArgument($managers);
 
         $this->container
             ->add('Cli', 'League\CLImate\CLImate');
 
         $this->container
-            ->add('Filesystem', 'League\Flysystem\Filesystem')
-            ->withArgument('Adapter');
-
-        $this->container
-            ->add('Adapter', 'League\Flysystem\Adapter\Local')
-            ->withArgument(getcwd());
-
-        $this->container
             ->add('ComposerManager', 'Skeletor\Manager\ComposerManager')
             ->withArgument('Cli')
-            ->withArgument('Filesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('PackageManager', 'Skeletor\Manager\PackageManager')
             ->withArgument('Cli')
-            ->withArgument('Filesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('FrameworkManager', 'Skeletor\Manager\FrameworkManager')
             ->withArgument('Cli')
-            ->withArgument('Filesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('Laravel54Framework', 'Skeletor\Frameworks\Laravel54Framework')
             ->withArgument('ComposerManager')
-            ->withArgument('Filesystem')
+            ->withArgument('projectFilesystem')
             ->withArgument($this->options);
         $this->container
             ->add('LaravelLumen54Framework', 'Skeletor\Frameworks\LaravelLumen54Framework')
             ->withArgument('ComposerManager')
-            ->withArgument('Filesystem')
+            ->withArgument('projectFilesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('BehatPackage', 'Skeletor\Packages\BehatPackage')
             ->withArgument('ComposerManager')
-            ->withArgument('Filesystem')
+            ->withArgument('projectFilesystem')
+            ->withArgument('MountManager')
             ->withArgument($this->options);
         $this->container
             ->add('JsonBehatExtensionPackage', 'Skeletor\Packages\JsonBehatExtensionPackage')
             ->withArgument('ComposerManager')
-            ->withArgument('Filesystem')
+            ->withArgument('projectFilesystem')
+            ->withArgument('MountManager')
             ->withArgument($this->options);
 
         $this->container
             ->add('GitHooksPackage', 'Skeletor\Packages\GitHooksPackage')
             ->withArgument('ComposerManager')
-            ->withArgument('Filesystem')
+            ->withArgument('projectFilesystem')
+            ->withArgument('MountManager')
             ->withArgument($this->options);
     }
 

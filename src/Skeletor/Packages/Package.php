@@ -2,22 +2,25 @@
 namespace Skeletor\Packages;
 
 use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Skeletor\Manager\ComposerManager;
 
 abstract class Package implements PackageInterface
 {
-    public $composerManager;
-    public $filesystem;
     public $options;
+    public $mountManager;
+    public $composerManager;
+    public $projectFilesystem;
     protected $packageOptions = "";
     protected $version = "";
     protected $package;
     protected $name;
 
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem, array $options)
+    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)
     {
         $this->composerManager = $composerManager;
-        $this->filesystem = $filesystem;
+        $this->mountManager = $mountManager;
+        $this->projectFilesystem = $projectFilesystem;
         $this->options = $options;
         $this->setup();
     }

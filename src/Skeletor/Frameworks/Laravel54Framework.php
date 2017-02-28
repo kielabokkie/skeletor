@@ -15,9 +15,9 @@ class Laravel54Framework extends Framework
 
     public function configure()
     {
-        $this->filesystem->put('PixelFusion.txt', '©PIXELFUSION');
-        $this->filesystem->delete('server.php');
-        $this->filesystem->deleteDir('resources/assets');
-        $this->filesystem->createDir('setup/git-hooks');
+        $this->projectFilesystem->put('PixelFusion.txt', '©PIXELFUSION');
+        $this->projectFilesystem->delete('server.php');
+        $this->projectFilesystem->deleteDir('resources/assets');
+        $this->projectFilesystem->createDir('setup/git-hooks');
     }
 }

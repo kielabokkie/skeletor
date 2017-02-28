@@ -6,18 +6,18 @@ use Skeletor\Manager\ComposerManager;
 
 abstract class Framework implements FrameworkInterface
 {
+    protected $projectFilesystem;
     protected $composerManager;
-    protected $filesystem;
     protected $framework;
     protected $name;
     protected $version;
     protected $paths;
     protected $options;
 
-    public function __construct(ComposerManager $composerManager, Filesystem $filesystem, array $options)
+    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, array $options)
     {
         $this->composerManager = $composerManager;
-        $this->filesystem = $filesystem;
+        $this->projectFilesystem = $projectFilesystem;
         $this->options = $options;
         $this->setup();
     }

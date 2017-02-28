@@ -15,6 +15,6 @@ class BehatPackage extends Package
 
     public function configure(Framework $activeFramework)
     {
-        $this->filesystem->put('PixelFusion.txt', '©PIXELFUSION');
+        $this->projectFilesystem->put('PixelFusion.txt', '©PIXELFUSION');
     }
 }

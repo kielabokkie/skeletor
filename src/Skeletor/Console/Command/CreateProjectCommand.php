@@ -39,18 +39,12 @@ class CreateProjectCommand extends Command
         $dryRun = $input->getOption('dryrun');
         $name = strtolower($input->getArgument('name'));
         $this->setupFolder($name);
-        $this->getApplication()->registrateServices($dryRun);
+        $this->getApplication()->registerServices($dryRun);
         $this->setupCommand();
 
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames())))->br();
         $activeFramework = $this->frameworkManager->getFrameworkOption();
         $activePackages = $this->packageManager->getPackageOptions();
-
-        $this->cli->br()->dump($this->getApplication()->options);
-
-        $this->cli->br()->dump($this->getApplication()->container->get('SkeletorFilesystem')->getSize(
-            $this->getApplication()->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php'
-        ));
 
         if ($this->confirmOptions("Specify package versions?")) {
             $this->packageManager->specifyPackagesVersions($activePackages);
@@ -79,7 +73,7 @@ class CreateProjectCommand extends Command
 
     private function setupFolder(string $name)
     {
-        if((is_dir($name)  || is_file($directory)) && $directory != getcwd()) {
+        if((is_dir($name)  || is_file($name)) && $name != getcwd()) {
             throw new FailedFilesystem(sprintf('Failed to make directory %s already exists', $name));
         }
 
