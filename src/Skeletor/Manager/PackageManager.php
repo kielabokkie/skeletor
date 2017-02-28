@@ -1,8 +1,8 @@
 <?php
 namespace Skeletor\Manager;
 
-use Skeletor\Frameworks\Framework;
 use Skeletor\Packages\Package;
+use Skeletor\Frameworks\Framework;
 
 class PackageManager extends Manager
 {

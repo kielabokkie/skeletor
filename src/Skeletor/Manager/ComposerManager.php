@@ -1,8 +1,8 @@
 <?php
 namespace Skeletor\Manager;
 
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ComposerManager extends Manager implements InstallerInterface
 {

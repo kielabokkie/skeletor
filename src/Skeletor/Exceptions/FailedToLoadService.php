@@ -1,6 +1,5 @@
 <?php
-
-namespace Skeletor\App\Exceptions;
+namespace Skeletor\Exceptions;
 
 use SebastianBergmann\CodeCoverage\RuntimeException;
 

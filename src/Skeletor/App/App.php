@@ -1,10 +1,17 @@
 <?php
 namespace Skeletor\App;
 
+use League\CLImate\CLImate;
 use League\Container\Container;
-use Skeletor\App\Config\SkeletorConfigurator;
-use Skeletor\App\Exceptions\FailedToLoadService;
+use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
+use League\Flysystem\Adapter\Local;
+use Skeletor\Manager\PackageManager;
+use Skeletor\Manager\ComposerManager;
+use Skeletor\Manager\FrameworkManager;
 use Symfony\Component\Console\Application;
+use Skeletor\App\Config\SkeletorConfigurator;
+use Skeletor\Exceptions\FailedToLoadService;
 
 class App extends Application
 {
@@ -35,17 +42,17 @@ class App extends Application
     public function registerFilesystem()
     {
         $this->container
-            ->add('skeletorAdapter', 'League\Flysystem\Adapter\Local')
+            ->add('skeletorAdapter', Local::class)
             ->withArgument($this->options['basePath']);
         $this->container
-            ->add('projectAdapter', 'League\Flysystem\Adapter\Local')
+            ->add('projectAdapter', Local::class)
             ->withArgument(getcwd());
 
         $this->container
-            ->add('skeletorFilesystem', 'League\Flysystem\Filesystem')
+            ->add('skeletorFilesystem', Filesystem::class)
             ->withArgument('skeletorAdapter');
         $this->container
-            ->add('projectFilesystem', 'League\Flysystem\Filesystem')
+            ->add('projectFilesystem', Filesystem::class)
             ->withArgument('projectAdapter');
 
         $managers = [
@@ -53,30 +60,30 @@ class App extends Application
             'project' => $this->container->get('projectFilesystem')
         ];
         $this->container
-            ->add('MountManager', 'League\Flysystem\MountManager')
+            ->add('MountManager', MountManager::class)
             ->withArgument($managers);
     }
 
     public function registerTools()
     {
         $this->container
-            ->add('Cli', 'League\CLImate\CLImate');
+            ->add('Cli', CLImate::class);
     }
 
     public function registerManagers()
     {
         $this->container
-            ->add('ComposerManager', 'Skeletor\Manager\ComposerManager')
+            ->add('ComposerManager', ComposerManager::class)
             ->withArgument('Cli')
             ->withArgument($this->options);
 
         $this->container
-            ->add('PackageManager', 'Skeletor\Manager\PackageManager')
+            ->add('PackageManager', PackageManager::class)
             ->withArgument('Cli')
             ->withArgument($this->options);
 
         $this->container
-            ->add('FrameworkManager', 'Skeletor\Manager\FrameworkManager')
+            ->add('FrameworkManager', FrameworkManager::class)
             ->withArgument('Cli')
             ->withArgument($this->options);
     }
@@ -107,7 +114,7 @@ class App extends Application
             $packageClass = sprintf('Skeletor\Packages\%s', $package);
 
             if(!class_exists($packageClass)) {
-                throw new FailedToLoadService("Couldn't find class ". $package);
+                throw new FailedToLoadService("Couldn't find class ". $packageClass);
             }
 
             $this->container

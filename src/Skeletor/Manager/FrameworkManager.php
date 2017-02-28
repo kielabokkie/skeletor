@@ -2,7 +2,7 @@
 namespace Skeletor\Manager;
 
 use Skeletor\Frameworks\Framework;
-use Skeletor\App\Exceptions\FailedToLoadFrameworkException;
+use Skeletor\Exceptions\FailedToLoadFrameworkException;
 
 class FrameworkManager extends Manager
 {
