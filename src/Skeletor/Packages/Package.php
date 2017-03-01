@@ -7,13 +7,13 @@ use Skeletor\Manager\ComposerManager;
 
 abstract class Package implements PackageInterface
 {
-    protected $options;
-    protected $mountManager;
-    protected $composerManager;
     protected $projectFilesystem;
+    protected $composerManager;
     protected $packageOptions = "";
-    protected $version = "";
+    protected $mountManager;
     protected $installSlug;
+    protected $version = "";
+    protected $options;
     protected $name;
 
     public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)

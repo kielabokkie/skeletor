@@ -6,9 +6,6 @@ use Skeletor\Exceptions\FailedToLoadFrameworkException;
 
 class FrameworkManager extends Manager
 {
-    /**
-     * @var array with frameworks
-     */
     protected $frameworks;
 
     public function setFrameworks(array $frameworks)

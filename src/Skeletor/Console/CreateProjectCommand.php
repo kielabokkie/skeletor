@@ -11,20 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateProjectCommand extends Command
 {
-    /**
-     * @var Instance of CLI
-     */
-    protected $cli;
-
-    /**
-     * @var Instace of Framework Manager
-     */
     protected $frameworkManager;
-
-    /**
-     * @var Instace of Package Manager
-     */
     protected $packageManager;
+    protected $cli;
 
     protected function configure()
     {

@@ -17,7 +17,7 @@ Make sure to place the `$HOME/.composer/vendor/bin` directory (or the equivalent
 the `Skeletor` executable can be located by you system.
 
 
-### Create a project skeleton
+### Create a project
 
 Once installed, the `skeletor project:create` command will create a fresh project installation in the directory you specify.
 For instance, `skeletor project:create helloworld` will create a directory named `helloworld` 

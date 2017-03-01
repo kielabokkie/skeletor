@@ -5,8 +5,8 @@ use League\CLImate\CLImate;
 
 abstract class Manager
 {
-    protected $cli;
     protected $options;
+    protected $cli;
 
     public function __construct(CLImate $cli, array $options)
     {

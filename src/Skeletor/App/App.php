@@ -22,10 +22,11 @@ class App extends Application
     public function __construct(SkeletorConfigurator $configurator, Container $container, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         parent::__construct($name, $version);
-        $this->container = $container;
         $this->configurator = $configurator;
-        $this->options['basePath'] = realpath(__DIR__.'/../');
+        $this->container = $container;
+
         $this->options['templatePath'] = '/Templates';
+        $this->options['basePath'] = realpath(__DIR__.'/../');
     }
 
     public function registerServices(bool $dryRun = false)

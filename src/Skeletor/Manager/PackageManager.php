@@ -6,15 +6,8 @@ use Skeletor\Frameworks\Framework;
 
 class PackageManager extends Manager
 {
-    /**
-     * @var array with packages
-     */
-    protected $packages = array();
-
-    /**
-     * @var array with default packages
-     */
     protected $defaultPackages = array();
+    protected $packages = array();
 
     public function setPackages(array $packages)
     {

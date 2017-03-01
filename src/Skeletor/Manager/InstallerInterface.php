@@ -1,5 +1,4 @@
 <?php
-
 namespace Skeletor\Manager;
 
 interface InstallerInterface
