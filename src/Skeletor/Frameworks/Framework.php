@@ -57,6 +57,8 @@ abstract class Framework implements FrameworkInterface
         if(array_key_exists($path, $this->paths)){
             return $this->paths[$path];
         }
+
+        return '';
     }
 
     public function setPaths(array $paths)

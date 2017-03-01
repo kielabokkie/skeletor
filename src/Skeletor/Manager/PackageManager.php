@@ -9,12 +9,12 @@ class PackageManager extends Manager
     /**
      * @var array with packages
      */
-    protected $packages;
+    protected $packages = array();
 
     /**
      * @var array with default packages
      */
-    protected $defaultPackages;
+    protected $defaultPackages = array();
 
     public function setPackages(array $packages)
     {

@@ -4,6 +4,7 @@ namespace Skeletor\App;
 use Codeception\Util\Stub;
 use League\CLImate\CLImate;
 use League\Container\Container;
+use Skeletor\App\Config\SkeletorConfigurator;
 use Skeletor\Manager\FrameworkManager;
 use Skeletor\Manager\PackageManager;
 
@@ -19,7 +20,7 @@ class AppTest extends \Codeception\Test\Unit
     {
         $container = new Container();
         $config = Stub::make(
-            'Skeletor\App\Config\SkeletorConfigurator',
+            SkeletorConfigurator::class,
             [
                 'getName' => 'Test CLI',
                 'getVersion' => '0.0.1',

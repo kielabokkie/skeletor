@@ -27,11 +27,6 @@ class SkeletorConfigurator
         return $this->options['defaultPackages'];
     }
 
-    public function getConfig()
-    {
-        return $this->options;
-    }
-
     public function getName()
     {
         return $this->options['config']['name'];
@@ -40,5 +35,10 @@ class SkeletorConfigurator
     public function getVersion()
     {
         return $this->options['config']['version'];
+    }
+
+    public function getConfig()
+    {
+        return $this->options;
     }
 }
