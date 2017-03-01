@@ -1,7 +1,7 @@
 <?php
 namespace Skeletor\Api;
 
-use Skeletor\Api\Exception\FailedToLoadPackageVersion;
+use Skeletor\Exceptions\FailedToLoadPackageException;
 
 class PackagistApi extends Api
 {
@@ -10,7 +10,7 @@ class PackagistApi extends Api
         $packageVersions = [];
         foreach($packages as $key => $package)
         {
-            $packageVersions[$key] = $this->getVersionsPackage($package['slug']);
+            $packageVersions[$package->getName()] = $this->getVersionsPackage($package->getInstallSlug());
         }
         return $packageVersions;
     }
@@ -20,7 +20,7 @@ class PackagistApi extends Api
         $data = file_get_contents($this->buildUrl($packageSlug));
 
         if(!$data){
-            throw New FailedToLoadPackageVersion('Couldnt find version for ' . $packageSlug);
+            throw New FailedToLoadPackageException('Couldnt find version for ' . $packageSlug);
         }
 
         $packageData = $this->jsonDecode($data);

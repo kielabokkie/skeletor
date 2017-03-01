@@ -1,8 +1,6 @@
 <?php
 namespace Skeletor\Api;
 
-use Skeletor\Api\Exception\FailedToLoadPackageVersion;
-
 abstract class Api
 {
     public function jsonEncode($data)

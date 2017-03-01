@@ -6,6 +6,7 @@ use League\Container\Container;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use League\Flysystem\Adapter\Local;
+use Skeletor\Api\PackagistApi;
 use Skeletor\Manager\PackageManager;
 use Skeletor\Manager\ComposerManager;
 use Skeletor\Manager\FrameworkManager;
@@ -69,6 +70,9 @@ class App extends Application
     {
         $this->container
             ->add('Cli', CLImate::class);
+
+        $this->container
+            ->add('PackagistApi', PackagistApi::class);
     }
 
     public function registerManagers()
@@ -163,5 +167,10 @@ class App extends Application
     public function getCli()
     {
         return $this->container->get('Cli');
+    }
+
+    public function getPackagistApi()
+    {
+        return $this->container->get('PackagistApi');
     }
 }

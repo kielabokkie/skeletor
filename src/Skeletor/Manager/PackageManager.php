@@ -14,6 +14,11 @@ class PackageManager extends Manager
         $this->packages = $packages;
     }
 
+    public function getPackages()
+    {
+        return $this->packages;
+    }
+
     public function setDefaultPackages(array $defaultPackages)
     {
         $this->defaultPackages = $defaultPackages;

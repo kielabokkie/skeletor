@@ -31,6 +31,7 @@ $app = new App($config, $container, $config->getName(), $config->getVersion());
 
 $app->addCommands(array(
     new Skeletor\Console\CreateProjectCommand,
+    new Skeletor\Console\GetPackageVersions,
 ));
 
 $app->run();
