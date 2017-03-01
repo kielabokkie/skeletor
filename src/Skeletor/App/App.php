@@ -102,6 +102,7 @@ class App extends Application
                 ->add($framework, $frameworkClass)
                 ->withArgument('ComposerManager')
                 ->withArgument('projectFilesystem')
+                ->withArgument('MountManager')
                 ->withArgument($this->options);
         }
     }

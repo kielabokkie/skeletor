@@ -3,6 +3,7 @@ namespace Skeletor\App\Frameworks;
 
 use Codeception\Util\Stub;
 use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Skeletor\Frameworks\Laravel54Framework;
 use Skeletor\Manager\ComposerManager;
 
@@ -26,9 +27,14 @@ class Laravel54FrameworkTest extends \Codeception\Test\Unit
             [
             ]
         );
+        $mountmanager = Stub::make(
+            MountManager::class,
+            [
+            ]
+        );
         $options = [];
 
-        $this->laravel54Framework = new Laravel54Framework($composerManager, $projectFilesystem, $options);
+        $this->laravel54Framework = new Laravel54Framework($composerManager, $projectFilesystem, $mountmanager, $options);
     }
 
     protected function _after()
@@ -38,7 +44,7 @@ class Laravel54FrameworkTest extends \Codeception\Test\Unit
     // tests
     public function testGetFramework()
     {
-        $this->assertInternalType('string', $this->laravel54Framework->getFramework());
+        $this->assertInternalType('string', $this->laravel54Framework->getInstallSlug());
     }
 
     public function testGetName()

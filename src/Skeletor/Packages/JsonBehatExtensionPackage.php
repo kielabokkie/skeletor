@@ -5,10 +5,9 @@ use Skeletor\Frameworks\Framework;
 
 class JsonBehatExtensionPackage extends Package
 {
-
     public function setup()
     {
-        $this->setPackage('kielabokkie/jsonapi-behat-extension');
+        $this->setInstallSlug('kielabokkie/jsonapi-behat-extension');
         $this->setName("Behat extension for testing JSON APIs");
     }
 

@@ -7,7 +7,7 @@ class GitHooksPackage extends Package
 {
     public function setup()
     {
-        $this->setPackage('pixelfusion/git-hooks');
+        $this->setInstallSlug('pixelfusion/git-hooks');
         $this->setName("PixelFusion Git Hooks");
     }
 

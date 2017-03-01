@@ -4,8 +4,8 @@ namespace Skeletor\Frameworks;
 interface FrameworkInterface
 {
     public function setup();
-    public function getFramework();
-    public function setFramework(string $framework);
+    public function getInstallSlug();
+    public function setInstallSlug(string $installSlug);
     public function getName();
     public function setName(string $name);
     public function getVersion();

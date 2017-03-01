@@ -1,7 +1,6 @@
 <?php
 namespace Skeletor\App\Packages;
 
-
 use Codeception\Util\Stub;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
@@ -45,7 +44,7 @@ class GitHooksPackageTest extends \Codeception\Test\Unit
     // tests
     public function testGetPackage()
     {
-        $this->assertInternalType('string', $this->gitHooksPackage->getPackage());
+        $this->assertInternalType('string', $this->gitHooksPackage->getInstallSlug());
     }
 
     public function testGetName()

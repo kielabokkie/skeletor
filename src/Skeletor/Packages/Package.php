@@ -13,26 +13,26 @@ abstract class Package implements PackageInterface
     protected $projectFilesystem;
     protected $packageOptions = "";
     protected $version = "";
-    protected $package;
+    protected $installSlug;
     protected $name;
 
     public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)
     {
+        $this->projectFilesystem = $projectFilesystem;
         $this->composerManager = $composerManager;
         $this->mountManager = $mountManager;
-        $this->projectFilesystem = $projectFilesystem;
         $this->options = $options;
         $this->setup();
     }
 
-    public function getPackage()
+    public function getInstallSlug()
     {
-        return $this->package;
+        return $this->installSlug;
     }
 
-    public function setPackage(string $package)
+    public function setInstallSlug(string $installSlug)
     {
-        $this->package = $package;
+        $this->installSlug = $installSlug;
     }
 
     public function getName()
@@ -67,7 +67,7 @@ abstract class Package implements PackageInterface
 
     public function install()
     {
-        $command = $this->composerManager->preparePackageCommand($this->getPackage(), $this->getVersion(), $this->getPackageOptions());
+        $command = $this->composerManager->preparePackageCommand($this->getInstallSlug(), $this->getVersion(), $this->getPackageOptions());
         $this->composerManager->runCommand($command);
     }
 }

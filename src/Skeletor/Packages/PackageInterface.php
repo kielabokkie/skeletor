@@ -6,8 +6,8 @@ use Skeletor\Frameworks\Framework;
 interface PackageInterface
 {
     public function setup();
-    public function getPackage();
-    public function setPackage(string $package);
+    public function getInstallSlug();
+    public function setInstallSlug(string $installSlug);
     public function getName();
     public function setName(string $name);
     public function getVersion();

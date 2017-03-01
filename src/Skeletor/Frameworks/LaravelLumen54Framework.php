@@ -5,7 +5,7 @@ class LaravelLumen54Framework extends Framework
 {
     public function setup()
     {
-        $this->setFramework('laravel/lumen');
+        $this->setInstallSlug('laravel/lumen');
         $this->setName("Lumen");
         $this->setVersion("5.4");
     }

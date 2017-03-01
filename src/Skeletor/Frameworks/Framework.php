@@ -2,34 +2,37 @@
 namespace Skeletor\Frameworks;
 
 use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Skeletor\Manager\ComposerManager;
 
 abstract class Framework implements FrameworkInterface
 {
     protected $projectFilesystem;
     protected $composerManager;
-    protected $framework;
-    protected $name;
+    protected $mountManager;
+    protected $installSlug;
+    protected $options;
     protected $version;
     protected $paths;
-    protected $options;
+    protected $name;
 
-    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, array $options)
+    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)
     {
-        $this->composerManager = $composerManager;
         $this->projectFilesystem = $projectFilesystem;
+        $this->composerManager = $composerManager;
+        $this->mountManager = $mountManager;
         $this->options = $options;
         $this->setup();
     }
 
-    public function getFramework()
+    public function getInstallSlug()
     {
-        return $this->framework;
+        return $this->installSlug;
     }
 
-    public function setFramework(string $framework)
+    public function setInstallSlug(string $installSlug)
     {
-        $this->framework = $framework;
+        $this->installSlug = $installSlug;
     }
 
     public function getName()
@@ -68,7 +71,7 @@ abstract class Framework implements FrameworkInterface
 
     public function install()
     {
-        $command = $this->composerManager->prepareFrameworkCommand($this->getFramework(), $this->getVersion());
+        $command = $this->composerManager->prepareFrameworkCommand($this->getInstallSlug(), $this->getVersion());
         $this->composerManager->runCommand($command);
     }
 }
