@@ -13,7 +13,7 @@ Take a look at the `Framework.php` here are all available methods, also take a l
 Add the name of the new package to the `skeletor.yml`
 For example we add `TestPackage`, now make a blueprint for the package `src/Skeletor/Packages/TestPackage.php`.
 This blueprint will define, more detail about the package and give you the freedom to configure it.
-Take a look at the `Framework.php` here are all available methods, also take a look at the [Flysystem docs](https://flysystem.thephpleague.com/api/). 
+Take a look at the `Package.php` here are all available methods, also take a look at the [Flysystem docs](https://flysystem.thephpleague.com/api/). 
 
 ### Default packages
 Same process as the packages, only add this package name under defaultPackages in the `skeletor.yml`.

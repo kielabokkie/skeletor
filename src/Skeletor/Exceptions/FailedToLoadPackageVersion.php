@@ -1,5 +1,5 @@
 <?php
-namespace Skeletor\Api\Exception;
+namespace Skeletor\Exceptions;
 
 use Symfony\Component\Console\Exception\RuntimeException;
 

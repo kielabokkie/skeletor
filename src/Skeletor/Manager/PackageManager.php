@@ -9,16 +9,25 @@ class PackageManager extends Manager
     protected $defaultPackages = array();
     protected $packages = array();
 
+    /**
+     * @param array $packages
+     */
     public function setPackages(array $packages)
     {
         $this->packages = $packages;
     }
 
+    /**
+     * @param array $defaultPackages
+     */
     public function setDefaultPackages(array $defaultPackages)
     {
         $this->defaultPackages = $defaultPackages;
     }
 
+    /**
+     * @return array
+     */
     public function getInstallablePackageNames()
     {
         return array_map(function(Package $package) {
@@ -26,6 +35,10 @@ class PackageManager extends Manager
         }, $this->packages);
     }
 
+    /**
+     * @param array $names
+     * @return array
+     */
     public function load(array $names)
     {
         $activePackages = [];
@@ -37,6 +50,10 @@ class PackageManager extends Manager
         return $activePackages;
     }
 
+    /**
+     * @param array $packages
+     * @return array
+     */
     public function showPackagesTable(array $packages)
     {
         return array_map(function($package) {
@@ -44,17 +61,27 @@ class PackageManager extends Manager
         }, $packages);
     }
 
+    /**
+     * @param array $selectedPacakges
+     * @return array
+     */
     public function mergeSelectedAndDefaultPackages(array $selectedPacakges)
     {
         return array_merge($selectedPacakges, $this->defaultPackages);
     }
 
+    /**
+     * @return array
+     */
     public function getPackageOptions()
     {
         $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->getInstallablePackageNames());
         return $this->load($packagesQuestion->prompt());
     }
 
+    /**
+     * @param array $packages
+     */
     public function specifyPackagesVersions(array $packages)
     {
         foreach ($packages as $key => $package)
@@ -68,11 +95,18 @@ class PackageManager extends Manager
         }
     }
 
+    /**
+     * @param Package $package
+     */
     public function install(Package $package)
     {
         $package->install();
     }
 
+    /**
+     * @param Package $package
+     * @param Framework $activeFramework
+     */
     public function configure(Package $package, Framework $activeFramework)
     {
         if(!$this->options['dryRun']) {

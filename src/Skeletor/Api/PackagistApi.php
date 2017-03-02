@@ -1,10 +1,14 @@
 <?php
 namespace Skeletor\Api;
 
-use Skeletor\Api\Exception\FailedToLoadPackageVersion;
+use Skeletor\Exceptions\FailedToLoadPackageVersion;
 
 class PackagistApi extends Api
 {
+    /**
+     * @param array $packages
+     * @return array
+     */
     public function getAvailablePackasgeVersions(array $packages)
     {
         $packageVersions = [];
@@ -15,6 +19,10 @@ class PackagistApi extends Api
         return $packageVersions;
     }
 
+    /**
+     * @param string $packageSlug
+     * @return array
+     */
     public function getVersionsPackage(string $packageSlug)
     {
         $data = file_get_contents($this->buildUrl($packageSlug));
@@ -30,7 +38,11 @@ class PackagistApi extends Api
         return array_slice( array_reverse($versions), 0, 10);
     }
 
-    public function buildUrl($packageSlug)
+    /**
+     * @param string $packageSlug
+     * @return string
+     */
+    public function buildUrl(string $packageSlug)
     {
         return sprintf('https://packagist.org/p/%s.json', $packageSlug);
     }
