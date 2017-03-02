@@ -1,8 +1,10 @@
 <?php
 namespace Skeletor\Manager;
 
+use Skeletor\Exceptions\FailedToLoadPackageException;
 use Skeletor\Packages\Package;
 use Skeletor\Frameworks\Framework;
+use Symfony\Component\Console\Exception\RuntimeException;
 
 class PackageManager extends Manager
 {
@@ -63,7 +65,7 @@ class PackageManager extends Manager
     public function getAvailablePackageVersions()
     {
         if( !$this->skeletorFilesystem->has('Tmp/PackageVersions.json') ){
-            return array();
+            throw new FailedToLoadPackageException('Could not load package versions');
         }
 
         $versions = $this->skeletorFilesystem->read('Tmp/PackageVersions.json');

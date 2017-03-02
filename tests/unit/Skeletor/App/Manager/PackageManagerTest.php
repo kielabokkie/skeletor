@@ -3,6 +3,8 @@ namespace Skeletor\App\Manager;
 
 use Codeception\Util\Stub;
 use League\CLImate\CLImate;
+use League\Flysystem\Filesystem;
+use Skeletor\Exceptions\FailedToLoadPackageException;
 use Skeletor\Manager\PackageManager;
 use Skeletor\Packages\GitHooksPackage;
 
@@ -21,6 +23,13 @@ class PackageManagerTest extends \Codeception\Test\Unit
             [
             ]
         );
+        $skeletorFilesystem = Stub::make(
+            Filesystem::class,
+            [
+                'has' => true,
+                'read' => '{"Behat":["v3.3.0","v3.2.3","v3.2.2","v3.2.1","v3.2.0rc2","v3.2.0rc1","v3.2.0","v3.1.0rc2","v3.1.0rc1","v3.1.0"]}',
+            ]
+        );
         $defaultPackage = Stub::make(
             GitHooksPackage::class,
             [
@@ -30,7 +39,7 @@ class PackageManagerTest extends \Codeception\Test\Unit
         );
 
         $options = [];
-        $this->packageManager = new PackageManager($cli, $options);
+        $this->packageManager = new PackageManager($cli, $skeletorFilesystem, $options);
 
         //Load one framework
         $this->packageManager->setDefaultPackages([$defaultPackage]);
@@ -49,6 +58,11 @@ class PackageManagerTest extends \Codeception\Test\Unit
     public function testLoadPackages()
     {
         $this->assertInternalType('array', $this->packageManager->load(['PixelFusion Git Hooks']));
+    }
+
+    public function testException()
+    {
+        $this->assertInternalType('array', $this->packageManager->getAvailablePackageVersions());
     }
 
     public function testShowPackagesTable()
