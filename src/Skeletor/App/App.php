@@ -19,9 +19,9 @@ class App extends Application
     public $container;
     public $options;
 
-    public function __construct(SkeletorConfigurator $configurator, Container $container, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    public function __construct(SkeletorConfigurator $configurator, Container $container)
     {
-        parent::__construct($name, $version);
+        parent::__construct($configurator->getName(), $configurator->getVersion());
         $this->configurator = $configurator;
         $this->container = $container;
 
