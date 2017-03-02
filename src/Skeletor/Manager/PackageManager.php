@@ -60,11 +60,26 @@ class PackageManager extends Manager
         return $this->load($packagesQuestion->prompt());
     }
 
+    public function getAvailablePackageVersions()
+    {
+        if( !$this->skeletorFilesystem->has('Tmp/PackageVersions.json') ){
+            return array();
+        }
+
+        $versions = $this->skeletorFilesystem->read('Tmp/PackageVersions.json');
+        return json_decode($versions, true);
+    }
+
     public function specifyPackagesVersions(array $packages)
     {
+        $versions = $this->getAvailablePackageVersions();
         foreach ($packages as $key => $package)
         {
+            $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getName()])));
             $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion() ));
+            $versions[$package->getName()][] = '';
+
+            $input->accept($versions[$package->getName()]);
             $version = $input->prompt();
 
             if(!empty($version)) {

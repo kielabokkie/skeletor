@@ -80,16 +80,19 @@ class App extends Application
         $this->container
             ->add('ComposerManager', ComposerManager::class)
             ->withArgument('Cli')
+            ->withArgument('skeletorFilesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('PackageManager', PackageManager::class)
             ->withArgument('Cli')
+            ->withArgument('skeletorFilesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('FrameworkManager', FrameworkManager::class)
             ->withArgument('Cli')
+            ->withArgument('skeletorFilesystem')
             ->withArgument($this->options);
     }
 
@@ -172,5 +175,10 @@ class App extends Application
     public function getPackagistApi()
     {
         return $this->container->get('PackagistApi');
+    }
+
+    public function getSkeletorFilesystem()
+    {
+        return $this->container->get('skeletorFilesystem');
     }
 }

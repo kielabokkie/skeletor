@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class CreateProjectCommand extends Command
 {
@@ -34,11 +36,23 @@ class CreateProjectCommand extends Command
         $this->getApplication()->registerServices($dryRun);
         $this->setupCommand();
 
+        //Start process in the background
+        $process = new Process('php skeletor package:show --no-ansi');
+        $process->setTimeout(7200);
+        $process->start();
+
         $this->cli->br()->yellow(sprintf('Skeletor - %s project creator', implode(" / ", $this->frameworkManager->getFrameworkNames())))->br();
         $activeFramework = $this->frameworkManager->getFrameworkOption();
         $activePackages = $this->packageManager->getPackageOptions();
 
         if ($this->confirmOptions("Specify package versions?")) {
+            $process->wait(function($type, $buffer) {
+                if(Process::ERR === $type) {
+                    $this->cli->red('ERR > ');
+                } else {
+                    $this->cli->green('Fetching versions...');
+                }
+            });
             $this->packageManager->specifyPackagesVersions($activePackages);
         }
 

@@ -2,15 +2,18 @@
 namespace Skeletor\Manager;
 
 use League\CLImate\CLImate;
+use League\Flysystem\Filesystem;
 
 abstract class Manager
 {
+    protected $skeletorFilesystem;
     protected $options;
     protected $cli;
 
-    public function __construct(CLImate $cli, array $options)
+    public function __construct(CLImate $cli, Filesystem $skeletorFilesystem, array $options)
     {
         $this->cli = $cli;
         $this->options = $options;
+        $this->skeletorFilesystem = $skeletorFilesystem;
     }
 }
