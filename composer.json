@@ -13,6 +13,7 @@
         }
     ],
     "require": {
+        "php": ">=7.0",
         "symfony/console": "^2.8",
         "symfony/process": "^2.8",
         "league/flysystem": "^1.0",
