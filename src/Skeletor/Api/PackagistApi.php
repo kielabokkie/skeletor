@@ -5,6 +5,10 @@ use Skeletor\Exceptions\FailedToLoadPackageException;
 
 class PackagistApi extends Api
 {
+    /**
+     * @param array $packages
+     * @return array
+     */
     public function getAvailablePackasgeVersions(array $packages)
     {
         $packageVersions = [];
@@ -15,6 +19,10 @@ class PackagistApi extends Api
         return $packageVersions;
     }
 
+    /**
+     * @param string $packageSlug
+     * @return array
+     */
     public function getVersionsPackage(string $packageSlug)
     {
         $data = file_get_contents($this->buildUrl($packageSlug));
@@ -26,10 +34,14 @@ class PackagistApi extends Api
         $packageData = $this->jsonDecode($data);
         $versions = array_keys($packageData['packages'][$packageSlug]);
 
-        // Flip the array and return 10 latest versions
-        return array_slice( array_reverse($versions), 0, 10);
+        // Flip the array and return versions
+        return array_reverse($versions);
     }
 
+    /**
+     * @param $packageSlug
+     * @return string
+     */
     public function buildUrl($packageSlug)
     {
         return sprintf('https://packagist.org/p/%s.json', $packageSlug);
