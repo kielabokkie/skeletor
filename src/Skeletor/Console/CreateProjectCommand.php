@@ -20,12 +20,12 @@ class CreateProjectCommand extends Command
         $this->setName('project:create')
             ->setDescription('Create a new Laravel/Lumen project skeleton')
             ->addArgument('name', InputArgument::REQUIRED, 'Project name')
-            ->addOption('dryrun', null, InputOption::VALUE_NONE, 'Dryrun the install', null);
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dryrun the install', null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dryRun = $input->getOption('dryrun');
+        $dryRun = $input->getOption('dry-run');
         $name = strtolower($input->getArgument('name'));
         if(!$dryRun) {
             $this->setupFolder($name);
