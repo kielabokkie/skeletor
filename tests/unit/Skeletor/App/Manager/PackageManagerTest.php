@@ -60,7 +60,7 @@ class PackageManagerTest extends \Codeception\Test\Unit
         $this->assertInternalType('array', $this->packageManager->load(['PixelFusion Git Hooks']));
     }
 
-    public function testException()
+    public function testGetAvailablePackageVersions()
     {
         $this->assertInternalType('array', $this->packageManager->getAvailablePackageVersions());
     }
