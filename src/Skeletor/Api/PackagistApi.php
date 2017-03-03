@@ -14,7 +14,7 @@ class PackagistApi extends Api
         $packageVersions = [];
         foreach($packages as $key => $package)
         {
-            $packageVersions[$key] = $this->getVersionsPackage($package['slug']);
+            $packageVersions[$package->getName()] = $this->getVersionsPackage($package->getInstallSlug());
         }
         return $packageVersions;
     }
@@ -28,14 +28,14 @@ class PackagistApi extends Api
         $data = file_get_contents($this->buildUrl($packageSlug));
 
         if(!$data){
-            throw New FailedToLoadPackageVersion('Couldnt find version for ' . $packageSlug);
+            throw New FailedToLoadPackageException('Couldnt find version for ' . $packageSlug);
         }
 
         $packageData = $this->jsonDecode($data);
         $versions = array_keys($packageData['packages'][$packageSlug]);
 
-        // Flip the array and return 10 latest versions
-        return array_slice( array_reverse($versions), 0, 10);
+        // Flip the array and return versions
+        return array_reverse($versions);
     }
 
     /**

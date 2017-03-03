@@ -3,6 +3,8 @@ namespace Skeletor\App\Manager;
 
 use Codeception\Util\Stub;
 use League\CLImate\CLImate;
+use League\CLImate\Util\Writer\File;
+use League\Flysystem\Filesystem;
 use Skeletor\Manager\ComposerManager;
 
 class ComposerManagerTest extends \Codeception\Test\Unit
@@ -20,9 +22,14 @@ class ComposerManagerTest extends \Codeception\Test\Unit
             [
             ]
         );
+        $skeletorFilesystem = Stub::make(
+            Filesystem::class,
+            [
+            ]
+        );
         $options = [];
 
-        $this->composerManager = new ComposerManager($cli, $options);
+        $this->composerManager = new ComposerManager($cli, $skeletorFilesystem, $options);
     }
 
     protected function _after()

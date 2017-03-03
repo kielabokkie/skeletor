@@ -6,6 +6,7 @@ use League\Container\Container;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use League\Flysystem\Adapter\Local;
+use Skeletor\Api\PackagistApi;
 use Skeletor\Manager\PackageManager;
 use Skeletor\Manager\ComposerManager;
 use Skeletor\Manager\FrameworkManager;
@@ -77,6 +78,9 @@ class App extends Application
     {
         $this->container
             ->add('Cli', CLImate::class);
+
+        $this->container
+            ->add('PackagistApi', PackagistApi::class);
     }
 
     public function registerManagers()
@@ -84,16 +88,19 @@ class App extends Application
         $this->container
             ->add('ComposerManager', ComposerManager::class)
             ->withArgument('Cli')
+            ->withArgument('skeletorFilesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('PackageManager', PackageManager::class)
             ->withArgument('Cli')
+            ->withArgument('skeletorFilesystem')
             ->withArgument($this->options);
 
         $this->container
             ->add('FrameworkManager', FrameworkManager::class)
             ->withArgument('Cli')
+            ->withArgument('skeletorFilesystem')
             ->withArgument($this->options);
     }
 
@@ -189,5 +196,15 @@ class App extends Application
     public function getCli()
     {
         return $this->container->get('Cli');
+    }
+
+    public function getPackagistApi()
+    {
+        return $this->container->get('PackagistApi');
+    }
+
+    public function getSkeletorFilesystem()
+    {
+        return $this->container->get('skeletorFilesystem');
     }
 }

@@ -15,7 +15,7 @@
     "require": {
         "php": ">=7.0",
         "symfony/console": "^2.8",
-        "symfony/process": "^2.8",
+        "symfony/process": "^3.2",
         "league/flysystem": "^1.0",
         "league/climate": "^3.2",
         "league/container": "^2.3",

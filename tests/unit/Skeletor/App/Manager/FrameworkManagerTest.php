@@ -3,6 +3,8 @@ namespace Skeletor\App\Manager;
 
 use Codeception\Util\Stub;
 use League\CLImate\CLImate;
+use League\Flysystem\File;
+use League\Flysystem\Filesystem;
 use Skeletor\Frameworks\Framework;
 use Skeletor\Frameworks\Laravel54Framework;
 use Skeletor\Manager\FrameworkManager;
@@ -22,6 +24,11 @@ class FrameworkManagerTest extends \Codeception\Test\Unit
             [
             ]
         );
+        $skeletorFilesystem = Stub::make(
+            Filesystem::class,
+            [
+            ]
+        );
         $framework = Stub::make(
             Laravel54Framework::class,
             [
@@ -31,7 +38,7 @@ class FrameworkManagerTest extends \Codeception\Test\Unit
         );
 
         $options = [];
-        $this->frameworkManager = new FrameworkManager($cli, $options);
+        $this->frameworkManager = new FrameworkManager($cli, $skeletorFilesystem, $options);
 
         //Load one framework
         $this->frameworkManager->setFrameworks([$framework]);

@@ -1,3 +1,4 @@
 vendor
-
+.idea
+src/Skeletor/Tmp
 tests/_output/*
