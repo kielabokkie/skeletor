@@ -1,10 +1,9 @@
 <?php
 namespace Skeletor\Manager;
 
-use Skeletor\Exceptions\FailedToLoadPackageException;
 use Skeletor\Packages\Package;
 use Skeletor\Frameworks\Framework;
-use Symfony\Component\Console\Exception\RuntimeException;
+use Skeletor\Exceptions\FailedToLoadPackageException;
 
 class PackageManager extends Manager
 {
@@ -19,6 +18,9 @@ class PackageManager extends Manager
         $this->packages = $packages;
     }
 
+    /**
+     * @return array
+     */
     public function getPackages()
     {
         return $this->packages;
@@ -86,6 +88,9 @@ class PackageManager extends Manager
         return $this->load($packagesQuestion->prompt());
     }
 
+    /**
+     * @return array
+     */
     public function getAvailablePackageVersions()
     {
         if( !$this->skeletorFilesystem->has('Tmp/PackageVersions.json') ){

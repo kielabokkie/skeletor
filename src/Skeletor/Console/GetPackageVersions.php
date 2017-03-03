@@ -15,6 +15,10 @@ class GetPackageVersions extends Command
             ->addOption('no-ansi', null, InputOption::VALUE_NONE, 'Disable ANSI output', null);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $ansi = $input->getOption('no-ansi');

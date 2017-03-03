@@ -4,9 +4,6 @@ namespace Skeletor\Api;
 abstract class Api
 {
     /**
-     * @param $data
-     * @return string
-     */
      * @param array $data
      * @return string
      */
