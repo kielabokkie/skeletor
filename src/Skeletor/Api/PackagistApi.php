@@ -1,7 +1,7 @@
 <?php
 namespace Skeletor\Api;
 
-use Skeletor\Exceptions\FailedToLoadPackageException;
+use Skeletor\Exceptions\FailedToLoadPackageVersion;
 
 class PackagistApi extends Api
 {
@@ -39,10 +39,10 @@ class PackagistApi extends Api
     }
 
     /**
-     * @param $packageSlug
+     * @param string $packageSlug
      * @return string
      */
-    public function buildUrl($packageSlug)
+    public function buildUrl(string $packageSlug)
     {
         return sprintf('https://packagist.org/p/%s.json', $packageSlug);
     }

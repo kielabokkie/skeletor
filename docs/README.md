@@ -7,21 +7,36 @@ Adding new: framework, package or default package, is really easy. All of those 
 Add the name of the new Framework to the `skeletor.yml`
 For example we add `Test54Framework`, now make a blueprint for the framework `src/Skeletor/Frameworks/Test54Framework.php`.
 This blueprint will define, more detail about the framework and give you the freedom to configure it.
-See example: `Test54Framework.php`
+Take a look at the `Framework.php` here are all available methods, also take a look at the [Flysystem docs](https://flysystem.thephpleague.com/api/). 
 
 ### Packages
 Add the name of the new package to the `skeletor.yml`
 For example we add `TestPackage`, now make a blueprint for the package `src/Skeletor/Packages/TestPackage.php`.
 This blueprint will define, more detail about the package and give you the freedom to configure it.
-See example: `TestPackage.php`
+Take a look at the `Package.php` here are all available methods, also take a look at the [Flysystem docs](https://flysystem.thephpleague.com/api/). 
 
 ### Default packages
 Same process as the packages, only add this package name under defaultPackages in the `skeletor.yml`.
 
 ### Templates
 Our templates are located under `src/Templates`, here you can add the desired templates (for a framework or package).
+In the blueprint of the framework/package, you have access to those templates.
 
-In the blueprint of the framework/package, you have access to those templates. See the `Test54Framework.php` and `TestPackage.php` for an example.
+For example:
+```php
+    $this->mountManager->copy(
+        'skeletor://'.$this->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php',
+        'project://namespace/pixelfusion/bootstrap/FeatureContext.php'
+    );
+```
+
+In the blueprint of the package, you also have access to the active framework paths:
+```php
+    $this->mountManager->copy(
+        'skeletor://'.$this->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php',
+        'project://'.$activeFramework->getPath('tests').'/functional/features/bootstrap/FeatureContext.php'
+    );
+```
 
 ## Testing
 You can test the code with, the following command.

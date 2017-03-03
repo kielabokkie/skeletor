@@ -27,9 +27,9 @@ containing a fresh project installation with all of the selected packages and te
 skeletor project:create helloworld
 ```
 
-#### DryRun option
+#### Dry-run option
 
-When you want to test the install proces, you can run a dryrun.
+When you want to test the install process, you can run a dry-run.
 ```bash
-skeletor project:create helloworld --dryrun
+skeletor project:create helloworld --dry-run
 ```

@@ -20,9 +20,14 @@ class App extends Application
     public $container;
     public $options;
 
-    public function __construct(SkeletorConfigurator $configurator, Container $container, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    /**
+     * App constructor.
+     * @param SkeletorConfigurator $configurator
+     * @param Container $container
+     */
+    public function __construct(SkeletorConfigurator $configurator, Container $container)
     {
-        parent::__construct($name, $version);
+        parent::__construct($configurator->getName(), $configurator->getVersion());
         $this->configurator = $configurator;
         $this->container = $container;
 
@@ -30,6 +35,9 @@ class App extends Application
         $this->options['basePath'] = realpath(__DIR__.'/../');
     }
 
+    /**
+     * @param bool $dryRun
+     */
     public function registerServices(bool $dryRun = false)
     {
         $this->options['dryRun'] = $dryRun;
@@ -136,6 +144,9 @@ class App extends Application
         }
     }
 
+    /**
+     * @return array
+     */
     public function getFrameworks()
     {
         return array_map(function($framework) {
@@ -143,6 +154,9 @@ class App extends Application
         }, $this->configurator->getFrameworks());
     }
 
+    /**
+     * @return array
+     */
     public function getPackages()
     {
         return array_map(function($package) {
@@ -150,6 +164,9 @@ class App extends Application
         }, $this->configurator->getPackages());
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultPackages()
     {
         return array_map(function($defaultPackage) {
@@ -157,16 +174,25 @@ class App extends Application
         }, $this->configurator->getDefaultPackages());
     }
 
+    /**
+     * @return object
+     */
     public function getFrameworkManager()
     {
         return $this->container->get('FrameworkManager');
     }
 
+    /**
+     * @return object
+     */
     public function getPackageManager()
     {
         return $this->container->get('PackageManager');
     }
 
+    /**
+     * @return object
+     */
     public function getCli()
     {
         return $this->container->get('Cli');

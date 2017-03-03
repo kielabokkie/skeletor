@@ -25,9 +25,9 @@ use Skeletor\App\App;
 use League\Container\Container;
 use Skeletor\App\Config\SkeletorConfigurator;
 
-$container = new Container;
-$config = new SkeletorConfigurator;
-$app = new App($config, $container, $config->getName(), $config->getVersion());
+$container = new Container();
+$config = new SkeletorConfigurator();
+$app = new App($config, $container);
 
 $app->addCommands(array(
     new Skeletor\Console\CreateProjectCommand,

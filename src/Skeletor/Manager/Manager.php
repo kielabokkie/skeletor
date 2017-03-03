@@ -10,7 +10,12 @@ abstract class Manager
     protected $options;
     protected $cli;
 
-    public function __construct(CLImate $cli, Filesystem $skeletorFilesystem, array $options)
+    /**
+     * Manager constructor.
+     * @param CLImate $cli
+     * @param array $options
+     */
+  public function __construct(CLImate $cli, Filesystem $skeletorFilesystem, array $options)
     {
         $this->cli = $cli;
         $this->options = $options;

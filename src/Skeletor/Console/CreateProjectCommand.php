@@ -22,12 +22,17 @@ class CreateProjectCommand extends Command
         $this->setName('project:create')
             ->setDescription('Create a new Laravel/Lumen project skeleton')
             ->addArgument('name', InputArgument::REQUIRED, 'Project name')
-            ->addOption('dryrun', null, InputOption::VALUE_NONE, 'Dryrun the install', null);
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dryrun the install', null);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return bool
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dryRun = $input->getOption('dryrun');
+        $dryRun = $input->getOption('dry-run');
         $name = strtolower($input->getArgument('name'));
         if(!$dryRun) {
             $this->setupFolder($name);
@@ -77,6 +82,9 @@ class CreateProjectCommand extends Command
         $this->packageManager->setDefaultPackages($this->getApplication()->getDefaultPackages());
     }
 
+    /**
+     * @param string $name
+     */
     private function setupFolder(string $name)
     {
         if((is_dir($name)  || is_file($name)) && $name != getcwd()) {
@@ -92,6 +100,10 @@ class CreateProjectCommand extends Command
         }
     }
 
+    /**
+     * @param Framework $activeFramework
+     * @param array $activePackages
+     */
     private function showEnteredOptions(Framework $activeFramework, array $activePackages)
     {
         $padding = $this->cli->padding(20);
@@ -102,15 +114,20 @@ class CreateProjectCommand extends Command
         $this->cli->table($this->packageManager->showPackagesTable($activePackages));
     }
 
+    /**
+     * @param string $text
+     * @return bool
+     */
     private function confirmOptions($text = "Continue?")
     {
         $input = $this->cli->confirm($text);
-        if ($input->confirmed()) {
-            return true;
-        }
-        return false;
+        return $input->confirmed();
     }
 
+    /**
+     * @param Framework $activeFramework
+     * @param array $activePackages
+     */
     private function buildProject(Framework $activeFramework, array $activePackages)
     {
         $this->cli->br()->green('Building..');

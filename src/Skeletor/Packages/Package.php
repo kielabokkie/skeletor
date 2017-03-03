@@ -16,6 +16,13 @@ abstract class Package implements PackageInterface
     protected $options;
     protected $name;
 
+    /**
+     * Package constructor.
+     * @param ComposerManager $composerManager
+     * @param Filesystem $projectFilesystem
+     * @param MountManager $mountManager
+     * @param array $options
+     */
     public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)
     {
         $this->projectFilesystem = $projectFilesystem;
@@ -25,41 +32,65 @@ abstract class Package implements PackageInterface
         $this->setup();
     }
 
+    /**
+     * @return mixed
+     */
     public function getInstallSlug()
     {
         return $this->installSlug;
     }
 
+    /**
+     * @param string $installSlug
+     */
     public function setInstallSlug(string $installSlug)
     {
         $this->installSlug = $installSlug;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getVersion()
     {
         return $this->version;
     }
 
+    /**
+     * @param string $version
+     */
     public function setVersion(string $version)
     {
         $this->version = $version;
     }
 
+    /**
+     * @return string
+     */
     public function getPackageOptions()
     {
         return $this->packageOptions;
     }
 
+    /**
+     * @param string $packageOptions
+     */
     public function setPackageOptions(string $packageOptions)
     {
         $this->packageOptions = $packageOptions;
