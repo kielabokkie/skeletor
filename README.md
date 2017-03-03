@@ -1,27 +1,35 @@
 # Skeletor
 
-Skeletor allows you to easily setup a base Laravel project with [our atomic design](https://github.com/pixelfusion/base-atomic-design) frontend magic applied to it.
+Skeletor allows you to easily setup a base project, with our most used packages and templates.
 
 If you already have Skeletor installed you can skip to [create a project skeleton](#create-a-project-skeleton) section.
 
-## Install Skeletor
 
-Run the following command to build the phar file:
+### Install Skeletor
+
+First, download the Skeletor installer using Composer:
 
 ```bash
-./vendor/bin/box build
+composer global require "pixelfusion/skeletor"
 ```
 
-For ease of use you can copy the generated `skeletor.phar` file to your `bin` directory:
+Make sure to place the `$HOME/.composer/vendor/bin` directory (or the equivalent directory for your OS) in your $PATH so 
+the `Skeletor` executable can be located by you system.
+
+
+### Create a project
+
+Once installed, the `skeletor project:create` command will create a fresh project installation in the directory you specify.
+For instance, `skeletor project:create helloworld` will create a directory named `helloworld` 
+containing a fresh project installation with all of the selected packages and templates.
 
 ```bash
-mv skeletor.phar /usr/local/bin/skeletor
+skeletor project:create helloworld
 ```
 
-## Create a project skeleton
+#### Dry-run option
 
-Create a directory for your project and use skeletor to setup the project skeleton:
-
+When you want to test the install process, you can run a dry-run.
 ```bash
-mkdir myproject && skeletor project:create
+skeletor project:create helloworld --dry-run
 ```

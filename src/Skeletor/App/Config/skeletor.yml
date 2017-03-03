@@ -1,0 +1,11 @@
+config:
+    name: Skeletor CLI
+    version: 1.0.0
+frameworks:
+    - Laravel54Framework
+    - LaravelLumen54Framework
+packages:
+    - BehatPackage
+    - JsonBehatExtensionPackage
+defaultPackages:
+    - GitHooksPackage
