@@ -28,7 +28,7 @@ class PackagistApi extends Api
         $data = file_get_contents($this->buildUrl($packageSlug));
 
         if(!$data){
-            throw New FailedToLoadPackageException('Couldnt find version for ' . $packageSlug);
+            throw New FailedToLoadPackageVersion('Couldnt find version for ' . $packageSlug);
         }
 
         $packageData = $this->jsonDecode($data);

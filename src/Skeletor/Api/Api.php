@@ -4,7 +4,7 @@ namespace Skeletor\Api;
 abstract class Api
 {
     /**
-     * @param array $data
+     * @param string $data
      * @return string
      */
     public function jsonEncode(array $data)
@@ -13,11 +13,11 @@ abstract class Api
     }
 
     /**
-     * @param array $data
+     * @param string $data
      * @param bool $assoc
      * @return mixed
      */
-    public function jsonDecode(array $data, bool $assoc = true)
+    public function jsonDecode(string $data, bool $assoc = true)
     {
         return json_decode($data, $assoc);
     }
