@@ -4,22 +4,27 @@
 date_default_timezone_set('UTC');
 set_time_limit(0);
 
-if (!file_exists(__DIR__.'/vendor/autoload.php')) {
+if (file_exists(__DIR__.'/../../autoload.php')) {
+    require __DIR__.'/../../autoload.php';
+} elseif (file_exists(__DIR__.'/vendor/autoload.php')) {
+    require __DIR__.'/vendor/autoload.php';
+} else {
     throw new \RuntimeException(
-        '\n'
-        .'[ERROR] Skeletor depends on some external libraries and components.\n'
+        "\n"
+        ."[ERROR] Skeletor depends on some external libraries and components.\n"
         ."It seems that those dependencies aren't properly installed.\n\n"
         ."Perhaps you forgot to execute 'composer global require pixelfusion/skeletor' before\n"
-        .'using Skeletor for the first time?\n\n'
-        .'This command requires that you have previously installed Composer.\n'
-        .'To do so, execute the following command:\n\n'
-        .'$curl -s http://getcomposer.org/installer | php\n\n'
-        .'Make sure to place the $HOME/.composer/vendor/bin directory (or the equivalent directory for\n'
+        ."using Skeletor for the first time?\n\n"
+        ."This command requires that you have previously installed Composer.\n"
+        ."To do so, execute the following command:\n\n"
+        .'$curl -s http://getcomposer.org/installer | php'
+        ."\n\n"
+        .'Make sure to place the $HOME/.composer/vendor/bin directory (or the equivalent directory for'
+        ."\n"
         .'your OS) in your $PATH so the skeletor executable can be located by your system.'
-        .'\n\n'
+        ."\n\n"
     );
 }
-require __DIR__.'/vendor/autoload.php';
 
 use Skeletor\App\App;
 use League\Container\Container;
