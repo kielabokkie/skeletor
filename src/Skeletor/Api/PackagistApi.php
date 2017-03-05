@@ -3,7 +3,7 @@ namespace Skeletor\Api;
 
 use Skeletor\Exceptions\FailedToLoadPackageVersion;
 
-class PackagistApi extends Api
+class PackagistApi
 {
     /**
      * @param array $packages
@@ -28,10 +28,10 @@ class PackagistApi extends Api
         $data = file_get_contents($this->buildUrl($packageSlug));
 
         if(!$data){
-            throw New FailedToLoadPackageException('Couldnt find version for ' . $packageSlug);
+            throw New FailedToLoadPackageVersion('Couldnt find version for ' . $packageSlug);
         }
 
-        $packageData = $this->jsonDecode($data);
+        $packageData = json_decode($data, true);
         $versions = array_keys($packageData['packages'][$packageSlug]);
 
         // Flip the array and return versions
