@@ -1,4 +1,6 @@
 # Skeletor
+[![Build Status](https://travis-ci.org/pixelfusion/skeletor.svg?branch=master)](https://travis-ci.org/pixelfusion/skeletor)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 Skeletor allows you to easily setup a base project, with our most used packages and templates.
 
