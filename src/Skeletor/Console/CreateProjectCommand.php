@@ -42,7 +42,7 @@ class CreateProjectCommand extends Command
         $this->setupCommand();
 
         //Start process in the background
-        $process = new Process('php skeletor package:show --no-ansi');
+        $process = new Process('skeletor package:show --no-ansi');
         $process->setTimeout(7200);
         $process->start();
 
