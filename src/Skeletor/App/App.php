@@ -198,13 +198,27 @@ class App extends Application
         return $this->container->get('Cli');
     }
 
+    /**
+     * @return object
+     */
     public function getPackagistApi()
     {
         return $this->container->get('PackagistApi');
     }
 
+    /**
+     * @return object
+     */
     public function getSkeletorFilesystem()
     {
         return $this->container->get('skeletorFilesystem');
+    }
+
+    /**
+     * @return SkeletorConfigurator
+     */
+    public function getConfigurator()
+    {
+        return $this->configurator;
     }
 }
