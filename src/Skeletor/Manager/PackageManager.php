@@ -47,10 +47,10 @@ class PackageManager extends Manager
     /**
      * @return array
      */
-    public function getAllPackageSlugs()
+    public function getAllPackageNames()
     {
         return array_map(function(Package $package) {
-            return $package->getInstallSlug();
+            return $package->getName();
         }, $this->mergePackagesWithDefault($this->packages));
     }
 
