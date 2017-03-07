@@ -26,4 +26,17 @@ class PackagistApiTest extends \Codeception\Test\Unit
         $this->assertInternalType('array', $versions);
         $this->assertCount(0, $versions);
     }
+
+    public function testSearchPackage()
+    {
+        $api = new PackagistApi();
+        $this->assertInternalType('array', $api->searchPackage('behat'));
+    }
+
+    public function testBuildSearchUrl()
+    {
+        $api = new PackagistApi();
+        $package = 'behat';
+        $this->assertStringEndsWith($package, $api->buildSearchUrl($package));
+    }
 }
