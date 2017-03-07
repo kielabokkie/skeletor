@@ -1,6 +1,7 @@
 <?php
 namespace Skeletor\Api;
 
+use Skeletor\Exceptions\FailedToLoadPackageException;
 use Skeletor\Exceptions\FailedToLoadPackageVersion;
 
 class PackagistApi
@@ -39,11 +40,34 @@ class PackagistApi
     }
 
     /**
+     * @param string $package
+     * @return array
+     */
+    public function searchPackage(string $package)
+    {
+        $data = file_get_contents($this->buildSearchUrl($package));
+        $data = json_decode($data, true);
+
+        return array_map(function($result) {
+            return $result['name'];
+        }, $data['results']);
+    }
+
+    /**
      * @param string $packageSlug
      * @return string
      */
     public function buildUrl(string $packageSlug)
     {
         return sprintf('https://packagist.org/p/%s.json', $packageSlug);
+    }
+
+    /**
+     * @param string $packageSlug
+     * @return string
+     */
+    public function buildSearchUrl(string $packageSlug)
+    {
+        return sprintf('https://packagist.org/search.json?q=%s', $packageSlug);
     }
 }
