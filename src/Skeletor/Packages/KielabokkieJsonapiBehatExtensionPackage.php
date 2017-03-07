@@ -3,12 +3,12 @@ namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
 
-class JsonBehatExtensionPackage extends Package
+class KielabokkieJsonapiBehatExtensionPackage extends Package
 {
     public function setup()
     {
-        $this->setInstallSlug('kielabokkie/jsonapi-behat-extension');
-        $this->setName("Behat extension for testing JSON APIs");
+        $this->setInstallSlug("kielabokkie/jsonapi-behat-extension");
+        $this->setName("Kielabokkie Jsonapi Behat Extension");
     }
 
     public function configure(Framework $activeFramework)
