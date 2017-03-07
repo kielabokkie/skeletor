@@ -45,6 +45,16 @@ class PackageManager extends Manager
     }
 
     /**
+     * @return array
+     */
+    public function getAllPackageSlugs()
+    {
+        return array_map(function(Package $package) {
+            return $package->getInstallSlug();
+        }, $this->mergePackagesWithDefault($this->packages));
+    }
+
+    /**
      * @param array $names
      * @return array
      */
@@ -71,12 +81,12 @@ class PackageManager extends Manager
     }
 
     /**
-     * @param array $selectedPacakges
+     * @param array $packages
      * @return array
      */
-    public function mergeSelectedAndDefaultPackages(array $selectedPacakges)
+    public function mergePackagesWithDefault(array $packages)
     {
-        return array_merge($selectedPacakges, $this->defaultPackages);
+        return array_merge($packages, $this->defaultPackages);
     }
 
     /**
@@ -120,6 +130,16 @@ class PackageManager extends Manager
                 $package->setVersion($version);
             }
         }
+    }
+
+    /**
+     * @param array $packages
+     * @return string with package slug
+     */
+    public function specifyPackage($packages)
+    {
+        $packageQuestion = $this->cli->radio('Choose your packages:', $packages);
+        return $packageQuestion->prompt();
     }
 
     /**

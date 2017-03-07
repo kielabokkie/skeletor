@@ -35,8 +35,9 @@ $config = new SkeletorConfigurator();
 $app = new App($config, $container);
 
 $app->addCommands(array(
-    new Skeletor\Console\CreateProjectCommand,
-    new Skeletor\Console\GetPackageVersions,
+    new Skeletor\Console\CreateProjectCommand(),
+    new Skeletor\Console\GetPackageVersions(),
+    new Skeletor\Console\AddNewPackage(),
 ));
 
 $app->run();
