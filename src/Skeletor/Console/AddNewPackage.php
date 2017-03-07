@@ -36,7 +36,7 @@ class AddNewPackage extends Command
 
         $packageInfo['slug'] = $this->packageManager->specifyPackage($packageOptions);
         $packageInfo = $this->buildPackageInfo($packageInfo);
-        if (in_array($packageInfo['class'], $this->packageManager->getAllPackageSlugs())) {
+        if (in_array($packageInfo['name'], $this->packageManager->getAllPackageNames())) {
             $this->cli->br()->red('package already installed');
             return;
         }
@@ -63,10 +63,14 @@ class AddNewPackage extends Command
      */
     protected function buildPackageInfo(array $packageInfo)
     {
-        $packagName = explode('/', $packageInfo['slug']);
-        $packageInfo['name'] = ucfirst($packagName[0]);
-        $packageInfo['name'] .= ucfirst($packagName[1]);
-        $packageInfo['class'] = $packageInfo['name'].'Package';
+        $packageName = preg_replace('/\//', ' ', $packageInfo['slug']);
+        $packageName = preg_replace('/\-/', ' ', $packageName);
+        $packageName = ucwords($packageName);
+        $packageInfo['name'] = $packageName;
+
+        $packageName = preg_replace('/\s+/', '', $packageName);
+        $packageInfo['class'] = $packageName.'Package';
+
         return $packageInfo;
     }
 
