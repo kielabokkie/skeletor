@@ -22,7 +22,7 @@ class Laravel54Framework extends Framework
 
         $this->mountManager->copy(
             'skeletor://'.$this->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php',
-            'project://namespace/pixelfusion/bootstrap/FeatureContext.php'
+            'project://app/namespace/pixelfusion/bootstrap/FeatureContext.php'
         );
     }
 }
