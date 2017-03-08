@@ -34,8 +34,8 @@ class AddNewPackage extends SkeletorCommand
             return;
         }
 
-        $this->addPackageToConfig($packageInfo);
         $this->makePackageClass($packageInfo);
+        $this->addPackageToConfig($packageInfo);
     }
 
     /**
@@ -44,9 +44,9 @@ class AddNewPackage extends SkeletorCommand
      */
     protected function buildPackageInfo(array $packageInfo)
     {
-        $packageName = preg_replace('//|-/', ' ', $packageInfo['slug']);
+        $packageName = preg_replace('/\/|-/', ' ', $packageInfo['slug']);
         $packageName = ucwords($packageName);
-        $packageInfo['name'] = $this->slugToName();
+        $packageInfo['name'] = $packageName;
 
         $packageName = preg_replace('/\s+/', '', $packageName);
         $packageInfo['class'] = $packageName.'Package';
