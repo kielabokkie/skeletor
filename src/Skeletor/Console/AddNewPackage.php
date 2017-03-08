@@ -63,8 +63,7 @@ class AddNewPackage extends Command
      */
     protected function buildPackageInfo(array $packageInfo)
     {
-        $packageName = preg_replace('/\//', ' ', $packageInfo['slug']);
-        $packageName = preg_replace('/\-/', ' ', $packageName);
+        $packageName = preg_replace('//|-/', ' ', $packageInfo['slug']);
         $packageName = ucwords($packageName);
         $packageInfo['name'] = $packageName;
 
@@ -81,7 +80,7 @@ class AddNewPackage extends Command
     {
         $config = $this->configurator->getConfig();
         $config['packages'][] = $packageInfo['class'];
-        $this->configurator->setConfig($config);
+        $this->configurator->storeConfig($config);
     }
 
     /**
@@ -93,8 +92,7 @@ class AddNewPackage extends Command
         $stub = $this->skeletorFilesystem->read('Templates/stubs/package.stub');
 
         //Replace stub dummy data
-        foreach ($packageInfo as $key => $info)
-        {
+        foreach ($packageInfo as $key => $info) {
             $stub = str_replace($key.'Dummy', $info, $stub);
         }
 

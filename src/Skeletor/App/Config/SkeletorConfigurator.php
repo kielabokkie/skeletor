@@ -68,7 +68,7 @@ class SkeletorConfigurator
     /**
      * @param array $options
      */
-    public function setConfig(array $options)
+    public function storeConfig(array $options)
     {
         $yaml = Yaml::dump($options);
         file_put_contents($this->optionFile, $yaml);
