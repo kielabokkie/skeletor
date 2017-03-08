@@ -1,8 +1,6 @@
 <?php
 namespace Skeletor\Packages;
 
-use Skeletor\Frameworks\Framework;
-
 interface PackageInterface
 {
     public function setup();

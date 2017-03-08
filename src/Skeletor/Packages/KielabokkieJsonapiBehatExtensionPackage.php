@@ -3,7 +3,7 @@ namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
 
-class KielabokkieJsonapiBehatExtensionPackage extends Package
+class KielabokkieJsonapiBehatExtensionPackage extends Package implements ConfigurablePackageInterface
 {
     public function setup()
     {

@@ -3,7 +3,7 @@ namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
 
-class PixelfusionGitHooksPackage extends Package
+class PixelfusionGitHooksPackage extends Package implements ConfigurablePackageInterface
 {
     public function setup()
     {

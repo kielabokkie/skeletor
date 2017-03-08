@@ -3,7 +3,7 @@ namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
 
-class classDummy extends Package
+class classDummy extends Package implements ConfigurablePackageInterface
 {
     public function setup()
     {
@@ -13,6 +13,6 @@ class classDummy extends Package
 
     public function configure(Framework $activeFramework)
     {
-        //$this->projectFilesystem->put('PixelFusion.txt', '©PIXELFUSION');
+        $this->projectFilesystem->put('PixelFusion.txt', '©PIXELFUSION');
     }
 }
