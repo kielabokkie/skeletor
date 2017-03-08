@@ -15,7 +15,7 @@ class PackagistApi
         $packageVersions = [];
         foreach($packages as $key => $package)
         {
-            $packageVersions[$package->getName()] = $this->getVersionsPackage($package->getInstallSlug());
+            $packageVersions[$package->getInstallSlug()] = $this->getVersionsPackage($package->getInstallSlug());
         }
         return $packageVersions;
     }
@@ -33,7 +33,7 @@ class PackagistApi
         }
 
         $packageData = json_decode($data, true);
-        $versions = array_keys($packageData['packages'][$packageSlug]);
+        $versions = json_last_error() === JSON_ERROR_NONE ? array_keys($packageData['packages'][$packageSlug]) : [];
 
         // Flip the array and return versions
         return array_reverse($versions);
@@ -48,9 +48,9 @@ class PackagistApi
         $data = file_get_contents($this->buildSearchUrl($package));
         $data = json_decode($data, true);
 
-        return array_map(function($result) {
+        return json_last_error() === JSON_ERROR_NONE ? array_map(function($result) {
             return $result['name'];
-        }, $data['results']);
+        }, $data['results']) : [];
     }
 
     /**

@@ -66,6 +66,7 @@ class PackageManager extends Manager
                 $activePackages[] = $package;
             }
         }
+
         return $activePackages;
     }
 
@@ -108,6 +109,7 @@ class PackageManager extends Manager
         }
 
         $versions = $this->skeletorFilesystem->read('Tmp/PackageVersions.json');
+
         return json_decode($versions, true);
     }
 
@@ -119,11 +121,11 @@ class PackageManager extends Manager
         $versions = $this->getAvailablePackageVersions();
         foreach ($packages as $key => $package)
         {
-            $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getName()])));
+            $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getInstallSlug()])));
             $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion() ));
-            $versions[$package->getName()][] = '';
+            $versions[$package->getInstallSlug()][] = '';
 
-            $input->accept($versions[$package->getName()]);
+            $input->accept($versions[$package->getInstallSlug()]);
             $version = $input->prompt();
 
             if(!empty($version)) {

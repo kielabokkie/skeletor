@@ -1,19 +1,12 @@
 <?php
 namespace Skeletor\Console;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddNewPackage extends Command
+class AddNewPackage extends SkeletorCommand
 {
-    protected $cli;
-    protected $packagistApi;
-    protected $configurator;
-    protected $packageManager;
-    protected $skeletorFilesystem;
-
     protected function configure()
     {
         $this->setName('package:add')
@@ -23,8 +16,8 @@ class AddNewPackage extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getApplication()->registerServices();
         $this->setupCommand();
+
         $package = $input->getArgument('name');
         $this->cli->br()->yellow(sprintf('Skeletor - add new package, searching for %s', $package))->br();
 
@@ -45,18 +38,6 @@ class AddNewPackage extends Command
         $this->makePackageClass($packageInfo);
     }
 
-    protected function setupCommand()
-    {
-        $this->cli = $this->getApplication()->getCli();
-        $this->packagistApi = $this->getApplication()->getPackagistApi();
-        $this->configurator = $this->getApplication()->getConfigurator();
-        $this->packageManager = $this->getApplication()->getPackageManager();
-
-        $this->skeletorFilesystem = $this->getApplication()->getSkeletorFilesystem();
-        $this->packageManager->setPackages($this->getApplication()->getPackages());
-        $this->packageManager->setDefaultPackages($this->getApplication()->getDefaultPackages());
-    }
-
     /**
      * @param array $packageInfo
      * @return array
@@ -65,7 +46,7 @@ class AddNewPackage extends Command
     {
         $packageName = preg_replace('//|-/', ' ', $packageInfo['slug']);
         $packageName = ucwords($packageName);
-        $packageInfo['name'] = $packageName;
+        $packageInfo['name'] = $this->slugToName();
 
         $packageName = preg_replace('/\s+/', '', $packageName);
         $packageInfo['class'] = $packageName.'Package';

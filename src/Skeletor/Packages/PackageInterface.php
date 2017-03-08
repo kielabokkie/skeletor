@@ -15,5 +15,4 @@ interface PackageInterface
     public function getPackageOptions();
     public function setPackageOptions(string $packageOptions);
     public function install();
-    public function configure(Framework $framework);
 }
