@@ -6,13 +6,15 @@ use Symfony\Component\Yaml\Yaml;
 class SkeletorConfigurator
 {
     protected $options;
+    protected $optionFile;
 
     /**
      * SkeletorConfigurator constructor.
      */
     public function __construct()
     {
-        $this->options = Yaml::parse(file_get_contents(__DIR__.'/skeletor.yml'));
+        $this->optionFile = __DIR__.'/skeletor.yml';
+        $this->options = Yaml::parse(file_get_contents($this->optionFile));
     }
 
     /**
@@ -61,5 +63,14 @@ class SkeletorConfigurator
     public function getConfig()
     {
         return $this->options;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function storeConfig(array $options)
+    {
+        $yaml = Yaml::dump($options);
+        file_put_contents($this->optionFile, $yaml);
     }
 }

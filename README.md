@@ -16,7 +16,7 @@ First, download the Skeletor installer using Composer:
 composer global require "pixelfusion/skeletor"
 ```
 
-Make sure to place the `$HOME/.composer/vendor/bin` directory (or the equivalent directory for your OS) in your $PATH so
+Make sure to place the `~/.composer/vendor/bin` directory (or the equivalent directory for your OS) in your $PATH so
 the `Skeletor` executable can be located by you system.
 
 

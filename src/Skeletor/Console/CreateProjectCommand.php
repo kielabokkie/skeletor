@@ -2,21 +2,16 @@
 namespace Skeletor\Console;
 
 use Skeletor\Frameworks\Framework;
+use Symfony\Component\Process\Process;
 use Skeletor\Exceptions\FailedFilesystem;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
-class CreateProjectCommand extends Command
+
+class CreateProjectCommand extends SkeletorCommand
 {
-    protected $frameworkManager;
-    protected $packageManager;
-    protected $cli;
-
     protected function configure()
     {
         $this->setName('project:create')
@@ -38,11 +33,10 @@ class CreateProjectCommand extends Command
             $this->setupFolder($name);
         }
 
-        $this->getApplication()->registerServices($dryRun);
-        $this->setupCommand();
+        $this->setupCommand($dryRun);
 
         //Start process in the background
-        $process = new Process('php skeletor package:show --no-ansi');
+        $process = new Process('skeletor package:show --no-ansi');
         $process->setTimeout(7200);
         $process->start();
 
@@ -66,20 +60,9 @@ class CreateProjectCommand extends Command
             return false;
         }
 
-        $activePackages = $this->packageManager->mergeSelectedAndDefaultPackages($activePackages);
+        $activePackages = $this->packageManager->mergePackagesWithDefault($activePackages);
         $this->buildProject($activeFramework, $activePackages);
         $this->cli->br()->green('Yhea, success')->br();
-    }
-
-    private function setupCommand()
-    {
-        $this->frameworkManager = $this->getApplication()->getFrameworkManager();
-        $this->packageManager = $this->getApplication()->getPackageManager();
-        $this->cli = $this->getApplication()->getCli();
-
-        $this->frameworkManager->setFrameworks($this->getApplication()->getFrameworks());
-        $this->packageManager->setPackages($this->getApplication()->getPackages());
-        $this->packageManager->setDefaultPackages($this->getApplication()->getDefaultPackages());
     }
 
     /**

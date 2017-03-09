@@ -5,7 +5,7 @@ frameworks:
     - Laravel54Framework
     - LaravelLumen54Framework
 packages:
-    - BehatPackage
-    - JsonBehatExtensionPackage
+    - BehatBehatPackage
+    - KielabokkieJsonapiBehatExtensionPackage
 defaultPackages:
-    - GitHooksPackage
+    - PixelfusionGitHooksPackage

@@ -45,6 +45,16 @@ class PackageManager extends Manager
     }
 
     /**
+     * @return array
+     */
+    public function getAllPackageNames()
+    {
+        return array_map(function(Package $package) {
+            return $package->getName();
+        }, $this->mergePackagesWithDefault($this->packages));
+    }
+
+    /**
      * @param array $names
      * @return array
      */
@@ -56,6 +66,7 @@ class PackageManager extends Manager
                 $activePackages[] = $package;
             }
         }
+
         return $activePackages;
     }
 
@@ -71,12 +82,12 @@ class PackageManager extends Manager
     }
 
     /**
-     * @param array $selectedPacakges
+     * @param array $packages
      * @return array
      */
-    public function mergeSelectedAndDefaultPackages(array $selectedPacakges)
+    public function mergePackagesWithDefault(array $packages)
     {
-        return array_merge($selectedPacakges, $this->defaultPackages);
+        return array_merge($packages, $this->defaultPackages);
     }
 
     /**
@@ -98,6 +109,7 @@ class PackageManager extends Manager
         }
 
         $versions = $this->skeletorFilesystem->read('Tmp/PackageVersions.json');
+
         return json_decode($versions, true);
     }
 
@@ -109,17 +121,28 @@ class PackageManager extends Manager
         $versions = $this->getAvailablePackageVersions();
         foreach ($packages as $key => $package)
         {
-            $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getName()])));
+            $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getInstallSlug()])));
             $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion() ));
-            $versions[$package->getName()][] = '';
+            $versions[$package->getInstallSlug()][] = '';
 
-            $input->accept($versions[$package->getName()]);
+            $input->accept($versions[$package->getInstallSlug()]);
             $version = $input->prompt();
 
             if(!empty($version)) {
                 $package->setVersion($version);
             }
         }
+    }
+
+    /**
+     * @param array $packages
+     * @return string with package slug
+     */
+    public function specifyPackage($packages)
+    {
+        $packageQuestion = $this->cli->radio('Choose your packages:', $packages);
+
+        return $packageQuestion->prompt();
     }
 
     /**

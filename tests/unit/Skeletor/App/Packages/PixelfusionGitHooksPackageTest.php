@@ -5,9 +5,9 @@ use Codeception\Util\Stub;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Skeletor\Manager\ComposerManager;
-use Skeletor\Packages\GitHooksPackage;
+use Skeletor\Packages\PixelfusionGitHooksPackage;
 
-class GitHooksPackageTest extends \Codeception\Test\Unit
+class PixelfusionGitHooksPackageTest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester
@@ -34,7 +34,7 @@ class GitHooksPackageTest extends \Codeception\Test\Unit
         );
         $options = [];
 
-        $this->gitHooksPackage = new GitHooksPackage($composerManager, $projectFilesystem, $mountmanager, $options);
+        $this->gitHooksPackage = new PixelfusionGitHooksPackage($composerManager, $projectFilesystem, $mountmanager, $options);
     }
 
     protected function _after()
