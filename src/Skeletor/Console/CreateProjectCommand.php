@@ -119,7 +119,10 @@ class CreateProjectCommand extends SkeletorCommand
 
         foreach($activePackages as $key => $package) {
             $this->packageManager->install($package);
-            $this->packageManager->configure($package, $activeFramework);
+
+            if($package instanceof ConfigurablePackageInterface) {
+                $this->packageManager->configure($package, $activeFramework);
+            }
         }
     }
 }
