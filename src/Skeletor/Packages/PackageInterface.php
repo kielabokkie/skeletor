@@ -8,7 +8,7 @@ interface PackageInterface
     public function setInstallSlug(string $installSlug);
     public function getName();
     public function setName(string $name);
-    public function getVersion(bool $allowEmpty);
+    public function getVersion(bool $allowEmpty = true);
     public function setVersion(string $version);
     public function getPackageOptions();
     public function setPackageOptions(string $packageOptions);
