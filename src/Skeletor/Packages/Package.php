@@ -67,8 +67,12 @@ abstract class Package implements PackageInterface
     /**
      * @return string
      */
-    public function getVersion()
+    public function getVersion(bool $allowEmpty = true)
     {
+        if ($allowEmpty === false) {
+            return empty($this->version) === true ? 'latest' : $this->version;
+        }
+
         return $this->version;
     }
 

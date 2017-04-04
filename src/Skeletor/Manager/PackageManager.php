@@ -37,10 +37,10 @@ class PackageManager extends Manager
     /**
      * @return array
      */
-    public function getInstallablePackageNames()
+    public function getInstallablePackageSlugs()
     {
-        return array_map(function(Package $package) {
-            return $package->getName();
+        return array_map(function (Package $package) {
+            return $package->getInstallSlug();
         }, $this->packages);
     }
 
@@ -49,20 +49,20 @@ class PackageManager extends Manager
      */
     public function getAllPackageNames()
     {
-        return array_map(function(Package $package) {
+        return array_map(function (Package $package) {
             return $package->getName();
         }, $this->mergePackagesWithDefault($this->packages));
     }
 
     /**
-     * @param array $names
+     * @param array $slugs
      * @return array
      */
-    public function load(array $names)
+    public function load(array $slugs)
     {
         $activePackages = [];
-        foreach($this->packages as $key => $package) {
-            if( in_array($package->getName(), $names) ) {
+        foreach ($this->packages as $key => $package) {
+            if (in_array($package->getInstallSlug(), $slugs)) {
                 $activePackages[] = $package;
             }
         }
@@ -76,8 +76,8 @@ class PackageManager extends Manager
      */
     public function showPackagesTable(array $packages)
     {
-        return array_map(function($package) {
-            return ['name' => $package->getName(), 'version' => $package->getVersion()];
+        return array_map(function ($package) {
+            return ['name' => $package->getInstallSlug(), 'version' => $package->getVersion(false)];
         }, $packages);
     }
 
@@ -95,7 +95,7 @@ class PackageManager extends Manager
      */
     public function getPackageOptions()
     {
-        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->getInstallablePackageNames());
+        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->getInstallablePackageSlugs());
         return $this->load($packagesQuestion->prompt());
     }
 
@@ -104,7 +104,7 @@ class PackageManager extends Manager
      */
     public function getAvailablePackageVersions()
     {
-        if( !$this->skeletorFilesystem->has('Tmp/PackageVersions.json') ){
+        if ($this->skeletorFilesystem->has('Tmp/PackageVersions.json') === false) {
             throw new FailedToLoadPackageException('Could not load package versions');
         }
 
@@ -119,16 +119,15 @@ class PackageManager extends Manager
     public function specifyPackagesVersions(array $packages)
     {
         $versions = $this->getAvailablePackageVersions();
-        foreach ($packages as $key => $package)
-        {
+        foreach ($packages as $key => $package) {
             $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getInstallSlug()])));
-            $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion() ));
+            $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion()));
             $versions[$package->getInstallSlug()][] = '';
 
             $input->accept($versions[$package->getInstallSlug()]);
             $version = $input->prompt();
 
-            if(!empty($version)) {
+            if (!empty($version)) {
                 $package->setVersion($version);
             }
         }
@@ -159,7 +158,7 @@ class PackageManager extends Manager
      */
     public function configure(Package $package, Framework $activeFramework)
     {
-        if(!$this->options['dryRun']) {
+        if (!$this->options['dryRun']) {
             $package->configure($activeFramework);
         }
     }
