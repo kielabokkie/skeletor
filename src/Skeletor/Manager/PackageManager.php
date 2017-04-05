@@ -95,7 +95,8 @@ class PackageManager extends Manager
      */
     public function getPackageOptions()
     {
-        $packagesQuestion = $this->cli->checkboxes('Choose your packages', $this->getInstallablePackageSlugs());
+        $packagesQuestion = $this->cli->br()->checkboxes('Choose your packages', $this->getInstallablePackageSlugs());
+
         return $this->load($packagesQuestion->prompt());
     }
 
@@ -119,9 +120,11 @@ class PackageManager extends Manager
     public function specifyPackagesVersions(array $packages)
     {
         $versions = $this->getAvailablePackageVersions();
+
         foreach ($packages as $key => $package) {
-            $this->cli->br()->yellow(sprintf('Available %s versions: %s', $package->getName(), implode(', ', $versions[$package->getInstallSlug()])));
-            $input = $this->cli->input(sprintf('%s version [%s]:', $package->getName(), $package->getVersion()));
+            $this->cli->br()->yellow(sprintf('Available versions for %s:', $package->getInstallSlug()));
+            $this->cli->yellow(implode(', ', $versions[$package->getInstallSlug()]));
+            $input = $this->cli->input(sprintf('%s version [%s]:', $package->getInstallSlug(), $package->getVersion(false)));
             $versions[$package->getInstallSlug()][] = '';
 
             $input->accept($versions[$package->getInstallSlug()]);
@@ -139,7 +142,7 @@ class PackageManager extends Manager
      */
     public function specifyPackage($packages)
     {
-        $packageQuestion = $this->cli->radio('Choose your packages:', $packages);
+        $packageQuestion = $this->cli->br()->radio('Choose your packages:', $packages);
 
         return $packageQuestion->prompt();
     }
