@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class CreateProjectCommand extends SkeletorCommand
 {
     protected function configure()
@@ -29,7 +28,7 @@ class CreateProjectCommand extends SkeletorCommand
     {
         $dryRun = $input->getOption('dry-run');
         $name = strtolower($input->getArgument('name'));
-        if(!$dryRun) {
+        if (!$dryRun) {
             $this->setupFolder($name);
         }
 
@@ -44,9 +43,9 @@ class CreateProjectCommand extends SkeletorCommand
         $activeFramework = $this->frameworkManager->getFrameworkOption();
         $activePackages = $this->packageManager->getPackageOptions();
 
-        if ($this->confirmOptions("Specify package versions?")) {
-            $process->wait(function($type, $buffer) {
-                if(Process::ERR === $type) {
+        if ($this->confirmOptions("\nSpecify package versions?")) {
+            $process->wait(function ($type, $buffer) {
+                if (Process::ERR === $type) {
                     $this->cli->red('ERR > ');
                 } else {
                     $this->cli->green('Fetching versions...');
@@ -70,15 +69,15 @@ class CreateProjectCommand extends SkeletorCommand
      */
     private function setupFolder(string $name)
     {
-        if((is_dir($name)  || is_file($name)) && $name != getcwd()) {
+        if ((is_dir($name)  || is_file($name)) && $name != getcwd()) {
             throw new FailedFilesystem(sprintf('Failed to make directory %s already exists', $name));
         }
 
-        if(!mkdir($name)) {
+        if (!mkdir($name)) {
             throw new FailedFilesystem('Failed make directory for: ' . $name);
         };
 
-        if(!chdir($name)) {
+        if (!chdir($name)) {
             throw new FailedFilesystem('Failed change directory to: ' . $name);
         }
     }
@@ -117,10 +116,10 @@ class CreateProjectCommand extends SkeletorCommand
         $this->frameworkManager->install($activeFramework);
         $this->frameworkManager->configure($activeFramework);
 
-        foreach($activePackages as $key => $package) {
+        foreach ($activePackages as $key => $package) {
             $this->packageManager->install($package);
 
-            if($package instanceof ConfigurablePackageInterface) {
+            if ($package instanceof ConfigurablePackageInterface) {
                 $this->packageManager->configure($package, $activeFramework);
             }
         }

@@ -50,9 +50,9 @@ class PackageManagerTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testGetInstallablePackageNames()
+    public function testGetInstallablePackageSlugs()
     {
-        $this->assertInternalType('array', $this->packageManager->getInstallablePackageNames());
+        $this->assertInternalType('array', $this->packageManager->getInstallablePackageSlugs());
     }
 
     public function testLoadPackages()
