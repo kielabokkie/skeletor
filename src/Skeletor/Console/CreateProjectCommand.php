@@ -1,13 +1,14 @@
 <?php
 namespace Skeletor\Console;
 
-use Skeletor\Frameworks\Framework;
-use Symfony\Component\Process\Process;
 use Skeletor\Exceptions\FailedFilesystem;
-use Symfony\Component\Console\Input\InputOption;
+use Skeletor\Frameworks\Framework;
+use Skeletor\Packages\ConfigurablePackageInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class CreateProjectCommand extends SkeletorCommand
 {

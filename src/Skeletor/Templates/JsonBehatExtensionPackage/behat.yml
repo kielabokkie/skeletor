@@ -1,0 +1,22 @@
+default:
+    autoload:
+        - %paths.base%/tests/Behat/Feature/bootstrap
+    extensions:
+        Kielabokkie\BehatJsonApi:
+            base_url: http://127.0.0.1:8000
+            # parameters:
+            #     access_token: abcdefg123456789
+            #     oauth:
+            #         uri: /oauth/token
+            #         client_id: 1
+            #         client_secret: testing
+            #         use_bearer_token: true
+            #         password_grant_requires_client_credentials: true
+    suites:
+        default:
+            paths:
+                - %paths.base%/tests/Behat/Feature
+            contexts:
+                - FeatureContext: ~
+    formatters:
+        progress: true
