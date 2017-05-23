@@ -12,8 +12,10 @@ abstract class Package implements PackageInterface
     protected $packageOptions = "";
     protected $mountManager;
     protected $installSlug;
+    protected $provider;
     protected $version = "";
     protected $options;
+    protected $facade;
     protected $name;
 
     /**
@@ -65,6 +67,7 @@ abstract class Package implements PackageInterface
     }
 
     /**
+     * @param bool $allowEmpty
      * @return string
      */
     public function getVersion(bool $allowEmpty = true)
@@ -98,6 +101,38 @@ abstract class Package implements PackageInterface
     public function setPackageOptions(string $packageOptions)
     {
         $this->packageOptions = $packageOptions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * @param string $provider
+     */
+    public function setProvider(string $provider)
+    {
+        $this->provider = $provider;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacade()
+    {
+        return $this->facade;
+    }
+
+    /**
+     * @param string $facade
+     */
+    public function setFacade(string $facade)
+    {
+        $this->facade = $facade;
     }
 
     public function install()
