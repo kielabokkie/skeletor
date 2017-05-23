@@ -1,4 +1,5 @@
 <?php
+
 namespace Skeletor\App;
 
 use League\CLImate\CLImate;
@@ -7,9 +8,6 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use League\Flysystem\Adapter\Local;
 use Skeletor\Api\PackagistApi;
-use Skeletor\Manager\PackageManager;
-use Skeletor\Manager\ComposerManager;
-use Skeletor\Manager\FrameworkManager;
 use Symfony\Component\Console\Application;
 use Skeletor\App\Config\SkeletorConfigurator;
 use Skeletor\Exceptions\FailedToLoadService;
@@ -85,34 +83,24 @@ class App extends Application
 
     public function registerManagers()
     {
-        $this->container
-            ->add('ComposerManager', ComposerManager::class)
-            ->withArgument('Cli')
-            ->withArgument('skeletorFilesystem')
-            ->withArgument($this->options);
+        foreach($this->configurator->getManagers() as $key => $manager)
+        {
+            $managerClass = $this->getClassByReference('Skeletor\\Manager\\', $manager);
 
-        $this->container
-            ->add('PackageManager', PackageManager::class)
-            ->withArgument('Cli')
-            ->withArgument('skeletorFilesystem')
-            ->withArgument($this->options);
-
-        $this->container
-            ->add('FrameworkManager', FrameworkManager::class)
-            ->withArgument('Cli')
-            ->withArgument('skeletorFilesystem')
-            ->withArgument($this->options);
+            $this->container
+                ->add($manager, $managerClass)
+                ->withArgument('Cli')
+                ->withArgument('skeletorFilesystem')
+                ->withArgument('projectFilesystem')
+                ->withArgument($this->options);
+        }
     }
 
     public function registerFrameworks()
     {
         foreach($this->configurator->getFrameworks() as $key => $framework)
         {
-            $frameworkClass = sprintf('Skeletor\Frameworks\%s', $framework);
-
-            if(!class_exists($frameworkClass)) {
-                throw new FailedToLoadService("Couldn't find class ". $frameworkClass);
-            }
+            $frameworkClass = $this->getClassByReference('Skeletor\\Frameworks\\', $framework);
 
             $this->container
                 ->add($framework, $frameworkClass)
@@ -129,11 +117,7 @@ class App extends Application
         $packages = array_merge($this->configurator->getPackages(), $this->configurator->getDefaultPackages());
         foreach($packages as $key => $package)
         {
-            $packageClass = sprintf('Skeletor\Packages\%s', $package);
-
-            if(!class_exists($packageClass)) {
-                throw new FailedToLoadService("Couldn't find class ". $packageClass);
-            }
+            $packageClass = $this->getClassByReference('Skeletor\\Packages\\', $package);
 
             $this->container
                 ->add($package, $packageClass)
@@ -142,6 +126,22 @@ class App extends Application
                 ->withArgument('MountManager')
                 ->withArgument($this->options);
         }
+    }
+
+    /**
+     * @param string $namespace
+     * @param string $name
+     * @return string
+     */
+    public function getClassByReference(string $namespace, string $name)
+    {
+        $packageClass = $namespace.$name;
+
+        if(!class_exists($packageClass)) {
+            throw new FailedToLoadService("Couldn't find class ". $packageClass);
+        }
+
+        return $packageClass;
     }
 
     /**
@@ -188,6 +188,14 @@ class App extends Application
     public function getPackageManager()
     {
         return $this->container->get('PackageManager');
+    }
+
+    /**
+     * @return object
+     */
+    public function getProviderManager()
+    {
+        return $this->container->get('ProviderManager');
     }
 
     /**

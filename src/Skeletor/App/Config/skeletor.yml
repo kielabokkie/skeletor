@@ -9,3 +9,8 @@ packages:
     - KielabokkieJsonapiBehatExtensionPackage
 defaultPackages:
     - PixelfusionGitHooksPackage
+managers:
+    - ComposerManager
+    - FrameworkManager
+    - PackageManager
+    - ProviderManager
