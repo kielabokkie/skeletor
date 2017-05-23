@@ -9,23 +9,26 @@ abstract class SkeletorCommand extends Command
     protected $packagistApi;
     protected $configurator;
     protected $packageManager;
+    protected $providerManager;
     protected $frameworkManager;
     protected $skeletorFilesystem;
 
     protected function setupCommand($dryRun = false)
     {
+        $app = $this->getApplication();
         $this->getApplication()->registerServices($dryRun);
 
-        $this->cli = $this->getApplication()->getCli();
-        $this->packagistApi = $this->getApplication()->getPackagistApi();
-        $this->configurator = $this->getApplication()->getConfigurator();
-        $this->skeletorFilesystem = $this->getApplication()->getSkeletorFilesystem();
+        $this->cli = $app->getCli();
+        $this->packagistApi = $app->getPackagistApi();
+        $this->configurator = $app->getConfigurator();
+        $this->skeletorFilesystem = $app->getSkeletorFilesystem();
 
-        $this->frameworkManager = $this->getApplication()->getFrameworkManager();
-        $this->packageManager = $this->getApplication()->getPackageManager();
+        $this->frameworkManager = $app->getFrameworkManager();
+        $this->packageManager = $app->getPackageManager();
+        $this->providerManager = $app->getProviderManager();
 
-        $this->frameworkManager->setFrameworks($this->getApplication()->getFrameworks());
-        $this->packageManager->setPackages($this->getApplication()->getPackages());
-        $this->packageManager->setDefaultPackages($this->getApplication()->getDefaultPackages());
+        $this->frameworkManager->setFrameworks($app->getFrameworks());
+        $this->packageManager->setPackages($app->getPackages());
+        $this->packageManager->setDefaultPackages($app->getDefaultPackages());
     }
 }

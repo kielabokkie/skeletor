@@ -122,6 +122,7 @@ class CreateProjectCommand extends SkeletorCommand
 
             if ($package instanceof ConfigurablePackageInterface) {
                 $this->packageManager->configure($package, $activeFramework);
+                $this->providerManager->configure($package, $activeFramework);
             }
         }
     }
