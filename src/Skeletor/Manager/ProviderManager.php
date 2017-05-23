@@ -7,7 +7,7 @@ use Skeletor\Packages\Package;
 
 class ProviderManager extends Manager
 {
-    const PROVIDER_METHOD = 'getWriteableProvider';
+    const PROVIDER_METHOD = 'getProviderClass';
     const FACADE_METHOD = 'getFacadeClass';
 
     /**
@@ -65,7 +65,7 @@ class ProviderManager extends Manager
     {
         [$alias, $facade] = explode('@', $package->getFacade());
 
-        return sprintf("\t\t'%s' => %s::class, ", $alias, $facade) . PHP_EOL;
+        return sprintf("\t\t'%s' => %s::class,", $alias, $facade) . PHP_EOL;
     }
 
     /**
