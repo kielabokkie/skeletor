@@ -27,9 +27,14 @@ class ComposerManagerTest extends \Codeception\Test\Unit
             [
             ]
         );
+        $projectFilesystem = Stub::make(
+            Filesystem::class,
+            [
+            ]
+        );
         $options = [];
 
-        $this->composerManager = new ComposerManager($cli, $skeletorFilesystem, $options);
+        $this->composerManager = new ComposerManager($cli, $skeletorFilesystem, $projectFilesystem, $options);
     }
 
     protected function _after()
