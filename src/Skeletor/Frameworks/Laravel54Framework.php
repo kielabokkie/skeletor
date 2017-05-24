@@ -7,7 +7,7 @@ class Laravel54Framework extends Framework
     {
         $this->setInstallSlug('laravel/laravel');
         $this->setName("Laravel");
-        $this->setVersion("5.4");
+        $this->setVersion("5.4.*");
         $this->setPaths([
             'tests' => 'tests',
             'appConfig' => 'config/app.php'
