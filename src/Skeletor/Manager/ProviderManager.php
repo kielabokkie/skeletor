@@ -63,6 +63,11 @@ class ProviderManager extends Manager
      */
     public function getFacadeClass(Package $package)
     {
+        $facade = $package->getFacade();
+        if (isset($facade) === false) {
+            return;
+        }
+
         [$alias, $facade] = explode('@', $package->getFacade());
 
         return sprintf("\t\t'%s' => %s::class,", $alias, $facade) . PHP_EOL;
@@ -74,7 +79,11 @@ class ProviderManager extends Manager
      */
     public function getProviderClass(Package $package)
     {
+        $provider = $package->getProvider();
+        if (isset($provider) === false) {
+            return;
+        }
 
-        return sprintf("\t\t%s::class,", $package->getProvider()) . PHP_EOL;
+        return sprintf("\t\t%s::class,", $provider) . PHP_EOL;
     }
 }
