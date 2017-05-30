@@ -14,4 +14,5 @@ interface FrameworkInterface
     public function setPaths(array $paths);
     public function install();
     public function configure();
+    public function configurable();
 }

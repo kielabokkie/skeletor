@@ -24,4 +24,9 @@ class Laravel54Framework extends Framework
         //     'project://app/namespace/pixelfusion/bootstrap/FeatureContext.php'
         // );
     }
+
+    public function configurable()
+    {
+        return true;
+    }
 }
