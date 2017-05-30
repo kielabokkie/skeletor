@@ -16,26 +16,24 @@ class ProviderManager extends Manager
      */
     public function configure(Package $package, Framework $activeFramework)
     {
-        if ($activeFramework->getName() !== 'Laravel') {
-            $this->cli->red("Configure {$package->getInstallSlug()} manual for {$activeFramework->getName()}, we currently only support Laravel");
+        if ($activeFramework->configurable() === false) {
+            $this->cli->red("Configure {$package->getInstallSlug()} manual for {$activeFramework->getName()}");
             return;
         }
         $configFile = $activeFramework->getPath('appConfig');
-        $newContent = $this->getNewConfig($configFile, $package);
+        $newContent = $this->getNewConfig(file($configFile), $package);
         $this->projectFilesystem->update($configFile, $newContent);
     }
 
     /**
-     * @param string $configFile
+     * @param array $configFile
      * @param Package $package
      * @return array|bool
      */
-    public function getNewConfig(string $configFile, Package $package)
+    public function getNewConfig(array $configFile, Package $package)
     {
-        $state = null;
-        $appConfig = file($configFile);
-
-        foreach($appConfig as $key => $line) {
+        foreach($configFile as $key => $line) {
+            $state = null;
             $cleanLine = trim(preg_replace('/[\t\s]+/', '', $line));
 
             switch ($cleanLine) {
@@ -49,17 +47,16 @@ class ProviderManager extends Manager
 
             if ($cleanLine === "]," && $state !== null) {
                 $previousLine = --$key;
-                $appConfig[$previousLine] .= $this->$state($package);
-                $state = null;
+                $configFile[$previousLine] .= $this->$state($package);
             }
         }
 
-        return $appConfig;
+        return $configFile;
     }
 
     /**
      * @param Package $package
-     * @return string
+     * @return string|void
      */
     public function getFacadeClass(Package $package)
     {
@@ -75,7 +72,7 @@ class ProviderManager extends Manager
 
     /**
      * @param Package $package
-     * @return string
+     * @return string|void
      */
     public function getProviderClass(Package $package)
     {
