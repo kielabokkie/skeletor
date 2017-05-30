@@ -65,7 +65,7 @@ class ProviderManager extends Manager
             return;
         }
 
-        $provider = explode('@', $package->getFacade());
+        $provider = explode('@', $facade);
 
         return sprintf("\t\t'%s' => %s::class,", $provider[0], $provider[1]) . PHP_EOL;
     }
