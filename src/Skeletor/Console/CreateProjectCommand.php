@@ -95,7 +95,11 @@ class CreateProjectCommand extends SkeletorCommand
         $padding->label('Framework')->result($activeFramework->getName());
         $padding->label('Version')->result($activeFramework->getVersion());
         $this->cli->br()->yellow('Packages:');
-        $this->cli->table($this->packageManager->showPackagesTable($activePackages));
+        if (empty($activePackages)) {
+            $this->cli->white('No packages selected');
+        } else {
+            $this->cli->table($this->packageManager->showPackagesTable($activePackages));
+        }
     }
 
     /**
