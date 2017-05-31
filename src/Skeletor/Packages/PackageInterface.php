@@ -12,5 +12,9 @@ interface PackageInterface
     public function setVersion(string $version);
     public function getPackageOptions();
     public function setPackageOptions(string $packageOptions);
+    public function getProvider();
+    public function setProvider(string $provider);
+    public function getFacade();
+    public function setFacade(string $facade);
     public function install();
 }

@@ -7,9 +7,10 @@ class Laravel54Framework extends Framework
     {
         $this->setInstallSlug('laravel/laravel');
         $this->setName("Laravel");
-        $this->setVersion("5.4");
+        $this->setVersion("5.4.*");
         $this->setPaths([
             'tests' => 'tests',
+            'appConfig' => 'config/app.php'
         ]);
     }
 
@@ -22,5 +23,10 @@ class Laravel54Framework extends Framework
         //     'skeletor://'.$this->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php',
         //     'project://app/namespace/pixelfusion/bootstrap/FeatureContext.php'
         // );
+    }
+
+    public function configurable()
+    {
+        return true;
     }
 }

@@ -26,7 +26,8 @@ class AppTest extends \Codeception\Test\Unit
                 'getVersion' => '0.0.1',
                 'getFrameworks' => ['Laravel54Framework'],
                 'getPackages' => ['BehatBehatPackage'],
-                'getDefaultPackages' => ['PixelfusionGitHooksPackage']
+                'getDefaultPackages' => ['PixelfusionGitHooksPackage'],
+                'getManagers' => ['ComposerManager', 'FrameworkManager', 'PackageManager']
             ]
         );
         $this->app = new App($config, $container, $config->getName(), $config->getVersion());

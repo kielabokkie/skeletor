@@ -3,6 +3,7 @@ namespace Skeletor\Frameworks;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
+use Skeletor\Exceptions\FailedFilesystem;
 use Skeletor\Manager\ComposerManager;
 
 abstract class Framework implements FrameworkInterface
@@ -86,11 +87,11 @@ abstract class Framework implements FrameworkInterface
      */
     public function getPath(string $path)
     {
-        if(array_key_exists($path, $this->paths)){
-            return $this->paths[$path];
+        if (!array_key_exists($path, $this->paths)) {
+            throw new FailedFilesystem("Couldn't find {$path}");
         }
 
-        return '';
+        return $this->paths[$path];
     }
 
     /**

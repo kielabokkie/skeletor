@@ -20,6 +20,14 @@ class SkeletorConfigurator
     /**
      * @return array
      */
+    public function getManagers()
+    {
+        return $this->options['managers'];
+    }
+
+    /**
+     * @return array
+     */
     public function getFrameworks()
     {
         return $this->options['frameworks'];

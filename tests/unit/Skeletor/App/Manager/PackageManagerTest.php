@@ -30,6 +30,11 @@ class PackageManagerTest extends \Codeception\Test\Unit
                 'read' => '{"Behat Behat":["v3.3.0","v3.2.3","v3.2.2","v3.2.1","v3.2.0rc2","v3.2.0rc1","v3.2.0","v3.1.0rc2","v3.1.0rc1","v3.1.0"]}',
             ]
         );
+        $projectFilesystem = Stub::make(
+            Filesystem::class,
+            [
+            ]
+        );
         $defaultPackage = Stub::make(
             PixelfusionGitHooksPackage::class,
             [
@@ -39,7 +44,7 @@ class PackageManagerTest extends \Codeception\Test\Unit
         );
 
         $options = [];
-        $this->packageManager = new PackageManager($cli, $skeletorFilesystem, $options);
+        $this->packageManager = new PackageManager($cli, $skeletorFilesystem, $projectFilesystem, $options);
 
         //Load one framework
         $this->packageManager->setDefaultPackages([$defaultPackage]);

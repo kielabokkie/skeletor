@@ -29,6 +29,11 @@ class FrameworkManagerTest extends \Codeception\Test\Unit
             [
             ]
         );
+        $projectFilesystem = Stub::make(
+            Filesystem::class,
+            [
+            ]
+        );
         $framework = Stub::make(
             Laravel54Framework::class,
             [
@@ -38,7 +43,7 @@ class FrameworkManagerTest extends \Codeception\Test\Unit
         );
 
         $options = [];
-        $this->frameworkManager = new FrameworkManager($cli, $skeletorFilesystem, $options);
+        $this->frameworkManager = new FrameworkManager($cli, $skeletorFilesystem, $projectFilesystem, $options);
 
         //Load one framework
         $this->frameworkManager->setFrameworks([$framework]);
