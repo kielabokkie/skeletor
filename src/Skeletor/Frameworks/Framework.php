@@ -87,7 +87,7 @@ abstract class Framework implements FrameworkInterface
      */
     public function getPath(string $path)
     {
-        if(array_key_exists($path, $this->paths) === false){
+        if (!array_key_exists($path, $this->paths)) {
             throw new FailedFilesystem("Couldn't find {$path}");
         }
 
