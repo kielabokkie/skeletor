@@ -9,6 +9,11 @@ class classDummy extends Package implements ConfigurablePackageInterface
     {
         $this->setInstallSlug("slugDummy");
         $this->setName("nameDummy");
+        $this->setProvider('DummyPackage\DummyPackageProvider');
+        $this->setFacade('DummyPackage@DummyPackage\DummyFacade');
+        $this->setEnvironmentVariables([
+            'PACKAGE_VAR' => '',
+        ]);
     }
 
     public function configure(Framework $activeFramework)
