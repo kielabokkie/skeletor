@@ -16,6 +16,7 @@ abstract class Package implements PackageInterface
     protected $version = "";
     protected $options;
     protected $facade;
+    protected $envVariables = [];
     protected $name;
 
     /**
@@ -133,6 +134,30 @@ abstract class Package implements PackageInterface
     public function setFacade(string $facade)
     {
         $this->facade = $facade;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnvironmentVariables()
+    {
+        return $this->envVariables;
+    }
+
+    /**
+     * @param array $vars
+     */
+    public function setEnvironmentVariables(array $envVariables)
+    {
+        $this->envVariables = $envVariables;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasEnvironmentVariables()
+    {
+        return count($this->envVariables) > 0 ? true : false;
     }
 
     /**

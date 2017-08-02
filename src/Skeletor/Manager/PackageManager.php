@@ -163,6 +163,9 @@ class PackageManager extends Manager
     {
         if (!$this->options['dryRun']) {
             $package->configure($activeFramework);
+
+            // Update .env files
+            $this->updateEnvironmentVariables($package);
         }
     }
 
@@ -176,6 +179,30 @@ class PackageManager extends Manager
 
             $this->cli->br()->output('Publishing configuration');
             $this->cli->output($output);
+        }
+    }
+
+    /**
+     * Update the .env and .env.example files with the environment variables
+     * that are specified for the package.
+     *
+     * @param  Package $package
+     */
+    private function updateEnvironmentVariables(Package $package)
+    {
+        // Write the package environment variables to the .env files
+        if ($package->hasEnvironmentVariables() === true) {
+            $this->cli->br()->output('Writing environment variables');
+
+            $envVariables = $package->getEnvironmentVariables();
+            $lines = "\n";
+
+            foreach ($envVariables as $key => $value) {
+                $lines .= sprintf("%s=%s\n", $key, $value);
+            }
+
+            file_put_contents('.env', $lines, FILE_APPEND);
+            file_put_contents('.env.example', $lines, FILE_APPEND);
         }
     }
 }

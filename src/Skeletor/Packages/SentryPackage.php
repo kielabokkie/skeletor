@@ -11,6 +11,9 @@ class SentryPackage extends Package implements ConfigurablePackageInterface, Pub
         $this->setName('Sentry for Laravel');
         $this->setProvider('Sentry\SentryLaravel\SentryLaravelServiceProvider');
         $this->setFacade('Sentry@Sentry\SentryLaravel\SentryFacade');
+        $this->setEnvironmentVariables([
+            'SENTRY_DSN' => '',
+        ]);
     }
 
     public function configure(Framework $activeFramework)
