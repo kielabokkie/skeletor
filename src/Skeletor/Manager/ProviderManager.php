@@ -32,8 +32,7 @@ class ProviderManager extends Manager
      */
     public function getNewConfig(array $configFile, Package $package)
     {
-        foreach($configFile as $key => $line) {
-            $state = null;
+        foreach ($configFile as $key => $line) {
             $cleanLine = trim(preg_replace('/[\t\s]+/', '', $line));
 
             switch ($cleanLine) {
@@ -48,6 +47,7 @@ class ProviderManager extends Manager
             if ($cleanLine === "]," && $state !== null) {
                 $previousLine = --$key;
                 $configFile[$previousLine] .= $this->$state($package);
+                $state = null;
             }
         }
 
@@ -67,7 +67,7 @@ class ProviderManager extends Manager
 
         $provider = explode('@', $facade);
 
-        return sprintf("\t\t'%s' => %s::class,", $provider[0], $provider[1]) . PHP_EOL;
+        return sprintf("%s'%s' => %s::class,", str_repeat(" ", 8), $provider[0], $provider[1]) . PHP_EOL;
     }
 
     /**
@@ -81,6 +81,6 @@ class ProviderManager extends Manager
             return;
         }
 
-        return sprintf("\t\t%s::class,", $provider) . PHP_EOL;
+        return sprintf("%s%s::class,", str_repeat(" ", 8), $provider) . PHP_EOL;
     }
 }

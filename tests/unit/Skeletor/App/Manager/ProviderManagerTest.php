@@ -68,7 +68,7 @@ class ProviderManagerTest extends \Codeception\Test\Unit
     // tests
     public function testGetFacadeClass()
     {
-        $assert = "\t\t'Pixelfusion' => Pixelfusion\Support\Facades\Config::class," . PHP_EOL;
+        $assert = sprintf("%s'Pixelfusion' => Pixelfusion\Support\Facades\Config::class,", str_repeat(' ', 8)) . PHP_EOL;
         $facadeClass = $this->providerManager->getFacadeClass($this->package);
 
         $this->assertStringMatchesFormat($assert, $facadeClass);
@@ -76,7 +76,7 @@ class ProviderManagerTest extends \Codeception\Test\Unit
 
     public function testGetProviderClass()
     {
-        $assert = "\t\tPixelfusion\PathExample\SampleServiceProvider::class," . PHP_EOL;
+        $assert = sprintf("%sPixelfusion\PathExample\SampleServiceProvider::class,", str_repeat(' ', 8)) . PHP_EOL;
         $facadeClass = $this->providerManager->getProviderClass($this->package);
 
         $this->assertStringMatchesFormat($assert, $facadeClass);
