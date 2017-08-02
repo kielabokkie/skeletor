@@ -165,4 +165,17 @@ class PackageManager extends Manager
             $package->configure($activeFramework);
         }
     }
+
+    /**
+     * @param  Package $package
+     */
+    public function publishConfig(Package $package)
+    {
+        if (!$this->options['dryRun']) {
+            $output = $package->publishConfig();
+
+            $this->cli->br()->output('Publishing configuration');
+            $this->cli->output($output);
+        }
+    }
 }

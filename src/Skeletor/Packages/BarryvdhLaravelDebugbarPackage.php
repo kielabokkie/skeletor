@@ -3,7 +3,7 @@ namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
 
-class BarryvdhLaravelDebugbarPackage extends Package implements ConfigurablePackageInterface
+class BarryvdhLaravelDebugbarPackage extends Package implements ConfigurablePackageInterface, PublishablePackageInterface
 {
     public function setup()
     {

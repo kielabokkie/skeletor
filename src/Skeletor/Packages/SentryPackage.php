@@ -3,7 +3,7 @@ namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
 
-class SentryPackage extends Package implements ConfigurablePackageInterface
+class SentryPackage extends Package implements ConfigurablePackageInterface, PublishablePackageInterface
 {
     public function setup()
     {

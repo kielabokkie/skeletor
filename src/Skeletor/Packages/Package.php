@@ -135,9 +135,22 @@ abstract class Package implements PackageInterface
         $this->facade = $facade;
     }
 
+    /**
+     * Install the composer package
+     */
     public function install()
     {
         $command = $this->composerManager->preparePackageCommand($this->getInstallSlug(), $this->getVersion(), $this->getPackageOptions());
         $this->composerManager->runCommand($command);
+    }
+
+    /**
+     * Publish the configuration of the package
+     *
+     * @return string
+     */
+    public function publishConfig()
+    {
+        return shell_exec(sprintf('php artisan vendor:publish --provider="%s"', $this->getProvider()));
     }
 }
