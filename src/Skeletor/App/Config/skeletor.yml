@@ -5,9 +5,11 @@ frameworks:
     - Laravel54Framework
     - LaravelLumen54Framework
 packages:
-    - BehatBehatPackage
-    - KielabokkieJsonapiBehatExtensionPackage
     - BarryvdhLaravelDebugbarPackage
+    - BehatBehatPackage
+    - DatadogStatsPackage
+    - KielabokkieJsonapiBehatExtensionPackage
+    - SentryPackage
 defaultPackages:
     - PixelfusionGitHooksPackage
 managers:
