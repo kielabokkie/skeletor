@@ -20,9 +20,12 @@ class ProviderManager extends Manager
             $this->cli->red("Configure {$package->getInstallSlug()} manual for {$activeFramework->getName()}");
             return;
         }
-        $configFile = $activeFramework->getPath('appConfig');
-        $newContent = $this->getNewConfig(file($configFile), $package);
-        $this->projectFilesystem->update($configFile, $newContent);
+
+        if (!$this->options['dryRun']) {
+            $configFile = $activeFramework->getPath('appConfig');
+            $newContent = $this->getNewConfig(file($configFile), $package);
+            $this->projectFilesystem->update($configFile, $newContent);
+        }
     }
 
     /**
