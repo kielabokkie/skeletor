@@ -8,11 +8,10 @@ class PixelfusionGitHooksPackage extends Package implements ConfigurablePackageI
     public function setup()
     {
         $this->setInstallSlug('pixelfusion/git-hooks');
-        $this->setName("PixelFusion Git Hooks");
+        $this->setName('PixelFusion Git Hooks');
     }
 
     public function configure(Framework $activeFramework)
     {
-        $this->projectFilesystem->put('PixelFusion.txt', '©PIXELFUSION');
     }
 }

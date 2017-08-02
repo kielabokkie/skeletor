@@ -18,11 +18,6 @@ class Laravel54Framework extends Framework
     {
         $this->projectFilesystem->deleteDir('resources/assets');
         $this->projectFilesystem->createDir('setup/git-hooks');
-
-        // $this->mountManager->copy(
-        //     'skeletor://'.$this->options['templatePath'].'/JsonBehatExtensionPackage/FeatureContext.php',
-        //     'project://app/namespace/pixelfusion/bootstrap/FeatureContext.php'
-        // );
     }
 
     public function configurable()
