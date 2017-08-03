@@ -191,14 +191,14 @@ class PackageManager extends Manager
     private function updateEnvironmentVariables(Package $package)
     {
         // Write the package environment variables to the .env files
-        if ($package->hasEnvironmentVariables() === true) {
+        if ($package->hasEnvironmentVariables()) {
             $this->cli->br()->output('Writing environment variables');
 
             $envVariables = $package->getEnvironmentVariables();
-            $lines = "\n";
+            $lines = PHP_EOL;
 
             foreach ($envVariables as $key => $value) {
-                $lines .= sprintf("%s=%s\n", $key, $value);
+                $lines .= sprintf('%s=%s%s', $key, $value, PHP_EOL);
             }
 
             file_put_contents('.env', $lines, FILE_APPEND);
