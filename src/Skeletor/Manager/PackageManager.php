@@ -201,8 +201,12 @@ class PackageManager extends Manager
                 $lines .= sprintf('%s=%s%s', $key, $value, PHP_EOL);
             }
 
-            file_put_contents('.env', $lines, FILE_APPEND);
-            file_put_contents('.env.example', $lines, FILE_APPEND);
+            $envFiles = ['.env', '.env.example'];
+
+            foreach ($envFiles as $file) {
+                $fileContents = $this->projectFilesystem->read($file);
+                $this->projectFilesystem->update($file, $fileContents . $lines);
+            }
         }
     }
 }
