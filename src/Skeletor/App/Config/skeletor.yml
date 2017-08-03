@@ -9,6 +9,7 @@ packages:
     - BehatBehatPackage
     - DatadogStatsPackage
     - KielabokkieJsonapiBehatExtensionPackage
+    - PrettusL5RepositoryPackage
     - SentryPackage
 defaultPackages:
     - PixelfusionGitHooksPackage
