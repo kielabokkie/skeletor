@@ -16,8 +16,10 @@ class Laravel54Framework extends Framework
 
     public function configure()
     {
-        $this->projectFilesystem->deleteDir('resources/assets');
-        $this->projectFilesystem->createDir('setup/git-hooks');
+        $this->projectFilesystem->deleteDir('public/css');
+        $this->projectFilesystem->deleteDir('public/js');
+        $this->projectFilesystem->delete('public/.htaccess');
+        $this->projectFilesystem->delete('public/web.config');
     }
 
     public function configurable()
