@@ -16,6 +16,7 @@ abstract class Package implements PackageInterface
     protected $version = "";
     protected $options;
     protected $facade;
+    protected $envVariables = [];
     protected $name;
 
     /**
@@ -135,9 +136,46 @@ abstract class Package implements PackageInterface
         $this->facade = $facade;
     }
 
+    /**
+     * @return array
+     */
+    public function getEnvironmentVariables()
+    {
+        return $this->envVariables;
+    }
+
+    /**
+     * @param array $vars
+     */
+    public function setEnvironmentVariables(array $envVariables)
+    {
+        $this->envVariables = $envVariables;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasEnvironmentVariables()
+    {
+        return count($this->envVariables) > 0;
+    }
+
+    /**
+     * Install the composer package
+     */
     public function install()
     {
         $command = $this->composerManager->preparePackageCommand($this->getInstallSlug(), $this->getVersion(), $this->getPackageOptions());
         $this->composerManager->runCommand($command);
+    }
+
+    /**
+     * Publish the configuration of the package
+     *
+     * @return string
+     */
+    public function publishConfig()
+    {
+        return shell_exec(sprintf('php artisan vendor:publish --provider="%s"', $this->getProvider()));
     }
 }

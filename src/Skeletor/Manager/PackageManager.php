@@ -163,6 +163,46 @@ class PackageManager extends Manager
     {
         if (!$this->options['dryRun']) {
             $package->configure($activeFramework);
+
+            // Update .env files
+            $this->updateEnvironmentVariables($package);
+        }
+    }
+
+    /**
+     * @param  Package $package
+     */
+    public function publishConfig(Package $package)
+    {
+        if (!$this->options['dryRun']) {
+            $this->cli->br()->output('Publishing configuration');
+
+            $output = $package->publishConfig();
+            $this->cli->output($output);
+        }
+    }
+
+    /**
+     * Update the .env and .env.example files with the environment variables
+     * that are specified for the package.
+     *
+     * @param  Package $package
+     */
+    private function updateEnvironmentVariables(Package $package)
+    {
+        // Write the package environment variables to the .env files
+        if ($package->hasEnvironmentVariables()) {
+            $this->cli->br()->output('Writing environment variables');
+
+            $envVariables = $package->getEnvironmentVariables();
+            $lines = PHP_EOL;
+
+            foreach ($envVariables as $key => $value) {
+                $lines .= sprintf('%s=%s%s', $key, $value, PHP_EOL);
+            }
+
+            file_put_contents('.env', $lines, FILE_APPEND);
+            file_put_contents('.env.example', $lines, FILE_APPEND);
         }
     }
 }

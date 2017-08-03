@@ -5,6 +5,7 @@ use Skeletor\Exceptions\FailedFilesystem;
 use Skeletor\Frameworks\Framework;
 use Skeletor\Packages\ConfigurablePackageInterface;
 use Skeletor\Packages\ProviderInterface;
+use Skeletor\Packages\PublishablePackageInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -128,6 +129,10 @@ class CreateProjectCommand extends SkeletorCommand
             if ($package instanceof ConfigurablePackageInterface) {
                 $this->packageManager->configure($package, $activeFramework);
                 $this->providerManager->configure($package, $activeFramework);
+            }
+
+            if ($package instanceof PublishablePackageInterface) {
+                $this->packageManager->publishConfig($package);
             }
         }
     }

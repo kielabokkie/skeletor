@@ -16,5 +16,8 @@ interface PackageInterface
     public function setProvider(string $provider);
     public function getFacade();
     public function setFacade(string $facade);
+    public function getEnvironmentVariables();
+    public function setEnvironmentVariables(array $envVariables);
+    public function hasEnvironmentVariables();
     public function install();
 }
