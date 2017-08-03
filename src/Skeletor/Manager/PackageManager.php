@@ -175,9 +175,9 @@ class PackageManager extends Manager
     public function publishConfig(Package $package)
     {
         if (!$this->options['dryRun']) {
-            $output = $package->publishConfig();
-
             $this->cli->br()->output('Publishing configuration');
+
+            $output = $package->publishConfig();
             $this->cli->output($output);
         }
     }
