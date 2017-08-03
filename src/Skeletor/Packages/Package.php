@@ -137,7 +137,7 @@ abstract class Package implements PackageInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getEnvironmentVariables()
     {
@@ -157,7 +157,7 @@ abstract class Package implements PackageInterface
      */
     public function hasEnvironmentVariables()
     {
-        return count($this->envVariables) > 0 ? true : false;
+        return count($this->envVariables) > 0;
     }
 
     /**
