@@ -11,6 +11,7 @@ packages:
     - KielabokkieJsonapiBehatExtensionPackage
     - PrettusL5RepositoryPackage
     - SentryPackage
+    - SpatieLaravelFractalPackage
 defaultPackages:
     - PixelfusionGitHooksPackage
 managers:
