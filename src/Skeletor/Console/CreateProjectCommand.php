@@ -46,7 +46,7 @@ class CreateProjectCommand extends SkeletorCommand
         $activeFramework = $this->frameworkManager->getFrameworkOption();
         $activePackages = $this->packageManager->getPackageOptions();
 
-        if ($this->confirmOptions("\nSpecify package versions?")) {
+        if (count($activePackages) > 0 && $this->confirmOptions("\nSpecify package versions?")) {
             $process->wait(function ($type, $buffer) {
                 if (Process::ERR === $type) {
                     $this->cli->red('ERR > ');
