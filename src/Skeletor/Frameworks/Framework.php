@@ -102,6 +102,14 @@ abstract class Framework implements FrameworkInterface
         $this->paths = $paths;
     }
 
+    public function configure()
+    {
+        $this->mountManager->copy(
+            'skeletor://'.$this->options['templatePath'].'/skeletor.md',
+            'project://skeletor.md'
+        );
+    }
+
     public function install()
     {
         $command = $this->composerManager->prepareFrameworkCommand($this->getInstallSlug(), $this->getVersion());
