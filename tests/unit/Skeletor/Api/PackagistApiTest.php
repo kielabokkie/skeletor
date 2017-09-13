@@ -21,7 +21,7 @@ class PackagistApiTest extends \Codeception\Test\Unit
     public function testAvailablePackagesVersionsReturnsEmptyArrayIfThereAreNoPackages()
     {
         $api = new PackagistApi();
-        $versions = $api->getAvailablePackasgeVersions([]);
+        $versions = $api->getAvailablePackageVersions([]);
 
         $this->assertInternalType('array', $versions);
         $this->assertCount(0, $versions);

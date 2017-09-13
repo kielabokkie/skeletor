@@ -122,7 +122,7 @@ class PackageManager extends Manager
         $versions = $this->getAvailablePackageVersions();
 
         foreach ($packages as $key => $package) {
-            $this->cli->br()->yellow(sprintf('Available versions for %s:', $package->getInstallSlug()));
+            $this->cli->br()->green(sprintf('Available versions for %s:', $package->getInstallSlug()));
             $this->cli->yellow(implode(', ', $versions[$package->getInstallSlug()]));
             $input = $this->cli->input(sprintf('%s version [%s]:', $package->getInstallSlug(), $package->getVersion(false)));
             $versions[$package->getInstallSlug()][] = '';
