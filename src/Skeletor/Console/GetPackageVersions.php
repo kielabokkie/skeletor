@@ -23,7 +23,7 @@ class GetPackageVersions extends SkeletorCommand
         $ansi = $input->getOption('no-ansi');
         $this->setupCommand();
 
-        $packageVersions = $this->packagistApi->getAvailablePackasgeVersions($this->packageManager->getPackages());
+        $packageVersions = $this->packagistApi->getAvailablePackageVersions($this->packageManager->getPackages());
         $this->skeletorFilesystem->put('Tmp/PackageVersions.json', json_encode($packageVersions));
 
         if(!$ansi) {

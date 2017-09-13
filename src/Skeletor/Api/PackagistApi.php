@@ -10,7 +10,7 @@ class PackagistApi
      * @param array $packages
      * @return array
      */
-    public function getAvailablePackasgeVersions(array $packages)
+    public function getAvailablePackageVersions(array $packages)
     {
         $packageVersions = [];
         foreach($packages as $key => $package)
