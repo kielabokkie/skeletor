@@ -26,7 +26,7 @@ class GetPackageVersions extends SkeletorCommand
         $packageVersions = $this->packagistApi->getAvailablePackageVersions($this->packageManager->getPackages());
         $this->skeletorFilesystem->put('Tmp/PackageVersions.json', json_encode($packageVersions));
 
-        if(!$ansi) {
+        if (!$ansi) {
             $cli = $this->getApplication()->getCli();
             $cli->br()->dump($packageVersions);
         }
