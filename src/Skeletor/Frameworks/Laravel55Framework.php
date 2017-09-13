@@ -1,13 +1,13 @@
 <?php
 namespace Skeletor\Frameworks;
 
-class Laravel54Framework extends Framework
+class Laravel55Framework extends Framework
 {
     public function setup()
     {
         $this->setInstallSlug('laravel/laravel');
         $this->setName("Laravel");
-        $this->setVersion("5.4.*");
+        $this->setVersion("5.5.*");
         $this->setPaths([
             'tests' => 'tests',
             'appConfig' => 'config/app.php'

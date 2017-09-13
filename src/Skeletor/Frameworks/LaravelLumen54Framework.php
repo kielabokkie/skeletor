@@ -12,8 +12,7 @@ class LaravelLumen54Framework extends Framework
 
     public function configure()
     {
-        $this->projectFilesystem->put('PixelFusion.txt', '©PIXELFUSION');
-        $this->projectFilesystem->createDir('setup/git-hooks');
+        parent::configure();
     }
 
     public function configurable()
