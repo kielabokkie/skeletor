@@ -91,13 +91,13 @@ class CreateProjectCommand extends SkeletorCommand
      */
     private function showEnteredOptions(Framework $activeFramework, array $activePackages)
     {
-        $padding = $this->cli->padding(20);
+        $padding = $this->cli->padding(16);
         $this->cli->br()->yellow('Project setup:');
         $padding->label('Framework')->result($activeFramework->getName());
         $padding->label('Version')->result($activeFramework->getVersion());
         $this->cli->br()->yellow('Packages:');
         if (empty($activePackages)) {
-            $this->cli->white('No packages selected');
+            $this->cli->green('No packages selected')->br();
         } else {
             $this->cli->table($this->packageManager->showPackagesTable($activePackages));
         }
