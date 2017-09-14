@@ -1,9 +1,9 @@
 <?php
-use Kielabokkie\BehatJsonApi\Context\JsonApiContext;
+use Behat\Behat\Context\Context;
 
 /**
 * Defines application features from the specific context.
 */
-class FeatureContext extends JsonApiContext
+class FeatureContext implements Context
 {
 }
