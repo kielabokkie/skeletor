@@ -9,6 +9,7 @@ class KielabokkieJsonapiBehatExtensionPackage extends Package implements Configu
     {
         $this->setInstallSlug('kielabokkie/jsonapi-behat-extension');
         $this->setName('Kielabokkie Jsonapi Behat Extension');
+        $this->setPackageOptions('--dev');
     }
 
     public function configure(Framework $activeFramework)

@@ -9,6 +9,7 @@ class BarryvdhLaravelDebugbarPackage extends Package implements ConfigurablePack
     {
         $this->setInstallSlug('barryvdh/laravel-debugbar');
         $this->setName('Barryvdh Laravel Debugbar');
+        $this->setPackageOptions('--dev');
         $this->setProvider('Barryvdh\Debugbar\ServiceProvider');
         $this->setFacade('Debugbar@Barryvdh\Debugbar\Facade');
     }

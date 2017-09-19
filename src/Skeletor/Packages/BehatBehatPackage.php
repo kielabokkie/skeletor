@@ -7,5 +7,6 @@ class BehatBehatPackage extends Package
     {
         $this->setInstallSlug('behat/behat');
         $this->setName('Behat Behat');
+        $this->setPackageOptions('--dev');
     }
 }
