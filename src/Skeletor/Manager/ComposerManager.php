@@ -24,7 +24,7 @@ class ComposerManager extends Manager implements InstallerInterface
      */
     public function preparePackageCommand(string $package, string $version, string $packageOptions)
     {
-        return sprintf('composer require %s %s %s', $package, $version, $packageOptions);
+        return sprintf('composer require %s %s %s --sort-packages', $package, $version, $packageOptions);
     }
 
     /**
@@ -34,7 +34,7 @@ class ComposerManager extends Manager implements InstallerInterface
     {
         $this->cli->yellow($command);
 
-        if($this->options['dryRun']) {
+        if ($this->options['dryRun']) {
             return;
         }
 
