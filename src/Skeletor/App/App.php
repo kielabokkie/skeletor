@@ -4,13 +4,14 @@ namespace Skeletor\App;
 
 use League\CLImate\CLImate;
 use League\Container\Container;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use League\Flysystem\Adapter\Local;
 use Skeletor\Api\PackagistApi;
-use Symfony\Component\Console\Application;
 use Skeletor\App\Config\SkeletorConfigurator;
 use Skeletor\Exceptions\FailedToLoadService;
+use Skeletor\Manager\RunManager;
+use Symfony\Component\Console\Application;
 
 class App extends Application
 {
@@ -107,6 +108,7 @@ class App extends Application
                 ->withArgument('ComposerManager')
                 ->withArgument('projectFilesystem')
                 ->withArgument('MountManager')
+                ->withArgument('RunManager')
                 ->withArgument($this->options);
         }
     }
@@ -124,6 +126,7 @@ class App extends Application
                 ->withArgument('ComposerManager')
                 ->withArgument('projectFilesystem')
                 ->withArgument('MountManager')
+                ->withArgument('RunManager')
                 ->withArgument($this->options);
         }
     }

@@ -40,29 +40,4 @@ class ComposerManager extends Manager implements InstallerInterface
 
         $this->projectFilesystem->put('composer.json', json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
-
-    /**
-     * @param string $command
-     */
-    public function runCommand(string $command)
-    {
-        $this->cli->yellow($command);
-
-        if ($this->options['dryRun']) {
-            return;
-        }
-
-        $process = new Process($command);
-        $process->setTimeout(500);
-
-        // Stream output to the cli
-        $process->run(function ($type, $buffer) {
-            echo $buffer;
-        });
-
-        if ($process->isSuccessful() === false) {
-            $this->success = false;
-            throw new ProcessFailedException($process);
-        }
-    }
 }

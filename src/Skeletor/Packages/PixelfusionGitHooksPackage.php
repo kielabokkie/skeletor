@@ -14,7 +14,7 @@ class PixelfusionGitHooksPackage extends Package implements PreInstallPackageInt
 
     public function preInstall()
     {
-        $this->composerManager->runCommand('git init');
+        $this->runManager->runCommand('git init');
 
         $composerUpdates = [
             'scripts' => [

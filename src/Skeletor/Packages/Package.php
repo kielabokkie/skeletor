@@ -4,6 +4,7 @@ namespace Skeletor\Packages;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Skeletor\Manager\ComposerManager;
+use Skeletor\Manager\RunManager;
 use Skeletor\Packages\Interfaces\PackageInterface;
 
 abstract class Package implements PackageInterface
@@ -12,6 +13,7 @@ abstract class Package implements PackageInterface
     protected $composerManager;
     protected $packageOptions = "";
     protected $mountManager;
+    protected $runManager;
     protected $installSlug;
     protected $provider;
     protected $version = "";
@@ -27,11 +29,12 @@ abstract class Package implements PackageInterface
      * @param MountManager $mountManager
      * @param array $options
      */
-    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)
+    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, RunManager $runManager, array $options)
     {
         $this->projectFilesystem = $projectFilesystem;
         $this->composerManager = $composerManager;
         $this->mountManager = $mountManager;
+        $this->runManager = $runManager;
         $this->options = $options;
         $this->setup();
     }
@@ -178,7 +181,7 @@ abstract class Package implements PackageInterface
     public function install()
     {
         $command = $this->composerManager->preparePackageCommand($this->getInstallSlug(), $this->getVersion(), $this->getPackageOptions());
-        $this->composerManager->runCommand($command);
+        $this->runManager->runCommand($command);
     }
 
     /**
