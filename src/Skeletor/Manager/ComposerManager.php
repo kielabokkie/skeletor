@@ -28,16 +28,27 @@ class ComposerManager extends Manager implements InstallerInterface
     }
 
     /**
+     * Get the composer file of the project
+     *
+     * @return array
+     */
+    public function getComposerFile()
+    {
+        return json_decode($this->projectFilesystem->read('composer.json'), true);
+    }
+
+    /**
      * Update the composer file of the project
      *
      * @param array $updates
      */
     public function updateComposerFile(array $updates)
     {
-        $original = $this->projectFilesystem->read('composer.json');
+        $original = $this->getComposerFile();
 
-        $result = array_merge_recursive(json_decode($original, true), $updates);
+        $result = array_merge_recursive($original, $updates);
 
         $this->projectFilesystem->put('composer.json', json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
+
 }
