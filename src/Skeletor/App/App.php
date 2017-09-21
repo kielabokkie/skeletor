@@ -10,7 +10,6 @@ use League\Flysystem\MountManager;
 use Skeletor\Api\PackagistApi;
 use Skeletor\App\Config\SkeletorConfigurator;
 use Skeletor\Exceptions\FailedToLoadService;
-use Skeletor\Manager\RunManager;
 use Symfony\Component\Console\Application;
 
 class App extends Application
@@ -31,7 +30,7 @@ class App extends Application
         $this->container = $container;
 
         $this->options['templatePath'] = '/Templates';
-        $this->options['basePath'] = realpath(__DIR__.'/../');
+        $this->options['basePath'] = realpath(__DIR__ . '/../');
     }
 
     /**
@@ -66,7 +65,7 @@ class App extends Application
 
         $managers = [
             'skeletor' => $this->container->get('skeletorFilesystem'),
-            'project' => $this->container->get('projectFilesystem')
+            'project' => $this->container->get('projectFilesystem'),
         ];
         $this->container
             ->add('MountManager', MountManager::class)
@@ -84,8 +83,7 @@ class App extends Application
 
     public function registerManagers()
     {
-        foreach($this->configurator->getManagers() as $key => $manager)
-        {
+        foreach ($this->configurator->getManagers() as $key => $manager) {
             $managerClass = $this->getClassByReference('Skeletor\\Manager\\', $manager);
 
             $this->container
@@ -99,8 +97,7 @@ class App extends Application
 
     public function registerFrameworks()
     {
-        foreach($this->configurator->getFrameworks() as $key => $framework)
-        {
+        foreach ($this->configurator->getFrameworks() as $key => $framework) {
             $frameworkClass = $this->getClassByReference('Skeletor\\Frameworks\\', $framework);
 
             $this->container
@@ -117,8 +114,7 @@ class App extends Application
     {
         //Merge the optional and default packages, because the service is the same
         $packages = array_merge($this->configurator->getPackages(), $this->configurator->getDefaultPackages());
-        foreach($packages as $key => $package)
-        {
+        foreach ($packages as $key => $package) {
             $packageClass = $this->getClassByReference('Skeletor\\Packages\\', $package);
 
             $this->container
@@ -138,10 +134,10 @@ class App extends Application
      */
     public function getClassByReference(string $namespace, string $name)
     {
-        $packageClass = $namespace.$name;
+        $packageClass = $namespace . $name;
 
-        if(!class_exists($packageClass)) {
-            throw new FailedToLoadService("Couldn't find class ". $packageClass);
+        if (!class_exists($packageClass)) {
+            throw new FailedToLoadService("Couldn't find class " . $packageClass);
         }
 
         return $packageClass;
@@ -152,7 +148,7 @@ class App extends Application
      */
     public function getFrameworks()
     {
-        return array_map(function($framework) {
+        return array_map(function ($framework) {
             return $this->container->get($framework);
         }, $this->configurator->getFrameworks());
     }
@@ -162,7 +158,7 @@ class App extends Application
      */
     public function getPackages()
     {
-        return array_map(function($package) {
+        return array_map(function ($package) {
             return $this->container->get($package);
         }, $this->configurator->getPackages());
     }
@@ -172,7 +168,7 @@ class App extends Application
      */
     public function getDefaultPackages()
     {
-        return array_map(function($defaultPackage) {
+        return array_map(function ($defaultPackage) {
             return $this->container->get($defaultPackage);
         }, $this->configurator->getDefaultPackages());
     }
