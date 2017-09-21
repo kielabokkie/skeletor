@@ -4,6 +4,7 @@ namespace Skeletor\Packages;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Skeletor\Manager\ComposerManager;
+use Skeletor\Packages\Interfaces\PackageInterface;
 
 abstract class Package implements PackageInterface
 {
@@ -158,6 +159,17 @@ abstract class Package implements PackageInterface
     public function hasEnvironmentVariables()
     {
         return count($this->envVariables) > 0;
+    }
+
+    /**
+     * Update the composer.json file of the project. The supplied array will be
+     * merged with the existing composer file.
+     *
+     * @param array $updates
+     */
+    public function setComposerFileUpdates(array $updates)
+    {
+        $this->composerManager->updateComposerFile($updates);
     }
 
     /**

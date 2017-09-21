@@ -1,9 +1,9 @@
 <?php
 namespace Skeletor\Packages;
 
-use Skeletor\Frameworks\Framework;
+use Skeletor\Packages\Interfaces\PreInstallPackageInterface;
 
-class PixelfusionGitHooksPackage extends Package implements ConfigurablePackageInterface
+class PixelfusionGitHooksPackage extends Package implements PreInstallPackageInterface
 {
     public function setup()
     {
@@ -12,7 +12,21 @@ class PixelfusionGitHooksPackage extends Package implements ConfigurablePackageI
         $this->setPackageOptions('--dev');
     }
 
-    public function configure(Framework $activeFramework)
+    public function preInstall()
     {
+        $this->composerManager->runCommand('git init');
+
+        $composerUpdates = [
+            'scripts' => [
+                'post-install-cmd' => [
+                    './vendor/pixelfusion/git-hooks/src/git-hooks.sh',
+                ],
+                'post-update-cmd' => [
+                    './vendor/pixelfusion/git-hooks/src/git-hooks.sh',
+                ],
+            ],
+        ];
+
+        $this->setComposerFileUpdates($composerUpdates);
     }
 }

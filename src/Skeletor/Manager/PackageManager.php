@@ -150,6 +150,14 @@ class PackageManager extends Manager
     /**
      * @param Package $package
      */
+    public function preInstall(Package $package)
+    {
+        $package->preInstall();
+    }
+
+    /**
+     * @param Package $package
+     */
     public function install(Package $package)
     {
         $package->install();

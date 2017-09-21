@@ -2,6 +2,7 @@
 namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
+use Skeletor\Packages\Interfaces\ConfigurablePackageInterface;
 
 class classDummy extends Package implements ConfigurablePackageInterface
 {
