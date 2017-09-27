@@ -11,7 +11,7 @@ class RunManager extends Manager
      */
     public function runCommand(string $command)
     {
-        $this->cli->yellow($command);
+        $this->cli->br()->yellow($command);
 
         if ($this->options['dryRun']) {
             return;
