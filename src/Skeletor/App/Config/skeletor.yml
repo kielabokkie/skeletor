@@ -13,6 +13,7 @@ packages:
     - PrettusL5RepositoryPackage
     - SentryPackage
     - SpatieLaravelFractalPackage
+    - SpatieLaravelPermissionPackage
 defaultPackages:
     - PixelfusionGitHooksPackage
 managers:
