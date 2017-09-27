@@ -17,7 +17,7 @@ class ProviderManager extends Manager
     public function configure(Package $package, Framework $activeFramework)
     {
         if ($activeFramework->configurable() === false) {
-            $this->cli->red("Configure {$package->getInstallSlug()} manual for {$activeFramework->getName()}");
+            $this->cli->red("Configure {$package->getInstallSlug()} manually for {$activeFramework->getName()}");
             return;
         }
 
