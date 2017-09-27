@@ -9,11 +9,12 @@ packages:
     - BarryvdhLaravelDebugbarPackage
     - DatadogStatsPackage
     - KielabokkieJsonapiBehatExtensionPackage
+    - LeagueClimatePackage
+    - PredisPredisPackage
     - PrettusL5RepositoryPackage
     - SentryPackage
     - SpatieLaravelFractalPackage
     - SpatieLaravelPermissionPackage
-    - LeagueClimatePackage
 defaultPackages:
     - PixelfusionGitHooksPackage
 managers:
