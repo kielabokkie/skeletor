@@ -1,9 +1,9 @@
 <?php
 namespace Skeletor\Packages;
 
-use Skeletor\Frameworks\Framework;
+use Skeletor\Packages\Interfaces\PublishablePackageInterface;
 
-class BarryvdhLaravelDebugbarPackage extends Package implements ConfigurablePackageInterface, PublishablePackageInterface
+class BarryvdhLaravelDebugbarPackage extends Package implements PublishablePackageInterface
 {
     public function setup()
     {
@@ -12,9 +12,5 @@ class BarryvdhLaravelDebugbarPackage extends Package implements ConfigurablePack
         $this->setPackageOptions('--dev');
         $this->setProvider('Barryvdh\Debugbar\ServiceProvider');
         $this->setFacade('Debugbar@Barryvdh\Debugbar\Facade');
-    }
-
-    public function configure(Framework $activeFramework)
-    {
     }
 }

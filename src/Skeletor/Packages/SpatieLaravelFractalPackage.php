@@ -1,9 +1,9 @@
 <?php
 namespace Skeletor\Packages;
 
-use Skeletor\Frameworks\Framework;
+use Skeletor\Packages\Interfaces\PublishablePackageInterface;
 
-class SpatieLaravelFractalPackage extends Package implements ConfigurablePackageInterface, PublishablePackageInterface
+class SpatieLaravelFractalPackage extends Package implements PublishablePackageInterface
 {
     public function setup()
     {
@@ -11,9 +11,5 @@ class SpatieLaravelFractalPackage extends Package implements ConfigurablePackage
         $this->setName('Spatie Laravel Fractal');
         $this->setProvider('Spatie\Fractal\FractalServiceProvider');
         $this->setFacade('Fractal@Spatie\Fractal\FractalFacade');
-    }
-
-    public function configure(Framework $activeFramework)
-    {
     }
 }

@@ -6,6 +6,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Skeletor\Frameworks\Laravel54Framework;
 use Skeletor\Manager\ComposerManager;
+use Skeletor\Manager\RunManager;
 
 class Laravel54FrameworkTest extends \Codeception\Test\Unit
 {
@@ -27,14 +28,19 @@ class Laravel54FrameworkTest extends \Codeception\Test\Unit
             [
             ]
         );
-        $mountmanager = Stub::make(
+        $mountManager = Stub::make(
             MountManager::class,
+            [
+            ]
+        );
+        $runManager = Stub::make(
+            RunManager::class,
             [
             ]
         );
         $options = [];
 
-        $this->laravel54Framework = new Laravel54Framework($composerManager, $projectFilesystem, $mountmanager, $options);
+        $this->laravel54Framework = new Laravel54Framework($composerManager, $projectFilesystem, $mountManager, $runManager, $options);
     }
 
     protected function _after()

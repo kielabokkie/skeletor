@@ -20,3 +20,4 @@ managers:
     - FrameworkManager
     - PackageManager
     - ProviderManager
+    - RunManager

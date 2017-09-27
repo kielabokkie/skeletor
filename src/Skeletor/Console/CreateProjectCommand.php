@@ -3,9 +3,9 @@ namespace Skeletor\Console;
 
 use Skeletor\Exceptions\FailedFilesystem;
 use Skeletor\Frameworks\Framework;
-use Skeletor\Packages\ConfigurablePackageInterface;
-use Skeletor\Packages\ProviderInterface;
-use Skeletor\Packages\PublishablePackageInterface;
+use Skeletor\Packages\Interfaces\ConfigurablePackageInterface;
+use Skeletor\Packages\Interfaces\PreInstallPackageInterface;
+use Skeletor\Packages\Interfaces\PublishablePackageInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -72,7 +72,7 @@ class CreateProjectCommand extends SkeletorCommand
      */
     private function setupFolder(string $name)
     {
-        if ((is_dir($name)  || is_file($name)) && $name != getcwd()) {
+        if ((is_dir($name) || is_file($name)) && $name != getcwd()) {
             throw new FailedFilesystem(sprintf('Failed to make directory %s already exists', $name));
         }
 
@@ -124,6 +124,10 @@ class CreateProjectCommand extends SkeletorCommand
         $this->frameworkManager->configure($activeFramework);
 
         foreach ($activePackages as $key => $package) {
+            if ($package instanceof PreInstallPackageInterface) {
+                $this->packageManager->preInstall($package);
+            }
+
             $this->packageManager->install($package);
 
             if ($package instanceof ConfigurablePackageInterface) {

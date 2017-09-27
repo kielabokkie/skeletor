@@ -2,6 +2,8 @@
 namespace Skeletor\Packages;
 
 use Skeletor\Frameworks\Framework;
+use Skeletor\Packages\Interfaces\ConfigurablePackageInterface;
+use Skeletor\Packages\Interfaces\PublishablePackageInterface;
 
 class SentryPackage extends Package implements ConfigurablePackageInterface, PublishablePackageInterface
 {

@@ -7,6 +7,7 @@ use League\Container\Container;
 use Skeletor\App\Config\SkeletorConfigurator;
 use Skeletor\Manager\FrameworkManager;
 use Skeletor\Manager\PackageManager;
+use Skeletor\Manager\RunManager;
 
 class AppTest extends \Codeception\Test\Unit
 {
@@ -27,7 +28,7 @@ class AppTest extends \Codeception\Test\Unit
                 'getFrameworks' => ['Laravel54Framework'],
                 'getPackages' => ['BehatBehatPackage'],
                 'getDefaultPackages' => ['PixelfusionGitHooksPackage'],
-                'getManagers' => ['ComposerManager', 'FrameworkManager', 'PackageManager']
+                'getManagers' => ['ComposerManager', 'FrameworkManager', 'PackageManager', 'RunManager']
             ]
         );
         $this->app = new App($config, $container, $config->getName(), $config->getVersion());

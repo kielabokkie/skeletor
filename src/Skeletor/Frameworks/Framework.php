@@ -5,12 +5,14 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Skeletor\Exceptions\FailedFilesystem;
 use Skeletor\Manager\ComposerManager;
+use Skeletor\Manager\RunManager;
 
 abstract class Framework implements FrameworkInterface
 {
     protected $projectFilesystem;
     protected $composerManager;
     protected $mountManager;
+    protected $runManager;
     protected $installSlug;
     protected $options;
     protected $version;
@@ -24,11 +26,12 @@ abstract class Framework implements FrameworkInterface
      * @param MountManager $mountManager
      * @param array $options
      */
-    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, array $options)
+    public function __construct(ComposerManager $composerManager, Filesystem $projectFilesystem, MountManager $mountManager, RunManager $runManager, array $options)
     {
         $this->projectFilesystem = $projectFilesystem;
         $this->composerManager = $composerManager;
         $this->mountManager = $mountManager;
+        $this->runManager = $runManager;
         $this->options = $options;
         $this->setup();
     }
@@ -105,7 +108,7 @@ abstract class Framework implements FrameworkInterface
     public function configure()
     {
         $this->mountManager->copy(
-            'skeletor://'.$this->options['templatePath'].'/skeletor.md',
+            'skeletor://' . $this->options['templatePath'] . '/skeletor.md',
             'project://skeletor.md'
         );
     }
@@ -113,6 +116,6 @@ abstract class Framework implements FrameworkInterface
     public function install()
     {
         $command = $this->composerManager->prepareFrameworkCommand($this->getInstallSlug(), $this->getVersion());
-        $this->composerManager->runCommand($command);
+        $this->runManager->runCommand($command);
     }
 }

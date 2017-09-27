@@ -1,5 +1,5 @@
 <?php
-namespace Skeletor\Packages;
+namespace Skeletor\Packages\Interfaces;
 
 interface PackageInterface
 {
