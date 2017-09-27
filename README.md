@@ -14,10 +14,18 @@ If you already have Skeletor installed you can skip to the [create a project](#c
 Download the Skeletor installer using Composer:
 
 ```bash
-composer global require "pixelfusion/skeletor"
+composer global require pixelfusion/skeletor
 ```
 
 Make sure to place the `~/.composer/vendor/bin` directory (or the equivalent directory for your OS) in your $PATH so the `Skeletor` executable can be located by you system.
+
+## Update Skeletor
+
+If you already have installed Skeletor and you need to update you can use the following command:
+
+```bash
+composer global update pixelfusion/skeletor
+```
 
 
 ## Create a project
