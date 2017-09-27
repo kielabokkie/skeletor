@@ -132,8 +132,9 @@ class CreateProjectCommand extends SkeletorCommand
 
             if ($package instanceof ConfigurablePackageInterface) {
                 $this->packageManager->configure($package, $activeFramework);
-                $this->providerManager->configure($package, $activeFramework);
             }
+
+            $this->providerManager->configure($package, $activeFramework);
 
             if ($package instanceof PublishablePackageInterface) {
                 $this->packageManager->publishConfig($package);
