@@ -28,6 +28,12 @@ class AddNewPackage extends SkeletorCommand
         }
 
         $packageInfo['slug'] = $this->packageManager->specifyPackage($packageOptions);
+
+        if (is_null($packageInfo['slug']) === true) {
+            $this->cli->br()->red('no package selected, nothing was done');
+            return;
+        }
+
         $packageInfo = $this->buildPackageInfo($packageInfo);
         if (in_array($packageInfo['name'], $this->packageManager->getAllPackageNames())) {
             $this->cli->br()->red('package already installed');

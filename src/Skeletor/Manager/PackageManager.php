@@ -142,7 +142,7 @@ class PackageManager extends Manager
      */
     public function specifyPackage($packages)
     {
-        $packageQuestion = $this->cli->br()->radio('Choose your packages:', $packages);
+        $packageQuestion = $this->cli->br()->radio('Choose your package:', $packages);
 
         return $packageQuestion->prompt();
     }
