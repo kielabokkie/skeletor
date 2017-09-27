@@ -107,6 +107,13 @@ abstract class Framework implements FrameworkInterface
 
     public function configure()
     {
+        $this->mountManager->delete('project://readme.md');
+
+        $this->mountManager->copy(
+            'skeletor://' . $this->options['templatePath'] . '/readme.md',
+            'project://readme.md'
+        );
+
         $this->mountManager->copy(
             'skeletor://' . $this->options['templatePath'] . '/skeletor.md',
             'project://skeletor.md'
