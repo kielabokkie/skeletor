@@ -7,9 +7,10 @@ frameworks:
     - LaravelLumen54Framework
 packages:
     - BarryvdhLaravelDebugbarPackage
-    - BehatBehatPackage
     - DatadogStatsPackage
     - KielabokkieJsonapiBehatExtensionPackage
+    - LeagueClimatePackage
+    - PredisPredisPackage
     - PrettusL5RepositoryPackage
     - SentryPackage
     - SpatieLaravelFractalPackage
