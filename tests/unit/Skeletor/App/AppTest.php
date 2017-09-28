@@ -26,7 +26,7 @@ class AppTest extends \Codeception\Test\Unit
                 'getName' => 'Test CLI',
                 'getVersion' => '0.0.1',
                 'getFrameworks' => ['Laravel54Framework'],
-                'getPackages' => ['BehatBehatPackage'],
+                'getPackages' => ['BarryvdhLaravelDebugbarPackage'],
                 'getDefaultPackages' => ['PixelfusionGitHooksPackage'],
                 'getManagers' => ['ComposerManager', 'FrameworkManager', 'PackageManager', 'RunManager']
             ]
