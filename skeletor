@@ -26,13 +26,43 @@ if (file_exists(__DIR__.'/../../autoload.php')) {
     );
 }
 
-use Skeletor\App\App;
 use League\Container\Container;
+use Skeletor\App\App;
 use Skeletor\App\Config\SkeletorConfigurator;
+use Zttp\Zttp;
 
 $container = new Container();
 $config = new SkeletorConfigurator();
 $app = new App($config, $container);
+
+// Fetch Skeletor package tags from Github
+$response = Zttp::get('https://api.github.com/repos/pixelfusion/skeletor/tags');
+$tags = $response->json();
+
+// If tags are recieved from Github, check if the user has the latest version
+if ($response->status() === 200 && count($tags) > 0) {
+    $localVersion = $config->getVersion();
+    $latestVersion = $tags[0]['name'];
+
+    if (version_compare($localVersion, $latestVersion) < 0) {
+        $climate = new League\CLImate\CLImate;
+
+        $climate->br()
+            ->red(sprintf('Oops, your Skeletor version [%s] is out of date', $localVersion))
+            ->br();
+
+        $climate->red()
+            ->inline('Run ')
+            ->blue()
+            ->inline('composer global update pixelfusion/skeletor')
+            ->red()
+            ->inline(sprintf(' to update to version %s', $latestVersion))
+            ->clean()
+            ->br();
+
+        die();
+    }
+}
 
 $app->addCommands(array(
     new Skeletor\Console\CreateProjectCommand(),

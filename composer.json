@@ -19,7 +19,8 @@
         "league/flysystem": "^1.0",
         "league/climate": "^3.2",
         "league/container": "^2.3",
-        "symfony/yaml": "^3.2"
+        "symfony/yaml": "^3.2",
+        "kitetail/zttp": "^0.3.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2"
