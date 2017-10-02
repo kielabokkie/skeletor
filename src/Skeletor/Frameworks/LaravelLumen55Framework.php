@@ -1,13 +1,13 @@
 <?php
 namespace Skeletor\Frameworks;
 
-class LaravelLumen54Framework extends Framework
+class LaravelLumen55Framework extends Framework
 {
     public function setup()
     {
         $this->setInstallSlug('laravel/lumen');
         $this->setName("Lumen");
-        $this->setVersion("5.4.*");
+        $this->setVersion("5.5.*");
         $this->setPaths([
             'tests' => 'tests',
             'appConfig' => 'config/app.php'

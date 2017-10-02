@@ -2,9 +2,10 @@ config:
     name: 'Skeletor CLI'
     version: 1.3.0
 frameworks:
-    - Laravel54Framework
+    # - Laravel54Framework
     - Laravel55Framework
-    - LaravelLumen54Framework
+    # - LaravelLumen54Framework
+    - LaravelLumen55Framework
 packages:
     - BarryvdhLaravelDebugbarPackage
     - DatadogStatsPackage
