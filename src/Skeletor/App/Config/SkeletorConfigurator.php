@@ -66,6 +66,14 @@ class SkeletorConfigurator
     }
 
     /**
+     * @return string
+     */
+    public function getGithubApiUrl()
+    {
+        return $this->options['config']['github_api_url'];
+    }
+
+    /**
      * @return array
      */
     public function getConfig()

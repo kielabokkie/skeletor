@@ -36,7 +36,7 @@ $config = new SkeletorConfigurator();
 $app = new App($config, $container);
 
 // Fetch Skeletor package tags from Github
-$response = Zttp::get('https://api.github.com/repos/pixelfusion/skeletor/tags');
+$response = Zttp::get($config->getGithubApiUrl());
 $tags = $response->json();
 
 // If tags are recieved from Github, check if the user has the latest version
