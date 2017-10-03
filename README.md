@@ -36,6 +36,7 @@ Once installed, the `skeletor project:create` command will create a fresh projec
 skeletor project:create helloworld
 ```
 
+[![asciicast](https://asciinema.org/a/pyTg9Qh36cDa3sJaS6T3WLvca.png)](https://asciinema.org/a/pyTg9Qh36cDa3sJaS6T3WLvca)
 
 ## Customisation
 
