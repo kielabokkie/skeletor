@@ -20,14 +20,24 @@ class SentryPackage extends Package implements ConfigurablePackageInterface, Pub
 
     public function configure(Framework $activeFramework)
     {
-        if ($activeFramework->getVersion() === '5.4.*') {
-            // Remove the original file first or else copy won't work
-            $this->mountManager->delete('project://app/Exceptions/Handler.php');
+        $original = 'project://app/Exceptions/Handler.php';
 
-            $this->mountManager->copy(
-                'skeletor://'.$this->options['templatePath'].'/SentryPackage/Exceptions/Handler.php',
-                'project://app/Exceptions/Handler.php'
-            );
+        // Delete the original file first or else copy won't work
+        $this->mountManager->delete($original);
+
+        switch ($activeFramework->getVersion()) {
+            case '5.5.*':
+                $this->mountManager->copy(
+                    'skeletor://'.$this->options['templatePath'].'/SentryPackage/Exceptions/HandlerL55.php',
+                    $original
+                );
+                break;
+            case '5.4.*':
+                $this->mountManager->copy(
+                    'skeletor://'.$this->options['templatePath'].'/SentryPackage/Exceptions/HandlerL54.php',
+                    $original
+                );
+                break;
         }
     }
 }
